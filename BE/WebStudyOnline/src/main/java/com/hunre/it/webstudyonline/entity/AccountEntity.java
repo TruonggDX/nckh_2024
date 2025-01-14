@@ -17,6 +17,8 @@ public class AccountEntity extends AbstractEntity{
     private String email;
     private String phone;
 
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    private InforTeacherEntity teacher;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "account_role",
@@ -24,6 +26,14 @@ public class AccountEntity extends AbstractEntity{
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<RoleEntity> roles = new HashSet<>();
+
+    public InforTeacherEntity getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(InforTeacherEntity teacher) {
+        this.teacher = teacher;
+    }
 
     public String getCode() {
         return code;

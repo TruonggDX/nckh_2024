@@ -30,7 +30,7 @@ public class CertificateEntity extends AbstractEntity{
     @ManyToOne
     @JoinColumn(name = "teacher_id")
     @EqualsAndHashCode.Exclude
-    private TeacherEntity teacherEntity;
+    private InforTeacherEntity inforTeacherEntity;
 
     public String getCertificateName() {
         return certificateName;
@@ -88,11 +88,11 @@ public class CertificateEntity extends AbstractEntity{
         this.certificateStatus = certificateStatus;
     }
 
-    public TeacherEntity getTeacherEntity() {
-        return teacherEntity;
+    public InforTeacherEntity getTeacherEntity() {
+        return inforTeacherEntity;
     }
 
-    public void setTeacherEntity(TeacherEntity teacherEntity) {
-        this.teacherEntity = teacherEntity;
+    public void setTeacherEntity(InforTeacherEntity inforTeacherEntity) {
+        this.inforTeacherEntity = inforTeacherEntity;
     }
 }
