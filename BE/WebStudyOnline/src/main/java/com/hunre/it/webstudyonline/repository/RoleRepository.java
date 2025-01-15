@@ -9,6 +9,5 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface RoleRepository extends JpaRepository<RoleEntity,Long> {
-    @Query(value = "select r from RoleEntity r join r.users u where u.username=:username")
-    List<RoleEntity> getRoleByUsername(@Param("username") String username);
+    RoleEntity findByName(String name);
 }

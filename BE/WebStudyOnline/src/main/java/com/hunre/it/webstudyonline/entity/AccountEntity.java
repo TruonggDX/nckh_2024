@@ -16,7 +16,7 @@ public class AccountEntity extends AbstractEntity{
     private String password;
     private String email;
     private String phone;
-
+    private boolean enabled;
     @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     private InforTeacherEntity teacher;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
@@ -26,6 +26,22 @@ public class AccountEntity extends AbstractEntity{
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<RoleEntity> roles = new HashSet<>();
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public AccountEntity(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public AccountEntity() {
+    }
 
     public InforTeacherEntity getTeacher() {
         return teacher;

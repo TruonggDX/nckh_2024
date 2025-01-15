@@ -2,20 +2,22 @@ package com.hunre.it.webstudyonline.mapper;
 
 import com.hunre.it.webstudyonline.entity.RoleEntity;
 import com.hunre.it.webstudyonline.model.dto.RoleDto;
-import org.mapstruct.Mapper;
+import org.springframework.stereotype.Component;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-
-@Mapper(componentModel = "spring")
-public interface RoleMapper {
-    RoleDto toDto(RoleEntity roleEntity);
-    RoleEntity toEntity(RoleDto roleDto);
-
-    default Set<RoleDto> toDtoSet(Set<RoleEntity> roleEntitySet) {
-        return  roleEntitySet.stream().map(this::toDto).collect(Collectors.toSet());
+@Component
+public class RoleMapper {
+    public RoleDto toDto(RoleEntity roleEntity) {
+        RoleDto dto = new RoleDto();
+        dto.setId(roleEntity.getId());
+        dto.setCode(roleEntity.getCode());
+        dto.setName(roleEntity.getName());
+        return dto;
     }
-    default Set<RoleEntity> toEntitySet(Set<RoleDto> roleDtoSet) {
-        return roleDtoSet.stream().map(this::toEntity).collect(Collectors.toSet());
+    public RoleEntity toRoleEntity(RoleDto dto) {
+        RoleEntity entity = new RoleEntity();
+        entity.setId(dto.getId());
+        entity.setCode(dto.getCode());
+        entity.setName(dto.getName());
+        return entity;
     }
 }
