@@ -9,4 +9,8 @@ import java.util.List;
 
 public interface IRoleService {
     ResponsePage<List<RoleDto>> getAllRoles(Pageable pageable);
+    BaseResponse<RoleDto> addRole(RoleDto role);
+    BaseResponse<RoleDto> updateRole(Long id ,RoleDto role);
+    BaseResponse<RoleDto> deleteRole(Long id);
+    BaseResponse<RoleDto> getRoleById(Long id);
 }

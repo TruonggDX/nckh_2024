@@ -38,6 +38,7 @@ public class WebSecurityConfig {
         httpSecurity.csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/api/role/**").permitAll()
                         .anyRequest().authenticated()
                 );
 
