@@ -14,8 +14,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class IRoleServiceImpl implements IRoleService {
@@ -111,5 +113,15 @@ public class IRoleServiceImpl implements IRoleService {
         response.setCode(HttpStatus.OK.value());
         response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
         return response;
+    }
+
+    public Set<RoleEntity> findByRoleCode(Set<String> roleCodes) {
+        Set<RoleEntity> roleEntities = new HashSet<>();
+        for (String roleCode : roleCodes) {
+            roleCode = roleCode.trim();
+            RoleEntity roleEntity = roleRepository.findByCode(roleCode).orElseThrow(() -> new RuntimeException("Role not found"));
+            roleEntities.add(roleEntity);
+        }
+        return roleEntities;
     }
 }

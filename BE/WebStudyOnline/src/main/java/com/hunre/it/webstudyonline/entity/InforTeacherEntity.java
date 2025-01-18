@@ -1,8 +1,6 @@
 package com.hunre.it.webstudyonline.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 @Entity
@@ -12,7 +10,7 @@ public class InforTeacherEntity extends AbstractEntity {
     private Integer experience;
     private LocalDate birthday;
 
-    @OneToOne(mappedBy = "teacher")
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     private AccountEntity account;
 
     public AccountEntity getAccount() {

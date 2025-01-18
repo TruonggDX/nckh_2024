@@ -13,8 +13,9 @@ public class AccountMapper {
     public AccountDto toDto(AccountEntity userEntity) {
         AccountDto dto = new AccountDto();
         dto.setId(userEntity.getId());
+        dto.setFullName(userEntity.getFullname());
+        dto.setPhone(userEntity.getPhone());
         dto.setUsername(userEntity.getUsername());
-        dto.setPassword(userEntity.getPassword());
         dto.setEmail(userEntity.getEmail());
         dto.setRoles(userEntity.getRoles()
                 .stream()
