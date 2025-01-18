@@ -17,7 +17,7 @@ public class AccountEntity extends AbstractEntity{
     private String email;
     private String phone;
     private boolean enabled;
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @OneToOne(mappedBy = "account")
     private InforTeacherEntity teacher;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(

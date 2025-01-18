@@ -1,5 +1,7 @@
 package com.hunre.it.webstudyonline.utils;
 
+import com.hunre.it.webstudyonline.model.response.BaseResponse;
+import jakarta.validation.ValidationException;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
@@ -11,7 +13,7 @@ public class DateUtils {
 
     public static LocalDate strToDate(String date) {
         if (StringUtils.isEmpty(date)) {
-            return null;
+            throw new ValidationException (Constant.HTTP_MESSAGE.EMPTY);
         }
         return LocalDate.parse(date, DateTimeFormatter.ofPattern(YYYYMMDD));
     }

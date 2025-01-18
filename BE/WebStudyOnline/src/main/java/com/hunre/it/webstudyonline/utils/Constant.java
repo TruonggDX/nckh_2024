@@ -12,5 +12,9 @@ public class Constant {
     public class HTTP_MESSAGE{
         public static final String SUCCESS="request successfully";
         public static final String FAILED="request failed";
+        public static final String NOTFOUND="Not Found";
+        public static final String EMPTY="Please fill out the variable";
+        public static final String StringToLong="Please enter a number";
+
     }
 }
