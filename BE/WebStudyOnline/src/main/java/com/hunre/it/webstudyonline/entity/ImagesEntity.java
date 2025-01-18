@@ -1,9 +1,6 @@
 package com.hunre.it.webstudyonline.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "image")
@@ -11,6 +8,10 @@ public class ImagesEntity extends AbstractEntity {
     private String url;
     private String publicId;
     private String type;
+
+    @ManyToOne
+    @JoinColumn(name = "course_id")
+    private CourseEntity courseEntity;
 
     public String getUrl() {
         return url;
@@ -34,5 +35,13 @@ public class ImagesEntity extends AbstractEntity {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public CourseEntity getCourseEntity() {
+        return courseEntity;
+    }
+
+    public void setCourseEntity(CourseEntity courseEntity) {
+        this.courseEntity = courseEntity;
     }
 }

@@ -40,6 +40,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/api/category/**").permitAll()
                         .requestMatchers("/api/role/**").permitAll()
+                        .requestMatchers("/api/course/**").permitAll()
                         .anyRequest().authenticated()
                 );
 

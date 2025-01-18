@@ -1,35 +1,24 @@
-package com.hunre.it.webstudyonline.entity;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
-import lombok.EqualsAndHashCode;
+package com.hunre.it.webstudyonline.model.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
 
-@Entity
-@Table(name = "course")
-public class CourseEntity extends AbstractEntity {
+public class CourseDto {
+    private Long id;
     private String code;
     private String name;
     private BigDecimal price;
     private String description;
     private String status;
+    private Long categoryId;
+    private String imageUrl;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    @EqualsAndHashCode.Exclude
-    private CategoryEntity categoryEntity;
-
-
-
-    public String getStatus() {
-        return status;
+    public Long getId() {
+        return id;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getCode() {
@@ -64,11 +53,27 @@ public class CourseEntity extends AbstractEntity {
         this.description = description;
     }
 
-    public CategoryEntity getCategoryEntity() {
-        return categoryEntity;
+    public String getStatus() {
+        return status;
     }
 
-    public void setCategoryEntity(CategoryEntity categoryEntity) {
-        this.categoryEntity = categoryEntity;
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
