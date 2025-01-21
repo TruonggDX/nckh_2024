@@ -52,7 +52,13 @@ public class IAuthServiceImpl implements IAuthService {
 
     @Override
     public RegisterUserDto signup(RegisterUserDto registerUserDto) {
-        AccountEntity account = new AccountEntity(registerUserDto.getEmail(), passwordEncoder.encode(registerUserDto.getPassword()));
+        AccountEntity account = new AccountEntity(
+                registerUserDto.getCode(),
+                registerUserDto.getFullname(),
+                passwordEncoder.encode(registerUserDto.getPassword()),
+                registerUserDto.getEmail(),
+                registerUserDto.getPhone()
+        );
         account.setEnabled(false);
         Set<RoleEntity> roles = registerUserDto.getRoleIds().stream().map(
                 roleId -> roleRepository.findById(roleId).orElseThrow(() -> new UsernameNotFoundException("Role not found"))

@@ -1,4 +1,4 @@
-package com.hunre.it.webstudyonline.controller.resource;
+package com.hunre.it.webstudyonline.controller.api;
 
 import com.hunre.it.webstudyonline.model.dto.CategoryDto;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/category")
-public class CategoryController {
+public class ApiCategory {
     @Autowired
     private ICategoryService categoryService;
 

@@ -11,7 +11,7 @@ import java.util.List;
 public interface ICourseService {
     ResponsePage<List<CourseDto>> getCourses(Pageable pageable);
     BaseResponse<CourseDto> addCourse(CourseDto courseDto, MultipartFile file);
-    BaseResponse<CourseDto> updateCourse(Long id,CourseDto courseDto,MultipartFile file);
+    BaseResponse<CourseDto> updateCourse(String id,CourseDto courseDto,MultipartFile file);
     BaseResponse<CourseDto> deleteCourse(Long id);
     BaseResponse<CourseDto> getCourseById(Long id);
 }

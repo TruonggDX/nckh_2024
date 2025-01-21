@@ -1,11 +1,7 @@
 package com.hunre.it.webstudyonline.utils;
 
-import com.hunre.it.webstudyonline.model.response.BaseResponse;
-import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
-
-import java.net.URLDecoder;
 
 public class LongUtils {
     public static Utils<Long> strToLong(String value) {

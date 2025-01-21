@@ -1,6 +1,5 @@
-package com.hunre.it.webstudyonline.controller.resource;
+package com.hunre.it.webstudyonline.controller.api;
 
-import com.cloudinary.provisioning.Account;
 import com.hunre.it.webstudyonline.model.dto.AccountDto;
 import com.hunre.it.webstudyonline.model.request.UpdateAccountForm;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
@@ -17,7 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/account")
 @CrossOrigin(origins = "http://localhost:3000")
-public class AccountController {
+public class ApiAccount {
     @Autowired
     private IAccountService accountService;
 
@@ -34,13 +33,13 @@ public class AccountController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<BaseResponse> update(@RequestBody @Valid UpdateAccountForm updateAccountForm, @PathVariable String id) {
+    public ResponseEntity<BaseResponse<AccountDto>> update(@RequestBody @Valid UpdateAccountForm updateAccountForm, @PathVariable String id) {
         BaseResponse<AccountDto> response = accountService.update(id, updateAccountForm);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<BaseResponse> delete(@PathVariable String id) {
+    public ResponseEntity<BaseResponse<AccountDto>> delete(@PathVariable String id) {
         BaseResponse<AccountDto> response = accountService.delete(id);
         return ResponseEntity.ok(response);
     }

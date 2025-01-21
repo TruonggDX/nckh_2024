@@ -11,7 +11,6 @@ import java.util.Set;
 
 public class AccountEntity extends AbstractEntity{
     private String code;
-    private String username;
     private String fullname;
     private String password;
     private String email;
@@ -31,9 +30,12 @@ public class AccountEntity extends AbstractEntity{
         return enabled;
     }
 
-    public AccountEntity(String email, String password) {
-        this.email = email;
+    public AccountEntity(String code, String fullname, String password, String email, String phone) {
+        this.code = code;
+        this.fullname = fullname;
         this.password = password;
+        this.email = email;
+        this.phone = phone;
     }
 
     public void setEnabled(boolean enabled) {
@@ -59,13 +61,6 @@ public class AccountEntity extends AbstractEntity{
         this.code = code;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public String getFullname() {
         return fullname;

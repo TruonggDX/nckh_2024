@@ -14,6 +14,9 @@ public class AuthMapper {
     public RegisterUserDto convertToDTO(AccountEntity account) {
         RegisterUserDto accountDTO = new RegisterUserDto();
         accountDTO.setId(account.getId());
+        accountDTO.setCode(account.getCode());
+        accountDTO.setFullname(account.getFullname());
+        accountDTO.setPhone(account.getPhone());
         accountDTO.setEmail(account.getEmail());
         accountDTO.setEnabled(account.isEnabled());
         accountDTO.setPassword(account.getPassword());

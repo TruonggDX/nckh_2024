@@ -41,6 +41,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/category/**").permitAll()
                         .requestMatchers("/api/role/**").permitAll()
                         .requestMatchers("/api/course/**").permitAll()
+                        .requestMatchers("/api/account/**").permitAll()
+                        .requestMatchers("/api/coursedetails/**").permitAll()
                         .anyRequest().authenticated()
                 );
 

@@ -1,4 +1,4 @@
-package com.hunre.it.webstudyonline.controller.resource;
+package com.hunre.it.webstudyonline.controller.api;
 
 
 import com.hunre.it.webstudyonline.entity.AccountEntity;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/auth")
 @CrossOrigin(origins = "http://localhost:3000")
-public class AuthController {
+public class ApiAuth {
     @Autowired
     private IAuthService iAuthService;
     @Autowired

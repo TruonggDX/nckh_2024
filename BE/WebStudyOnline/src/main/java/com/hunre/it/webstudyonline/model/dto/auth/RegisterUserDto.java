@@ -6,10 +6,13 @@ import java.util.Set;
 
 public class RegisterUserDto {
     private Long id;
+    private String code;
+    private String fullname;
     private String email;
     private String password;
     private Set<RoleDto> roles;
     private boolean enabled;
+    private String phone;
     private Set<Long> roleIds;
 
     public Set<Long> getRoleIds() {
@@ -36,8 +39,6 @@ public class RegisterUserDto {
         this.roles = roles;
     }
 
-
-
     public boolean isEnabled() {
         return enabled;
     }
@@ -60,5 +61,29 @@ public class RegisterUserDto {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public String getFullname() {
+        return fullname;
+    }
+
+    public void setFullname(String fullname) {
+        this.fullname = fullname;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

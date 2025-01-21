@@ -1,9 +1,10 @@
-package com.hunre.it.webstudyonline.controller.resource;
+package com.hunre.it.webstudyonline.controller.api;
 
 import com.hunre.it.webstudyonline.model.dto.CourseDto;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
 import com.hunre.it.webstudyonline.model.response.ResponsePage;
 import com.hunre.it.webstudyonline.service.ICourseService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/course")
-public class CourseController {
+public class ApiCourse {
     @Autowired
     private ICourseService courseService;
 
@@ -33,8 +34,8 @@ public class CourseController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<BaseResponse<CourseDto>> update(@PathVariable Long id,
-                                                          @ModelAttribute CourseDto courseDto,
+    public ResponseEntity<BaseResponse<CourseDto>> update(@PathVariable String id,
+                                                          @ModelAttribute @Valid CourseDto courseDto,
                                                           @RequestParam(value = "file" ,required = false) MultipartFile file) throws IOException {
         BaseResponse<CourseDto> response = courseService.updateCourse(id, courseDto, file);
         return ResponseEntity.ok(response);

@@ -1,4 +1,4 @@
-package com.hunre.it.webstudyonline.controller.resource;
+package com.hunre.it.webstudyonline.controller.api;
 
 import com.hunre.it.webstudyonline.model.dto.ImageDto;
 import com.hunre.it.webstudyonline.service.UploadImageFile;
@@ -15,7 +15,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api/upload")
 @RequiredArgsConstructor
-public class UploadFileController {
+public class ApiUploadFile {
 
     @Autowired
     private UploadImageFile uploadImageFile;

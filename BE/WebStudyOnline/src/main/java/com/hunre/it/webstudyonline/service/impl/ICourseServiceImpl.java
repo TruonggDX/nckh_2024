@@ -15,6 +15,8 @@ import com.hunre.it.webstudyonline.repository.ImageRepository;
 import com.hunre.it.webstudyonline.service.ICourseService;
 import com.hunre.it.webstudyonline.service.UploadImageFile;
 import com.hunre.it.webstudyonline.utils.Constant;
+import com.hunre.it.webstudyonline.utils.LongUtils;
+import com.hunre.it.webstudyonline.utils.Utils;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -99,20 +101,27 @@ public class ICourseServiceImpl implements ICourseService {
     }
 
     @Override
-    public BaseResponse<CourseDto> updateCourse(Long id, CourseDto courseDto,MultipartFile file) {
+    public BaseResponse<CourseDto> updateCourse(String id, CourseDto courseDto,MultipartFile file) {
         try {
             BaseResponse<CourseDto> response = new BaseResponse<>();
+            Utils<Long> utils = LongUtils.strToLong(id);
+            if (utils.getT()== null){
+                response.setCode(utils.getCode());
+                response.setMessage(utils.getMsg());
+                return response;
+            }
+            Long courseId = utils.getT();
             CourseEntity course = courseMapper.toEntity(courseDto);
-            Optional<CourseEntity> checkCourse = courseRepository.findById(id);
+            Optional<CourseEntity> checkCourse = courseRepository.findById(courseId);
             if (checkCourse.isEmpty()) {
                 response.setCode(HttpStatus.BAD_REQUEST.value());
-                response.setMessage(Constant.HTTP_MESSAGE.FAILED);
+                response.setMessage(Constant.HTTP_MESSAGE.NOTFOUND);
                 return response;
             }
             Optional<CategoryEntity> checkCate = categoryRepository.findById(courseDto.getCategoryId());
             if (checkCate.isEmpty()) {
                 response.setCode(HttpStatus.BAD_REQUEST.value());
-                response.setMessage(Constant.HTTP_MESSAGE.FAILED);
+                response.setMessage(Constant.HTTP_MESSAGE.NOTFOUND);
                 return response;
             }
             course.setCategoryEntity(checkCate.get());
