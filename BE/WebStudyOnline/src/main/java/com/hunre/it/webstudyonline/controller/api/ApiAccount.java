@@ -1,6 +1,7 @@
 package com.hunre.it.webstudyonline.controller.api;
 
 import com.hunre.it.webstudyonline.model.dto.AccountDto;
+import com.hunre.it.webstudyonline.model.dto.CertificateDto;
 import com.hunre.it.webstudyonline.model.request.UpdateAccountForm;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
 import com.hunre.it.webstudyonline.model.response.ResponsePage;
@@ -19,6 +20,12 @@ import java.util.List;
 public class ApiAccount {
     @Autowired
     private IAccountService accountService;
+
+    @GetMapping("/list")
+    public ResponseEntity<ResponsePage<List<AccountDto>>> getAll(Pageable pageable) {
+        ResponsePage<List<AccountDto>> responsePage = accountService.getAllAccounts(pageable);
+        return ResponseEntity.ok(responsePage);
+    }
 
     @GetMapping("/findByCondition")
     public ResponseEntity<ResponsePage<List<AccountDto>>> findByCondition( @RequestParam(value = "name") String name, Pageable pageable, @RequestParam String email) {

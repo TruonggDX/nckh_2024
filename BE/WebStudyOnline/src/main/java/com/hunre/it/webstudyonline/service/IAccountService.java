@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface IAccountService {
+    ResponsePage<List<AccountDto>> getAllAccounts(Pageable pageable);
     ResponsePage<List<AccountDto>> findUserByCondition(Pageable pageable, String fullname, String email);
     ResponsePage<List<AccountDto>> findUserByRole(Pageable pageable, String fullname, String email,String roleCode);
     BaseResponse<AccountDto> update(String id, UpdateAccountForm updateAccountForm);

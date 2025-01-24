@@ -4,13 +4,21 @@ import java.util.Set;
 
 public class AccountDto {
     private Long id;
-    private String username;
+    private String code;
     private String email;
     private String fullName;
     private String phone;
     private Set<RoleDto> roles ;
     private boolean enabled;
     private Set<Long> roleIds;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public String getFullName() {
         return fullName;
@@ -35,16 +43,6 @@ public class AccountDto {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-
     public String getEmail() {
         return email;
     }

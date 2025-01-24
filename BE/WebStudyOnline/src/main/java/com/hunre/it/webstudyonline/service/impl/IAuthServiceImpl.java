@@ -60,6 +60,7 @@ public class IAuthServiceImpl implements IAuthService {
                 registerUserDto.getPhone()
         );
         account.setEnabled(false);
+        account.setDeleted(false);
         Set<RoleEntity> roles = registerUserDto.getRoleIds().stream().map(
                 roleId -> roleRepository.findById(roleId).orElseThrow(() -> new UsernameNotFoundException("Role not found"))
         ).collect(Collectors.toSet());

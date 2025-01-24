@@ -17,5 +17,7 @@ public interface RoleRepository extends JpaRepository<RoleEntity,Long> {
     Page<RoleEntity> findAll(Pageable pageable);
     RoleEntity findByName(String name);
     Optional<RoleEntity> findByCode(String id);
+//    @Query(value = "select r from RoleEntity r join r.users u where u.email=:email")
+//    List<RoleEntity> getRoleByUsername(@Param("email") String email);
 
 }

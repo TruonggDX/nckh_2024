@@ -10,8 +10,8 @@ import java.util.List;
 public interface ICategoryService {
     ResponsePage<List<CategoryDto>> getAllCategories(Pageable pageable);
     BaseResponse<CategoryDto> addCategory(CategoryDto categoryDto);
-    BaseResponse<CategoryDto> updateCategory(Long id,CategoryDto categoryDto);
-    BaseResponse<CategoryDto> deleteCategory(Long id);
-    BaseResponse<CategoryDto> getCategoryById(Long id);
+    BaseResponse<CategoryDto> updateCategory(String id,CategoryDto categoryDto);
+    BaseResponse<CategoryDto> deleteCategory(String id);
+    BaseResponse<CategoryDto> getCategoryById(String id);
 
 }

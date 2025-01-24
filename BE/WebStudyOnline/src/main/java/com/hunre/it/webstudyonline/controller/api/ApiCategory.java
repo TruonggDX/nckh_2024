@@ -29,18 +29,18 @@ public class ApiCategory {
         return ResponseEntity.ok(category);
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<BaseResponse<CategoryDto>> update(@Valid @RequestBody CategoryDto categoryDto, @PathVariable Long id) {
+    public ResponseEntity<BaseResponse<CategoryDto>> update(@Valid @RequestBody CategoryDto categoryDto, @PathVariable String id) {
         BaseResponse<CategoryDto> category = categoryService.updateCategory(id, categoryDto);
         return ResponseEntity.ok(category);
     }
     @GetMapping("/findById/{id}")
-    public ResponseEntity<BaseResponse<CategoryDto>> getById(@PathVariable Long id) {
+    public ResponseEntity<BaseResponse<CategoryDto>> getById(@PathVariable String id) {
         BaseResponse<CategoryDto> category = categoryService.getCategoryById(id);
         return ResponseEntity.ok(category);
     }
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<BaseResponse> delete(@PathVariable Long id) {
-        BaseResponse baseResponse = categoryService.deleteCategory(id);
+    public ResponseEntity<BaseResponse<CategoryDto>> delete(@PathVariable String id) {
+        BaseResponse<CategoryDto> baseResponse = categoryService.deleteCategory(id);
         return ResponseEntity.ok(baseResponse);
     }
 

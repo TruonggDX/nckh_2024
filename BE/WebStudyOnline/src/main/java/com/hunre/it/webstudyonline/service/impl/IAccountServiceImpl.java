@@ -3,7 +3,9 @@ package com.hunre.it.webstudyonline.service.impl;
 import com.hunre.it.webstudyonline.entity.AccountEntity;
 import com.hunre.it.webstudyonline.entity.RoleEntity;
 import com.hunre.it.webstudyonline.mapper.AccountMapper;
+import com.hunre.it.webstudyonline.mapper.RoleMapper;
 import com.hunre.it.webstudyonline.model.dto.AccountDto;
+import com.hunre.it.webstudyonline.model.dto.RoleDto;
 import com.hunre.it.webstudyonline.model.request.UpdateAccountForm;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
 import com.hunre.it.webstudyonline.model.response.ResponsePage;
@@ -36,6 +38,33 @@ public class IAccountServiceImpl implements IAccountService {
     private AccountRepository accountRepository;
     @Autowired
     private IRoleServiceImpl roleServiceImpl;
+    @Autowired
+    private RoleRepository roleRepository;
+    @Autowired
+    private RoleMapper roleMapper;
+
+    @Override
+    public ResponsePage<List<AccountDto>> getAllAccounts(Pageable pageable) {
+        ResponsePage<List<AccountDto>> responsePage = new ResponsePage<>();
+        Page<AccountEntity> page = accountRepository.findByDeletedFalseWithRoles(pageable);  // Dùng phương thức với fetch join
+        List<AccountDto> accountDtos = page.getContent().stream().map(account -> {
+            AccountDto accountDto = accountMapper.toDto(account);
+            Set<RoleDto> roleDtos = account.getRoles().stream()
+                    .map(roleMapper::toDto)
+                    .collect(Collectors.toSet());
+            accountDto.setRoles(roleDtos);
+            Set<Long> roleId = account.getRoles().stream().map(RoleEntity::getId).collect(Collectors.toSet());
+            accountDto.setRoleIds(roleId);
+            return accountDto;
+        }).toList();
+        responsePage.setPageNumber(pageable.getPageNumber());
+        responsePage.setPageSize(pageable.getPageSize());
+        responsePage.setTotalElements(page.getTotalElements());
+        responsePage.setTotalPages(page.getTotalPages());
+        responsePage.setContent(accountDtos);
+        return responsePage;
+    }
+
 
     @Override
     public ResponsePage<List<AccountDto>> findUserByCondition(Pageable pageable, String fullname, String email) {

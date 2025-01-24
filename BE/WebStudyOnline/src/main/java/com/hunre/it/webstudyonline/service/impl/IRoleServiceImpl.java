@@ -8,6 +8,8 @@ import com.hunre.it.webstudyonline.model.response.ResponsePage;
 import com.hunre.it.webstudyonline.repository.RoleRepository;
 import com.hunre.it.webstudyonline.service.IRoleService;
 import com.hunre.it.webstudyonline.utils.Constant;
+import com.hunre.it.webstudyonline.utils.LongUtils;
+import com.hunre.it.webstudyonline.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -60,9 +62,16 @@ public class IRoleServiceImpl implements IRoleService {
     }
 
     @Override
-    public BaseResponse<RoleDto> updateRole(Long id, RoleDto role) {
+    public BaseResponse<RoleDto> updateRole(String id, RoleDto role) {
         BaseResponse<RoleDto> response = new BaseResponse<>();
-        Optional<RoleEntity> roleEntity = roleRepository.findById(id);
+        Utils<Long> utils = LongUtils.strToLong(id);
+        if (utils.getT() == null) {
+            response.setCode(utils.getCode());
+            response.setMessage(utils.getMsg());
+            return response;
+        }
+        Long roleId = utils.getT();
+        Optional<RoleEntity> roleEntity = roleRepository.findById(roleId);
         if(roleEntity.isEmpty()){
             response.setCode(HttpStatus.NOT_FOUND.value());
             response.setMessage(Constant.HTTP_MESSAGE.FAILED);
@@ -70,7 +79,7 @@ public class IRoleServiceImpl implements IRoleService {
         }
 
         RoleEntity roleEntity1 = roleMapper.toRoleEntity(role);
-        roleEntity1.setId(id);
+        roleEntity1.setId(roleId);
         roleEntity1 = roleRepository.save(roleEntity1);
         response.setData(roleMapper.toDto(roleEntity1));
         response.setCode(HttpStatus.OK.value());
@@ -80,9 +89,16 @@ public class IRoleServiceImpl implements IRoleService {
     }
 
     @Override
-    public BaseResponse<RoleDto> deleteRole(Long id) {
+    public BaseResponse<RoleDto> deleteRole(String id) {
         BaseResponse<RoleDto> response = new BaseResponse<>();
-        Optional<RoleEntity> roleEntity = roleRepository.findById(id);
+        Utils<Long> utils = LongUtils.strToLong(id);
+        if (utils.getT() == null) {
+            response.setCode(utils.getCode());
+            response.setMessage(utils.getMsg());
+            return response;
+        }
+        Long roleId = utils.getT();
+        Optional<RoleEntity> roleEntity = roleRepository.findById(roleId);
         if(roleEntity.isEmpty()){
             response.setCode(HttpStatus.NOT_FOUND.value());
             response.setMessage(Constant.HTTP_MESSAGE.FAILED);
@@ -99,9 +115,16 @@ public class IRoleServiceImpl implements IRoleService {
     }
 
     @Override
-    public BaseResponse<RoleDto> getRoleById(Long id) {
+    public BaseResponse<RoleDto> getRoleById(String id) {
         BaseResponse<RoleDto> response = new BaseResponse<>();
-        Optional<RoleEntity> roleEntity = roleRepository.findById(id);
+        Utils<Long> utils = LongUtils.strToLong(id);
+        if (utils.getT() == null) {
+            response.setCode(utils.getCode());
+            response.setMessage(utils.getMsg());
+            return response;
+        }
+        Long roleId = utils.getT();
+        Optional<RoleEntity> roleEntity = roleRepository.findById(roleId);
         if(roleEntity.isEmpty()){
             response.setCode(HttpStatus.NOT_FOUND.value());
             response.setMessage(Constant.HTTP_MESSAGE.FAILED);

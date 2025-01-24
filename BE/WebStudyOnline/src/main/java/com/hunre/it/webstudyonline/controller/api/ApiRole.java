@@ -31,7 +31,7 @@ public class ApiRole {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<BaseResponse<RoleDto>> updateRole(@Valid @RequestBody RoleDto roleDto, @PathVariable Long id) {
+    public ResponseEntity<BaseResponse<RoleDto>> updateRole(@Valid @RequestBody RoleDto roleDto, @PathVariable String id) {
         BaseResponse<RoleDto> baseResponse = roleService.updateRole(id,roleDto);
         return ResponseEntity.ok(baseResponse);
     }
@@ -39,13 +39,13 @@ public class ApiRole {
 
 
     @GetMapping("/findById/{id}")
-    public ResponseEntity<BaseResponse<RoleDto>> getRoleById(@PathVariable Long id) {
+    public ResponseEntity<BaseResponse<RoleDto>> getRoleById(@PathVariable String id) {
         BaseResponse<RoleDto> response = roleService.getRoleById(id);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/delele/{id}")
-    public ResponseEntity<BaseResponse<RoleDto>> deleteRole(@PathVariable Long id) {
+    public ResponseEntity<BaseResponse<RoleDto>> deleteRole(@PathVariable String id) {
         BaseResponse<RoleDto> response = roleService.deleteRole(id);
         return ResponseEntity.ok(response);
     }

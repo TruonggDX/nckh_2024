@@ -8,6 +8,8 @@ import com.hunre.it.webstudyonline.model.response.ResponsePage;
 import com.hunre.it.webstudyonline.repository.CategoryRepository;
 import com.hunre.it.webstudyonline.service.ICategoryService;
 import com.hunre.it.webstudyonline.utils.Constant;
+import com.hunre.it.webstudyonline.utils.LongUtils;
+import com.hunre.it.webstudyonline.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -61,9 +63,16 @@ public class ICategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public BaseResponse<CategoryDto> updateCategory(Long id, CategoryDto categoryDto) {
+    public BaseResponse<CategoryDto> updateCategory(String id, CategoryDto categoryDto) {
         BaseResponse<CategoryDto> response = new BaseResponse<>();
-        Optional<CategoryEntity> category = categoryRepository.findById(id);
+        Utils<Long> utils = LongUtils.strToLong(id);
+        if (utils.getT() == null) {
+            response.setCode(utils.getCode());
+            response.setMessage(utils.getMsg());
+            return response;
+        }
+        Long categoryId = utils.getT();
+        Optional<CategoryEntity> category = categoryRepository.findById(categoryId);
         if (category.isEmpty()){
             response.setCode(HttpStatus.NOT_FOUND.value());
             response.setMessage("Category not found");
@@ -90,7 +99,7 @@ public class ICategoryServiceImpl implements ICategoryService {
         }
         currentCategory = categoryMapper.toEntity(categoryDto);
         currentCategory.setDeleted(false);
-        currentCategory.setId(id);
+        currentCategory.setId(categoryId);
         currentCategory = categoryRepository.save(currentCategory);
         response.setCode(HttpStatus.OK.value());
         response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
@@ -100,9 +109,16 @@ public class ICategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public BaseResponse<CategoryDto> deleteCategory(Long id) {
+    public BaseResponse<CategoryDto> deleteCategory(String id) {
         BaseResponse<CategoryDto> response = new BaseResponse<>();
-        Optional<CategoryEntity> category = categoryRepository.findById(id);
+        Utils<Long> utils = LongUtils.strToLong(id);
+        if (utils.getT() == null) {
+            response.setCode(utils.getCode());
+            response.setMessage(utils.getMsg());
+            return response;
+        }
+        Long categoryId = utils.getT();
+        Optional<CategoryEntity> category = categoryRepository.findById(categoryId);
         if (category.isEmpty()) {
             response.setCode(HttpStatus.NOT_FOUND.value());
             response.setMessage(Constant.HTTP_MESSAGE.FAILED);
@@ -118,9 +134,16 @@ public class ICategoryServiceImpl implements ICategoryService {
     }
 
     @Override
-    public BaseResponse<CategoryDto> getCategoryById(Long id) {
+    public BaseResponse<CategoryDto> getCategoryById(String id) {
         BaseResponse<CategoryDto> response = new BaseResponse<>();
-        Optional<CategoryEntity> category = categoryRepository.findById(id);
+        Utils<Long> utils = LongUtils.strToLong(id);
+        if (utils.getT() == null) {
+            response.setCode(utils.getCode());
+            response.setMessage(utils.getMsg());
+            return response;
+        }
+        Long categoryId = utils.getT();
+        Optional<CategoryEntity> category = categoryRepository.findById(categoryId);
         if (category.isEmpty()) {
             response.setCode(HttpStatus.NOT_FOUND.value());
             response.setMessage(Constant.HTTP_MESSAGE.FAILED);
