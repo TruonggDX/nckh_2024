@@ -1,25 +1,21 @@
-package com.hunre.it.webstudyonline.entity;
+package com.hunre.it.webstudyonline.model.dto;
 
 import com.hunre.it.webstudyonline.utils.DateUtils;
-import jakarta.persistence.*;
 
 import java.time.LocalDate;
-@Entity
-@Table(name = "infor_teacher")
-public class InforTeacherEntity extends AbstractEntity {
+
+public class InforTeacherDto {
+    private Long id;
     private String address;
     private Integer experience;
     private LocalDate birthday;
 
-    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
-    private AccountEntity account;
-
-    public AccountEntity getAccount() {
-        return account;
+    public Long getId() {
+        return id;
     }
 
-    public void setAccount(AccountEntity account) {
-        this.account = account;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getAddress() {
@@ -43,6 +39,6 @@ public class InforTeacherEntity extends AbstractEntity {
     }
 
     public void setBirthday(String birthday) {
-         this.birthday = DateUtils.strToDate(birthday);
+        this.birthday = DateUtils.strToDate(birthday);
     }
 }
