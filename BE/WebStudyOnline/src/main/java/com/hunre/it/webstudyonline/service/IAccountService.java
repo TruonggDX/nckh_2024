@@ -15,4 +15,5 @@ public interface IAccountService {
     BaseResponse<AccountDto> update(String id, UpdateAccountForm updateAccountForm);
     BaseResponse<AccountDto> delete(String id);
     AccountDto findById(Long id);
+    BaseResponse<AccountDto> getAccount();
 }

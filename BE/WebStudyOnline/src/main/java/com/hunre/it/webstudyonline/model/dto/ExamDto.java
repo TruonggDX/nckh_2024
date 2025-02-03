@@ -1,15 +1,26 @@
-package com.hunre.it.webstudyonline.entity;
+package com.hunre.it.webstudyonline.model.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
-@Entity
-@Table(name = "exam")
-public class ExamEntity extends AbstractEntity{
+public class ExamDto {
+    private Long id;
+    @NotBlank(message = "Code cannot be empty")
     private String code;
+    @NotBlank(message = "Name cannot be empty")
     private String name;
+    @NotNull(message = "Duration cannot be empty")
     private Integer duration;
+    @NotNull(message = "Number question cannot be empty")
     private Integer number_question;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getCode() {
         return code;

@@ -6,7 +6,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name = "exam_details")
 public class ExamDetailsEntity extends AbstractEntity{
-    private Integer number_question;
+//    private Integer number_question;
     private String answer;
     private String description;
     private String url;
@@ -16,13 +16,13 @@ public class ExamDetailsEntity extends AbstractEntity{
     @EqualsAndHashCode.Exclude
     private ExamEntity examEntity;
 
-    public Integer getNumber_question() {
-        return number_question;
-    }
-
-    public void setNumber_question(Integer number_question) {
-        this.number_question = number_question;
-    }
+//    public Integer getNumber_question() {
+//        return number_question;
+//    }
+//
+//    public void setNumber_question(Integer number_question) {
+//        this.number_question = number_question;
+//    }
 
     public String getAnswer() {
         return answer;

@@ -9,6 +9,7 @@ import com.hunre.it.webstudyonline.service.IAccountService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,5 +50,15 @@ public class ApiAccount {
     public ResponseEntity<BaseResponse<AccountDto>> delete(@PathVariable String id) {
         BaseResponse<AccountDto> response = accountService.delete(id);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/getUser")
+    public ResponseEntity<BaseResponse<AccountDto>> getCurrentUser() {
+        BaseResponse<AccountDto> response = accountService.getAccount();
+        if (response.getCode() == HttpStatus.OK.value()) {
+            return ResponseEntity.ok(response);
+        } else {
+            return ResponseEntity.status(response.getCode()).body(response);
+        }
     }
 }

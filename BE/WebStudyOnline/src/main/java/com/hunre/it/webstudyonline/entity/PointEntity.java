@@ -9,20 +9,24 @@ import lombok.EqualsAndHashCode;
 @Table(name = "point")
 @Entity
 public class PointEntity extends AbstractEntity{
-    private String score;
+    private Double score;
     private Integer rank_level;
-    private String name_exam;
-
+    private Long completionTime;
     @ManyToOne
     @JoinColumn(name = "account_id")
     @EqualsAndHashCode.Exclude
     private AccountEntity accountEntity;
 
-    public String getScore() {
+    @ManyToOne
+    @JoinColumn(name = "exam_id")
+    @EqualsAndHashCode.Exclude
+    private ExamEntity examEntity;
+
+    public Double getScore() {
         return score;
     }
 
-    public void setScore(String score) {
+    public void setScore(Double score) {
         this.score = score;
     }
 
@@ -34,12 +38,12 @@ public class PointEntity extends AbstractEntity{
         this.rank_level = rank_level;
     }
 
-    public String getName_exam() {
-        return name_exam;
+    public Long getCompletionTime() {
+        return completionTime;
     }
 
-    public void setName_exam(String name_exam) {
-        this.name_exam = name_exam;
+    public void setCompletionTime(Long completionTime) {
+        this.completionTime = completionTime;
     }
 
     public AccountEntity getAccountEntity() {
@@ -48,5 +52,13 @@ public class PointEntity extends AbstractEntity{
 
     public void setAccountEntity(AccountEntity accountEntity) {
         this.accountEntity = accountEntity;
+    }
+
+    public ExamEntity getExamEntity() {
+        return examEntity;
+    }
+
+    public void setExamEntity(ExamEntity examEntity) {
+        this.examEntity = examEntity;
     }
 }

@@ -11,13 +11,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface AccountRepository extends JpaRepository<AccountEntity,Long> {
+public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
     Optional<AccountEntity> findByEmail(String email);
-//
-//    @Query(value = "SELECT a FROM AccountEntity a WHERE a.deleted=false ")
-//    Page<AccountEntity> findByDeletedFalse(Pageable pageable);
-@Query("SELECT a FROM AccountEntity a JOIN FETCH a.roles r WHERE a.deleted = false")
-Page<AccountEntity> findByDeletedFalseWithRoles(Pageable pageable);
+
+    @Query("SELECT a FROM AccountEntity a JOIN  a.roles r WHERE a.deleted = false")
+    Page<AccountEntity> findByDeletedFalseWithRoles(Pageable pageable);
 
 
     @Query("select c from AccountEntity c where c.fullname like %:username% and c.email like %:email% and c.deleted = false ")

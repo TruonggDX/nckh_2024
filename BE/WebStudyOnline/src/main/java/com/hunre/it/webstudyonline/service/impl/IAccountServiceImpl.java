@@ -20,6 +20,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import javax.management.relation.Role;
@@ -46,7 +49,7 @@ public class IAccountServiceImpl implements IAccountService {
     @Override
     public ResponsePage<List<AccountDto>> getAllAccounts(Pageable pageable) {
         ResponsePage<List<AccountDto>> responsePage = new ResponsePage<>();
-        Page<AccountEntity> page = accountRepository.findByDeletedFalseWithRoles(pageable);  // Dùng phương thức với fetch join
+        Page<AccountEntity> page = accountRepository.findByDeletedFalseWithRoles(pageable);
         List<AccountDto> accountDtos = page.getContent().stream().map(account -> {
             AccountDto accountDto = accountMapper.toDto(account);
             Set<RoleDto> roleDtos = account.getRoles().stream()
@@ -151,5 +154,31 @@ public class IAccountServiceImpl implements IAccountService {
         AccountEntity accountEntity = accountRepository.findById(id).orElseThrow(() -> new RuntimeException("Account not found"));
         AccountDto accountDto = accountMapper.toDto(accountEntity);
         return accountDto;
+    }
+
+    @Override
+    public BaseResponse<AccountDto> getAccount() {
+        BaseResponse<AccountDto> response = new BaseResponse<>();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null || !authentication.isAuthenticated()) {
+            response.setCode(HttpStatus.UNAUTHORIZED.value());
+            response.setMessage(Constant.HTTP_MESSAGE.FAILED);
+            return response;
+        }
+        if (authentication.getPrincipal() instanceof UserDetails){
+            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+            String email = userDetails.getUsername();
+            AccountEntity account = accountRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Account not found"));
+            AccountDto accountDto = accountMapper.toDto(account);
+            Set<RoleDto>roleDtos =account.getRoles().stream().map(roleMapper::toDto).collect(Collectors.toSet());
+            Set<Long> roleId = account.getRoles().stream().map(RoleEntity::getId).collect(Collectors.toSet());
+            accountDto.setRoleIds(roleId);
+            accountDto.setRoles(roleDtos);
+            response.setData(accountDto);
+            response.setCode(HttpStatus.OK.value());
+            response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
+        }
+
+        return response;
     }
 }

@@ -16,6 +16,7 @@ public class AccountMapper {
         dto.setFullName(userEntity.getFullname());
         dto.setPhone(userEntity.getPhone());
         dto.setEmail(userEntity.getEmail());
+        dto.setEnabled(userEntity.isEnabled());
         dto.setRoles(userEntity.getRoles()
                 .stream()
                 .map(roleMapper::toDto)

@@ -8,7 +8,7 @@ public class AccountDto {
     private String email;
     private String fullName;
     private String phone;
-    private Set<RoleDto> roles ;
+    private Set<RoleDto> roles;
     private boolean enabled;
     private Set<Long> roleIds;
 
