@@ -1,20 +1,20 @@
-package com.hunre.it.webstudyonline.entity;
+package com.hunre.it.webstudyonline.model.dto;
 
-import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
-
-@Entity
-@Table(name = "exam_details")
-public class ExamDetailsEntity extends AbstractEntity{
+public class ExamDetailsDto {
+    private Long id;
     private String name;
     private String answer;
     private String description;
     private String url;
+    private Long examId;
 
-    @ManyToOne
-    @JoinColumn(name = "exam_id")
-    @EqualsAndHashCode.Exclude
-    private ExamEntity examEntity;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
@@ -48,11 +48,11 @@ public class ExamDetailsEntity extends AbstractEntity{
         this.url = url;
     }
 
-    public ExamEntity getExamEntity() {
-        return examEntity;
+    public Long getExamId() {
+        return examId;
     }
 
-    public void setExamEntity(ExamEntity examEntity) {
-        this.examEntity = examEntity;
+    public void setExamId(Long examId) {
+        this.examId = examId;
     }
 }
