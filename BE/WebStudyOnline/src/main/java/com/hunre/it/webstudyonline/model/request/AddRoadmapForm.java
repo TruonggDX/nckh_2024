@@ -1,32 +1,21 @@
-package com.hunre.it.webstudyonline.entity;
-
-import jakarta.persistence.*;
+package com.hunre.it.webstudyonline.model.request;
 
 import java.math.BigDecimal;
-import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "roadmap")
-public class RoadmapEntity extends AbstractEntity {
+public class AddRoadmapForm {
+    private Set<Long> idCourses;
     private String name;
     private String description;
     private Integer discount;
     private BigDecimal price;
 
-    @ManyToMany
-    @JoinTable(
-            name = "roadmap_course",
-            joinColumns = @JoinColumn(name = "roadmap_id"),
-            inverseJoinColumns = @JoinColumn(name = "course_id"))
-    private Set<CourseEntity> course = new HashSet<>();
-
-    public Set<CourseEntity> getCourse() {
-        return course;
+    public Set<Long> getIdCourses() {
+        return idCourses;
     }
 
-    public void setCourse(Set<CourseEntity> course) {
-        this.course = course;
+    public void setIdCourses(Set<Long> idCourses) {
+        this.idCourses = idCourses;
     }
 
     public String getName() {

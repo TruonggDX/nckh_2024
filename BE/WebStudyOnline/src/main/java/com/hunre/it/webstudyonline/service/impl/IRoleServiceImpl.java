@@ -10,6 +10,7 @@ import com.hunre.it.webstudyonline.service.IRoleService;
 import com.hunre.it.webstudyonline.utils.Constant;
 import com.hunre.it.webstudyonline.utils.LongUtils;
 import com.hunre.it.webstudyonline.utils.Utils;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,6 +23,7 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
+@Transactional
 public class IRoleServiceImpl implements IRoleService {
 
     @Autowired

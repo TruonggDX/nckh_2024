@@ -1,12 +1,11 @@
 package com.hunre.it.webstudyonline.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "course")
@@ -22,7 +21,16 @@ public class CourseEntity extends AbstractEntity {
     @EqualsAndHashCode.Exclude
     private CategoryEntity categoryEntity;
 
+    @ManyToMany(mappedBy = "course")
+    private Set<RoadmapEntity> roadmap = new HashSet<>();
 
+    public Set<RoadmapEntity> getRoadmap() {
+        return roadmap;
+    }
+
+    public void setRoadmap(Set<RoadmapEntity> roadmap) {
+        this.roadmap = roadmap;
+    }
 
     public String getStatus() {
         return status;
