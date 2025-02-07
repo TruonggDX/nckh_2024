@@ -24,12 +24,23 @@ public class CourseEntity extends AbstractEntity {
     @ManyToMany(mappedBy = "course")
     private Set<RoadmapEntity> roadmap = new HashSet<>();
 
+    @OneToMany(mappedBy = "course")
+    private Set<CartEntity> cart = new HashSet<>();
+
     public Set<RoadmapEntity> getRoadmap() {
         return roadmap;
     }
 
     public void setRoadmap(Set<RoadmapEntity> roadmap) {
         this.roadmap = roadmap;
+    }
+
+    public Set<CartEntity> getCart() {
+        return cart;
+    }
+
+    public void setCart(Set<CartEntity> cart) {
+        this.cart = cart;
     }
 
     public String getStatus() {

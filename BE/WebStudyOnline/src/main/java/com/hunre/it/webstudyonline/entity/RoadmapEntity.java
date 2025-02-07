@@ -20,6 +20,16 @@ public class RoadmapEntity extends AbstractEntity {
             joinColumns = @JoinColumn(name = "roadmap_id"),
             inverseJoinColumns = @JoinColumn(name = "course_id"))
     private Set<CourseEntity> course = new HashSet<>();
+    @OneToMany(mappedBy = "roadmap")
+    private Set<CartEntity> cart = new HashSet<>();
+
+    public Set<CartEntity> getCart() {
+        return cart;
+    }
+
+    public void setCart(Set<CartEntity> cart) {
+        this.cart = cart;
+    }
 
     public Set<CourseEntity> getCourse() {
         return course;
