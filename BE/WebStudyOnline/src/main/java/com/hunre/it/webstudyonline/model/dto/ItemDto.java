@@ -1,4 +1,4 @@
-package com.hunre.it.webstudyonline.mapper;
+package com.hunre.it.webstudyonline.model.dto;
 
 import java.math.BigDecimal;
 

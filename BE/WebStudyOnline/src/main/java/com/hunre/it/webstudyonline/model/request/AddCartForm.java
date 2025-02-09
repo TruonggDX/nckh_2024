@@ -7,7 +7,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class AddCartForm {
-    private Long accountId;
     private Integer quantity;
     private Long itemId;
     private String type;
@@ -27,15 +26,6 @@ public class AddCartForm {
     public void setType(String type) {
         this.type = type;
     }
-
-    public Long getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(Long accountId) {
-        this.accountId = accountId;
-    }
-
     public Integer getQuantity() {
         return quantity;
     }

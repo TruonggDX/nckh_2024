@@ -17,9 +17,9 @@ public class ApiCart {
     @Autowired
     private ICartServiceImpl cartService;
 
-    @GetMapping("/{accId}")
-    public ResponseEntity<BaseResponse<List<CartDto>>> getCart(@PathVariable String accId) {
-        BaseResponse<List<CartDto>> response = cartService.getAllCart(accId);
+    @GetMapping("")
+    public ResponseEntity<BaseResponse<List<CartDto>>> getCart() {
+        BaseResponse<List<CartDto>> response = cartService.getAllCart();
         return ResponseEntity.ok(response);
     }
     @PostMapping("/add")
@@ -32,9 +32,9 @@ public class ApiCart {
         BaseResponse<CartDto> response = cartService.updateQuantity(id, updateCartForm);
         return ResponseEntity.ok(response);
     }
-    @DeleteMapping("/delete/{accId}")
-    public ResponseEntity<BaseResponse<String>> delete(@PathVariable String accId,@RequestBody List<String> ids) {
-        BaseResponse<String> response = cartService.deleteCart(accId,ids);
+    @DeleteMapping("/delete")
+    public ResponseEntity<BaseResponse<String>> delete(@RequestBody List<String> ids) {
+        BaseResponse<String> response = cartService.deleteCart(ids);
         return ResponseEntity.ok(response);
     }
 }

@@ -1,13 +1,5 @@
 package com.hunre.it.webstudyonline.model.dto;
 
-import com.hunre.it.webstudyonline.entity.AccountEntity;
-import com.hunre.it.webstudyonline.entity.CourseEntity;
-import com.hunre.it.webstudyonline.entity.RoadmapEntity;
-import com.hunre.it.webstudyonline.mapper.ItemDto;
-
-import java.math.BigDecimal;
-import java.util.Set;
-
 public class CartDto {
     private Long id;
     private Integer quantity;

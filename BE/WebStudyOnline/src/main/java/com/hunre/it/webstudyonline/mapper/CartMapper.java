@@ -5,6 +5,7 @@ import com.hunre.it.webstudyonline.entity.CartEntity;
 import com.hunre.it.webstudyonline.entity.CourseEntity;
 import com.hunre.it.webstudyonline.entity.RoadmapEntity;
 import com.hunre.it.webstudyonline.model.dto.CartDto;
+import com.hunre.it.webstudyonline.model.dto.ItemDto;
 import com.hunre.it.webstudyonline.model.request.AddCartForm;
 import com.hunre.it.webstudyonline.model.request.UpdateCartForm;
 import com.hunre.it.webstudyonline.repository.AccountRepository;
@@ -38,11 +39,11 @@ public class CartMapper {
         cartDto.setItem(itemDto);
         return cartDto;
     }
-    public CartEntity toEntity(AddCartForm addCartForm) {
+    public CartEntity toEntity(String email,AddCartForm addCartForm) {
         CartEntity cartEntity = new CartEntity();
         cartEntity.setQuantity(addCartForm.getQuantity());
 
-        AccountEntity accountEntity = accountRepository.findById(addCartForm.getAccountId()).orElseThrow(()-> new RuntimeException("User not found"));
+        AccountEntity accountEntity = accountRepository.findByEmail(email).orElseThrow(()-> new RuntimeException("User not found"));
         cartEntity.setAccount(accountEntity);
 
         if (addCartForm.getType().equals("Roadmap")) {

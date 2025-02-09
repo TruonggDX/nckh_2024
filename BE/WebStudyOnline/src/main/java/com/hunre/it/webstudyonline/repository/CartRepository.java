@@ -11,14 +11,15 @@ import java.util.Optional;
 
 @Repository
 public interface CartRepository extends JpaRepository<CartEntity,Long> {
-    @Query("select c from CartEntity c where c.account.id =:accId and c.id =:cartId and c.account.deleted = false ")
-    Optional<CartEntity> findByAccountAndCartId(Long accId,Long cartId);
+    @Query("select c from CartEntity c where c.account.email =:email and c.id =:cartId and c.account.deleted = false ")
+    Optional<CartEntity> findByEmailAndCartId(String email,Long cartId);
 
-    @Query("select c from CartEntity c where c.account.id =:accId and c.account.deleted = false ")
-    List<CartEntity> findByAccount(Long accId);
+    @Query("select c from CartEntity c where c.account.email =:email and c.account.deleted = false ")
+    List<CartEntity> findByEmail(String email);
 
-    @Query("select c from CartEntity c where c.account.id =:accId and c.course.id =:courseId and c.account.deleted = false ")
-    Optional<CartEntity> findByAccountAndCourseId(Long accId,Long courseId);
-    @Query("select c from CartEntity c where c.account.id =:accId and c.roadmap.id =:roadmapId and c.account.deleted = false ")
-    Optional<CartEntity> findByAccountAndRoadmapId(Long accId,Long roadmapId);
+    @Query("select c from CartEntity c where c.account.email =:email and c.course.id =:courseId and c.account.deleted = false ")
+    Optional<CartEntity> findByEmailAndCourseId(String email, Long courseId);
+
+    @Query("select c from CartEntity c where c.account.email =:email and c.roadmap.id =:roadmapId and c.account.deleted = false ")
+    Optional<CartEntity> findByEmailAndRoadmapId(String email,Long roadmapId);
 }

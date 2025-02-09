@@ -11,6 +11,6 @@ import java.util.Map;
 public interface ICartService {
     BaseResponse<List<CartDto>> addCart(List<AddCartForm> addCartForms);
     BaseResponse<CartDto> updateQuantity(String id, UpdateCartForm updateCartForm);
-    BaseResponse<String> deleteCart(String accountId, List<String> cartIds);
-    BaseResponse<List<CartDto>> getAllCart(String accountId);
+    BaseResponse<String> deleteCart(List<String> cartIds);
+    BaseResponse<List<CartDto>> getAllCart();
 }
