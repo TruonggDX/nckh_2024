@@ -6,14 +6,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.ToString;
 
-import java.math.BigDecimal;
-
 @Entity
 @Table(name = "bill")
 
 public class BillEntity extends AbstractEntity {
     private String code;
-    private BigDecimal amount;
     @ManyToOne
     @JoinColumn(name = "account_id")
     @ToString.Exclude
@@ -25,14 +22,6 @@ public class BillEntity extends AbstractEntity {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public BigDecimal getAmount() {
-        return amount;
-    }
-
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
     }
 
     public AccountEntity getAccountEntity() {
