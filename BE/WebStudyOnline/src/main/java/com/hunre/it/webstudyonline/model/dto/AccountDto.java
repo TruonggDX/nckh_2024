@@ -11,6 +11,15 @@ public class AccountDto {
     private Set<RoleDto> roles;
     private boolean enabled;
     private Set<Long> roleIds;
+    private String imageUrl;
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
 
     public String getCode() {
         return code;

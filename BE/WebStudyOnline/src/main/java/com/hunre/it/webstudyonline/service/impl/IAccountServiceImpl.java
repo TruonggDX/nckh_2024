@@ -132,9 +132,28 @@ public class IAccountServiceImpl implements IAccountService {
                 accountEntity.setRoles(RoleEntities);
             }
             accountRepository.save(accountEntity);
+            ImagesEntity images = imageRepository.findByAccountId(AccountId);
+            if (file != null && !file.isEmpty()) {
+                if (images != null) {
+                    imageFile.deleteImage(images.getPublicId());
+                } else {
+                    images = new ImagesEntity();
+                    images.setAccountEntity(accountEntity);
+                }
+                ImageDto imageDTO = imageFile.uploadImage(file);
+                images.setUrl(imageDTO.getUrl());
+                images.setType(file.getContentType());
+                images.setPublicId(imageDTO.getPublicId());
+                imageRepository.save(images);
+                updateAccountForm.setImageUrl(images.getUrl());
+            } else if (images != null) {
+                updateAccountForm.setImageUrl(images.getUrl());
+            }
+            AccountDto accountDto = accountMapper.toDto(accountEntity);
+            accountDto.setImageUrl(updateAccountForm.getImageUrl());
             response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
             response.setCode(HttpStatus.OK.value());
-            response.setData(accountMapper.toDto(accountEntity));
+            response.setData(accountDto);
         }catch (Exception e){
             response.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setMessage(e.getMessage());
