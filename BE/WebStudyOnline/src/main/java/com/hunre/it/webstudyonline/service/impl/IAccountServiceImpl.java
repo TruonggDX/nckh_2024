@@ -1,17 +1,22 @@
 package com.hunre.it.webstudyonline.service.impl;
 
 import com.hunre.it.webstudyonline.entity.AccountEntity;
+import com.hunre.it.webstudyonline.entity.ImagesEntity;
 import com.hunre.it.webstudyonline.entity.RoleEntity;
 import com.hunre.it.webstudyonline.mapper.AccountMapper;
 import com.hunre.it.webstudyonline.mapper.RoleMapper;
 import com.hunre.it.webstudyonline.model.dto.AccountDto;
+import com.hunre.it.webstudyonline.model.dto.ImageDto;
 import com.hunre.it.webstudyonline.model.dto.RoleDto;
+import com.hunre.it.webstudyonline.model.request.ChagePasswordRequest;
 import com.hunre.it.webstudyonline.model.request.UpdateAccountForm;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
 import com.hunre.it.webstudyonline.model.response.ResponsePage;
 import com.hunre.it.webstudyonline.repository.AccountRepository;
+import com.hunre.it.webstudyonline.repository.ImageRepository;
 import com.hunre.it.webstudyonline.repository.RoleRepository;
 import com.hunre.it.webstudyonline.service.IAccountService;
+import com.hunre.it.webstudyonline.service.UploadImageFile;
 import com.hunre.it.webstudyonline.utils.Constant;
 import com.hunre.it.webstudyonline.utils.LongUtils;
 import com.hunre.it.webstudyonline.utils.Utils;
@@ -23,7 +28,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.management.relation.Role;
 import java.util.Collections;
@@ -45,6 +52,12 @@ public class IAccountServiceImpl implements IAccountService {
     private RoleRepository roleRepository;
     @Autowired
     private RoleMapper roleMapper;
+    @Autowired
+    private ImageRepository imageRepository;
+    @Autowired
+    private UploadImageFile imageFile;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public ResponsePage<List<AccountDto>> getAllAccounts(Pageable pageable) {
@@ -96,31 +109,36 @@ public class IAccountServiceImpl implements IAccountService {
     }
 
     @Override
-    public BaseResponse<AccountDto> update(String id, UpdateAccountForm updateAccountForm) {
+    public BaseResponse<AccountDto> update(String id, UpdateAccountForm updateAccountForm, MultipartFile file) {
         BaseResponse<AccountDto> response = new BaseResponse<>();
-        Utils<Long> utils = LongUtils.strToLong(id);
-        if (utils.getT()== null){
-            response.setCode(utils.getCode());
-            response.setMessage(utils.getMsg());
-            return response;
+        try {
+            Utils<Long> utils = LongUtils.strToLong(id);
+            if (utils.getT()== null){
+                response.setCode(utils.getCode());
+                response.setMessage(utils.getMsg());
+                return response;
+            }
+            Long AccountId = utils.getT();
+            Optional<AccountEntity> check = accountRepository.findById(AccountId);
+            if (check.isEmpty()){
+                response.setCode(HttpStatus.BAD_REQUEST.value());
+                response.setMessage(Constant.HTTP_MESSAGE.NOTFOUND);
+                return response;
+            }
+            AccountEntity accountEntity = check.get();
+            accountEntity.setFullname(updateAccountForm.getFullName());
+            Set<RoleEntity> RoleEntities = roleServiceImpl.findByRoleCode(updateAccountForm.getRoleCode());
+            for (RoleEntity roleEntity : RoleEntities){
+                accountEntity.setRoles(RoleEntities);
+            }
+            accountRepository.save(accountEntity);
+            response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
+            response.setCode(HttpStatus.OK.value());
+            response.setData(accountMapper.toDto(accountEntity));
+        }catch (Exception e){
+            response.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setMessage(e.getMessage());
         }
-        Long AccountId = utils.getT();
-        Optional<AccountEntity> check = accountRepository.findById(AccountId);
-        if (check.isEmpty()){
-            response.setCode(HttpStatus.BAD_REQUEST.value());
-            response.setMessage(Constant.HTTP_MESSAGE.NOTFOUND);
-            return response;
-        }
-        AccountEntity accountEntity = check.get();
-        accountEntity.setFullname(updateAccountForm.getFullName());
-        Set<RoleEntity> RoleEntities = roleServiceImpl.findByRoleCode(updateAccountForm.getRoleCode());
-        for (RoleEntity roleEntity : RoleEntities){
-            accountEntity.setRoles(RoleEntities);
-        }
-        accountRepository.save(accountEntity);
-        response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
-        response.setCode(HttpStatus.OK.value());
-        response.setData(accountMapper.toDto(accountEntity));
         return response;
     }
 
@@ -181,4 +199,47 @@ public class IAccountServiceImpl implements IAccountService {
 
         return response;
     }
+
+    @Override
+    public BaseResponse<?> changePassword(String id, ChagePasswordRequest changePasswordRequest) {
+        BaseResponse<?> response = new BaseResponse<>();
+        Utils<Long> utils = LongUtils.strToLong(id);
+        if (utils.getT() == null) {
+            response.setCode(utils.getCode());
+            response.setMessage(utils.getMsg());
+            return response;
+        }
+        Long accountId = utils.getT();
+        Optional<AccountEntity> accountEntity = accountRepository.findById(accountId);
+        if (accountEntity.isEmpty()) {
+            response.setCode(HttpStatus.NOT_FOUND.value());
+            response.setMessage(Constant.HTTP_MESSAGE.NOTFOUND);
+            return response;
+        }
+        AccountEntity account = accountEntity.get();
+        if (!passwordEncoder.matches(changePasswordRequest.getOldPassword(), account.getPassword())) {
+            response.setCode(HttpStatus.BAD_REQUEST.value());
+            response.setMessage(Constant.HTTP_MESSAGE.OLDPASSWORD);
+            return response;
+        }
+        String newPassword = changePasswordRequest.getNewPassword();
+        String confirmPassword = changePasswordRequest.getConfirmPassword();
+
+        if (newPassword.equals(changePasswordRequest.getOldPassword())) {
+            response.setCode(HttpStatus.BAD_REQUEST.value());
+            response.setMessage(Constant.HTTP_MESSAGE.NEWPASSWORD);
+            return response;
+        }
+        if (!newPassword.equals(confirmPassword)) {
+            response.setCode(HttpStatus.BAD_REQUEST.value());
+            response.setMessage(Constant.HTTP_MESSAGE.CONFIRMPASSWORD);
+            return response;
+        }
+        account.setPassword(passwordEncoder.encode(newPassword));
+        accountRepository.save(account);
+        response.setCode(HttpStatus.OK.value());
+        response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
+        return response;
+    }
+
 }

@@ -2,6 +2,7 @@ package com.hunre.it.webstudyonline.controller.api;
 
 import com.hunre.it.webstudyonline.model.dto.AccountDto;
 import com.hunre.it.webstudyonline.model.dto.CertificateDto;
+import com.hunre.it.webstudyonline.model.request.ChagePasswordRequest;
 import com.hunre.it.webstudyonline.model.request.UpdateAccountForm;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
 import com.hunre.it.webstudyonline.model.response.ResponsePage;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -41,8 +43,8 @@ public class ApiAccount {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<BaseResponse<AccountDto>> update(@RequestBody @Valid UpdateAccountForm updateAccountForm, @PathVariable String id) {
-        BaseResponse<AccountDto> response = accountService.update(id, updateAccountForm);
+    public ResponseEntity<BaseResponse<AccountDto>> update(@ModelAttribute @Valid UpdateAccountForm updateAccountForm, @PathVariable String id, @RequestParam("file") MultipartFile file) {
+        BaseResponse<AccountDto> response = accountService.update(id, updateAccountForm,file);
         return ResponseEntity.ok(response);
     }
 
@@ -60,5 +62,10 @@ public class ApiAccount {
         } else {
             return ResponseEntity.status(response.getCode()).body(response);
         }
+    }
+    @PutMapping("/updatePassWord/{id}")
+    public ResponseEntity<BaseResponse<?>> updatePass(@PathVariable String id, @RequestBody ChagePasswordRequest chagePasswordRequest) {
+        BaseResponse<?> response = accountService.changePassword(id, chagePasswordRequest);
+        return ResponseEntity.ok(response);
     }
 }

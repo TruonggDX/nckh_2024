@@ -13,6 +13,10 @@ public class ImagesEntity extends AbstractEntity {
     @JoinColumn(name = "course_id")
     private CourseEntity courseEntity;
 
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    private AccountEntity accountEntity;
+
     public String getUrl() {
         return url;
     }
@@ -43,5 +47,13 @@ public class ImagesEntity extends AbstractEntity {
 
     public void setCourseEntity(CourseEntity courseEntity) {
         this.courseEntity = courseEntity;
+    }
+
+    public AccountEntity getAccountEntity() {
+        return accountEntity;
+    }
+
+    public void setAccountEntity(AccountEntity accountEntity) {
+        this.accountEntity = accountEntity;
     }
 }

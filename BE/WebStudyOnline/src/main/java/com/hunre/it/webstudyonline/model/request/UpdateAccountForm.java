@@ -9,6 +9,7 @@ public class UpdateAccountForm {
     @NotBlank(message = "Please enter full name")
     private String fullName;
     private Set<String> roleCode ;
+    private String imageUrl;
 
     public String getFullName() {
         return fullName;
@@ -24,5 +25,13 @@ public class UpdateAccountForm {
 
     public void setRoleCode(Set<String> roleCode) {
         this.roleCode = roleCode;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

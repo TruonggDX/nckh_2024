@@ -12,4 +12,7 @@ public interface ImageRepository extends JpaRepository<ImagesEntity, Long> {
     @Query(value = "SELECT i FROM ImagesEntity i WHERE i.courseEntity.id =:courseId")
     List<ImagesEntity> findByCourseId(Long courseId);
 
+    @Query(value = "SELECT i FROM ImagesEntity i WHERE i.accountEntity.id =:accountId")
+    ImagesEntity findByAccountId(Long accountId);
+
 }
