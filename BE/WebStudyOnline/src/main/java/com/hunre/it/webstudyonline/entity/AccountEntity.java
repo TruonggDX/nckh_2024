@@ -25,6 +25,16 @@ public class AccountEntity extends AbstractEntity{
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<RoleEntity> roles = new HashSet<>();
+    @ManyToMany(mappedBy = "accounts")
+    private Set<GradeEntity> grades = new HashSet<>();
+
+    public Set<GradeEntity> getGrades() {
+        return grades;
+    }
+
+    public void setGrades(Set<GradeEntity> grades) {
+        this.grades = grades;
+    }
 
     public boolean isEnabled() {
         return enabled;
