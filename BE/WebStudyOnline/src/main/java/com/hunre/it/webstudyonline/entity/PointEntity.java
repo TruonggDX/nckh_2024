@@ -1,24 +1,22 @@
 package com.hunre.it.webstudyonline.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 
 @Table(name = "point")
 @Entity
 public class PointEntity extends AbstractEntity{
     private Double score;
-    private Integer rank_level;
+    private Integer rankLevel;
     private Long completionTime;
-    @ManyToOne
-    @JoinColumn(name = "account_id")
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id", nullable = false)
     @EqualsAndHashCode.Exclude
     private AccountEntity accountEntity;
 
-    @ManyToOne
-    @JoinColumn(name = "exam_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "exam_id", nullable = false)
     @EqualsAndHashCode.Exclude
     private ExamEntity examEntity;
 
@@ -30,12 +28,12 @@ public class PointEntity extends AbstractEntity{
         this.score = score;
     }
 
-    public Integer getRank_level() {
-        return rank_level;
+    public Integer getRankLevel() {
+        return rankLevel;
     }
 
-    public void setRank_level(Integer rank_level) {
-        this.rank_level = rank_level;
+    public void setRankLevel(Integer rankLevel) {
+        this.rankLevel = rankLevel;
     }
 
     public Long getCompletionTime() {
