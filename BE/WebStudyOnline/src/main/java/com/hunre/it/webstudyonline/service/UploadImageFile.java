@@ -8,4 +8,6 @@ import java.io.IOException;
 public interface UploadImageFile {
     ImageDto uploadImage(MultipartFile file) throws IOException;
     void deleteImage(String publicId);
+    void deleteVideo(String publicId);
+    ImageDto uploadvideo(MultipartFile file);
 }

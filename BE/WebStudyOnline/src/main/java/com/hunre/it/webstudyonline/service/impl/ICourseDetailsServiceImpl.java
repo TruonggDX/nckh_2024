@@ -2,19 +2,25 @@ package com.hunre.it.webstudyonline.service.impl;
 
 import com.hunre.it.webstudyonline.entity.CourseDetailsEntity;
 import com.hunre.it.webstudyonline.entity.CourseEntity;
+import com.hunre.it.webstudyonline.entity.ImagesEntity;
 import com.hunre.it.webstudyonline.mapper.CourseDetailsMapper;
 import com.hunre.it.webstudyonline.model.dto.CourseDetailsDto;
+import com.hunre.it.webstudyonline.model.dto.ImageDto;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
 import com.hunre.it.webstudyonline.repository.CourseDetailsRepository;
 import com.hunre.it.webstudyonline.repository.CourseRepository;
+import com.hunre.it.webstudyonline.repository.ImageRepository;
 import com.hunre.it.webstudyonline.service.ICourseDetailsService;
+import com.hunre.it.webstudyonline.service.UploadImageFile;
 import com.hunre.it.webstudyonline.utils.Constant;
 import com.hunre.it.webstudyonline.utils.LongUtils;
 import com.hunre.it.webstudyonline.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +32,10 @@ public class ICourseDetailsServiceImpl implements ICourseDetailsService {
     private CourseDetailsMapper courseDetailsMapper;
     @Autowired
     private CourseRepository courseRepository;
-
+    @Autowired
+    private UploadImageFile uploadImageFile;
+    @Autowired
+    private ImageRepository imageRepository;
     @Override
     public BaseResponse<List<CourseDetailsDto>> getAll(String courseIds) {
         BaseResponse<List<CourseDetailsDto>> response = new BaseResponse<>();
@@ -48,9 +57,8 @@ public class ICourseDetailsServiceImpl implements ICourseDetailsService {
         response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
         return response;
     }
-
     @Override
-    public BaseResponse<CourseDetailsDto> addCourseDetails(CourseDetailsDto courseDetailsDto) {
+    public BaseResponse<CourseDetailsDto> addCourseDetails(CourseDetailsDto courseDetailsDto, MultipartFile file) {
         BaseResponse<CourseDetailsDto> response = new BaseResponse<>();
         CourseDetailsEntity courseDetailsEntity = courseDetailsMapper.toEntity(courseDetailsDto);
         Optional<CourseEntity> courseEntity = courseRepository.findById(courseDetailsDto.getCourseId());
@@ -59,6 +67,9 @@ public class ICourseDetailsServiceImpl implements ICourseDetailsService {
             response.setMessage(Constant.HTTP_MESSAGE.NOTFOUND);
             return response;
         }
+        ImageDto imageDto = addVideo(file);
+        courseDetailsEntity.setUrl(imageDto.getUrl());
+        courseDetailsEntity.setPublicId(imageDto.getPublicId());
         courseDetailsEntity.setCourseEntity(courseEntity.get());
         courseDetailsEntity.setDeleted(false);
         courseDetailsEntity = courseDetailsRepository.save(courseDetailsEntity);
@@ -115,6 +126,42 @@ public class ICourseDetailsServiceImpl implements ICourseDetailsService {
        return handleCourseDetailsRequest(id,false);
     }
 
+    @Override
+    public BaseResponse<CourseDetailsDto> updateRecord(String id,MultipartFile file) {
+        BaseResponse<CourseDetailsDto> response = new BaseResponse<>();
+        Utils<Long> utils = LongUtils.strToLong(id);
+        if (utils.getT() == null){
+            response.setCode(utils.getCode());
+            response.setMessage(utils.getMsg());
+            return response;
+        }
+        Long courseDetailsId = utils.getT();
+        Optional<CourseDetailsEntity> check = courseDetailsRepository.findById(courseDetailsId);
+        if (check.isEmpty()){
+            response.setCode(HttpStatus.BAD_REQUEST.value());
+            response.setMessage(Constant.HTTP_MESSAGE.NOTFOUND);
+            return response;
+        }
+        CourseDetailsEntity courseDetailsEntity = check.get();
+        String url =  null;
+        uploadImageFile.deleteVideo(courseDetailsEntity.getPublicId());
+        if (file.getOriginalFilename() != null){
+            url = uploadImageFile.uploadvideo(file).getUrl();
+        }
+        courseDetailsEntity.setUrl(url);
+        courseDetailsEntity = courseDetailsRepository.save(courseDetailsEntity);
+
+        CourseDetailsDto dto = courseDetailsMapper.toDto(courseDetailsEntity);
+        response.setData(dto);
+        response.setCode(HttpStatus.OK.value());
+        response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
+        return response;
+    }
+
+    private ImageDto addVideo( MultipartFile file) {
+        ImageDto imageDTO = uploadImageFile.uploadvideo(file);
+        return  imageDTO;
+    }
 
     public BaseResponse<CourseDetailsDto> handleCourseDetailsRequest(String id, boolean isDelete) {
         BaseResponse<CourseDetailsDto> response = new BaseResponse<>();
@@ -132,10 +179,8 @@ public class ICourseDetailsServiceImpl implements ICourseDetailsService {
             return response;
         }
         CourseDetailsEntity detailsEntity = courseDetailsEntity.get();
-        if (isDelete) {
-            detailsEntity.setDeleted(true);
-        }
-        detailsEntity = courseDetailsRepository.save(detailsEntity);
+        uploadImageFile.deleteImage(detailsEntity.getPublicId());
+        courseDetailsRepository.delete(detailsEntity);
         CourseDetailsDto dto = courseDetailsMapper.toDto(detailsEntity);
         dto.setCourseId(detailsEntity.getCourseEntity().getId());
         response.setData(dto);

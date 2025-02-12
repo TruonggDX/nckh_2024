@@ -1,6 +1,7 @@
 package com.hunre.it.webstudyonline.service.impl;
 
 import com.cloudinary.Cloudinary;
+import com.cloudinary.EagerTransformation;
 import com.cloudinary.utils.ObjectUtils;
 import com.hunre.it.webstudyonline.model.dto.ImageDto;
 import com.hunre.it.webstudyonline.service.UploadImageFile;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.UUID;
 
@@ -43,7 +45,32 @@ public class UploadImageFileImpl implements UploadImageFile {
 
         return imageDTO;
     }
+    @Override
+    public ImageDto uploadvideo(MultipartFile file)  {
+        assert file.getOriginalFilename() != null;
+        String publicValue = generatePublicValue(file.getOriginalFilename());
+        File fileUpload = null;
+        try {
+            fileUpload = convert(file);
+            var uploadResult =  cloudinary.uploader().upload(fileUpload,
+                    ObjectUtils.asMap("resource_type", "video",
+                            "public_id", publicValue,
+                            "eager", Arrays.asList(
+                                    new EagerTransformation().width(300).height(300).crop("pad").audioCodec("none"),
+                                    new EagerTransformation().width(160).height(100).crop("crop").gravity("south").audioCodec("none")),
+                            "eager_async", true,
+                            "eager_notification_url", "https://mysite.example.com/notify_endpoint"));
 
+            ImageDto imageDTO = new ImageDto();
+            imageDTO.setUrl(uploadResult.get("url").toString());
+            imageDTO.setPublicId(uploadResult.get("public_id").toString());
+            imageDTO.setType(file.getContentType());
+            return imageDTO;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
     @Override
     public void deleteImage(String publicId) {
         try {
@@ -53,7 +80,15 @@ public class UploadImageFileImpl implements UploadImageFile {
             throw new RuntimeException("Lỗi khi xóa hình ảnh từ Cloudinary", e);
         }
     }
-
+    @Override
+    public void deleteVideo(String publicId) {
+        try {
+            cloudinary.uploader().destroy(publicId,
+                    ObjectUtils.asMap("resource_type","video"));
+        } catch (Exception e) {
+            throw new RuntimeException("Lỗi khi xóa hình ảnh từ Cloudinary", e);
+        }
+    }
     private File convert(MultipartFile file) throws IOException {
         assert file.getOriginalFilename() != null;
         File convFile = new File(StringUtils.join(generatePublicValue(file.getOriginalFilename()), getFileName(file.getOriginalFilename())[1]));

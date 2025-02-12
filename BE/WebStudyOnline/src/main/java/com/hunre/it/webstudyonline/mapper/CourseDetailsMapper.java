@@ -18,11 +18,9 @@ public class CourseDetailsMapper {
 
     public CourseDetailsEntity toEntity(CourseDetailsDto courseDetailsDto){
         CourseDetailsEntity courseDetailsEntity = new CourseDetailsEntity();
-        courseDetailsEntity.setId(courseDetailsDto.getId());
         courseDetailsEntity.setName(courseDetailsDto.getName());
         courseDetailsEntity.setDescription(courseDetailsDto.getDescription());
         courseDetailsEntity.setPeriod(courseDetailsDto.getPeriod());
-        courseDetailsEntity.setUrl(courseDetailsDto.getUrl());
         return courseDetailsEntity;
     }
 }

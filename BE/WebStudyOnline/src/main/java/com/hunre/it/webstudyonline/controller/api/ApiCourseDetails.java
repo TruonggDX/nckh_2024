@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -22,13 +23,18 @@ public class ApiCourseDetails {
         return ResponseEntity.ok(response);
     }
     @PostMapping
-    public ResponseEntity<BaseResponse<CourseDetailsDto>> addCourseDetails(@RequestBody @Valid CourseDetailsDto courseDetailsDto) {
-        BaseResponse<CourseDetailsDto> response = courseDetailsService.addCourseDetails(courseDetailsDto);
+    public ResponseEntity<BaseResponse<CourseDetailsDto>> addCourseDetails(@ModelAttribute @Valid CourseDetailsDto courseDetailsDto, @RequestParam MultipartFile file) {
+        BaseResponse<CourseDetailsDto> response = courseDetailsService.addCourseDetails(courseDetailsDto,file);
         return ResponseEntity.ok(response);
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<BaseResponse<CourseDetailsDto>> updateCourseDetails(@PathVariable String id, @RequestBody @Valid CourseDetailsDto dto) {
         BaseResponse<CourseDetailsDto> response = courseDetailsService.updateCourseDetails(id, dto);
+        return ResponseEntity.ok(response);
+    }
+    @PutMapping("/updateRecord/{id}")
+    public ResponseEntity<BaseResponse<CourseDetailsDto>> updateRecord(@PathVariable String id,@RequestParam MultipartFile file) {
+        BaseResponse<CourseDetailsDto> response = courseDetailsService.updateRecord(id,file);
         return ResponseEntity.ok(response);
     }
     @DeleteMapping("/delete/{id}")

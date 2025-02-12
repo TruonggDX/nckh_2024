@@ -14,11 +14,20 @@ public class CourseDetailsEntity extends AbstractEntity {
     private String description;
     private String period;
     private String url;
+    private String publicId;
 
     @ManyToOne
     @JoinColumn(name = "course_id")
     @EqualsAndHashCode.Exclude
     private CourseEntity courseEntity;
+
+    public String getPublicId() {
+        return publicId;
+    }
+
+    public void setPublicId(String publicId) {
+        this.publicId = publicId;
+    }
 
     public String getName() {
         return name;

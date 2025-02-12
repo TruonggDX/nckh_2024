@@ -140,7 +140,8 @@ public class IAccountServiceImpl implements IAccountService {
                     images = new ImagesEntity();
                     images.setAccountEntity(accountEntity);
                 }
-                ImageDto imageDTO = imageFile.uploadImage(file);
+                ImageDto imageDTO = new ImageDto();
+                imageFile.uploadImage(file);
                 images.setUrl(imageDTO.getUrl());
                 images.setType(file.getContentType());
                 images.setPublicId(imageDTO.getPublicId());
