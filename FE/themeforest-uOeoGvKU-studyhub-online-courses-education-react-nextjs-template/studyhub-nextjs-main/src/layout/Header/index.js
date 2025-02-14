@@ -8,7 +8,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import HeaderCategory from './Category';
 import MenuItems from './MenuItems';
 import MobileMenuItems from './MobileMenuItems';
-import HeaderTopbar from './Topbar';
 
 export default function Header( props ) {
 	const {headerClass, headerLogo, topbarEnable, categoryEnable, menuItemsLeft, authenticationHeader} = props;
@@ -100,10 +99,6 @@ export default function Header( props ) {
 	return (
 		<>
 			<header className={`${headerClass || "header-one header--sticky"} ${isVisible ? 'sticky' : ''}`}>
-				{
-					topbarEnable && <HeaderTopbar />
-				}
-				
 				<div className="container">
 					<div className="row">
 						<div className="col-lg-12">
@@ -147,8 +142,8 @@ export default function Header( props ) {
 										{
 											!admin ?
 											<div className="buttons-area">
-												<Link href="/signin" className="rts-btn btn-border">Log In</Link>
-												<Link href="/signup" className="rts-btn btn-primary">Sign Up</Link>
+												<Link href="/signin" className="rts-btn btn-border">Đăng nhập</Link>
+												<Link href="/signup" className="rts-btn btn-primary">Đăng ký</Link>
 											</div> : 
 											<div className="studyhub__header__quickaction__item">
 												<button 

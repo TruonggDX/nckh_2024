@@ -32,7 +32,6 @@ public class BillDetailsMapper {
         dto.setBillId(entity.getBillEntity() != null ? entity.getBillEntity().getId() : null);
 
         ItemDto itemDto = null;
-        BigDecimal itemPrice = BigDecimal.ZERO;
         if (entity.getCourseEntity() != null) {
             itemDto = new ItemDto(
                     entity.getCourseEntity().getId(),
@@ -42,7 +41,6 @@ public class BillDetailsMapper {
                     0,
                     "Course"
             );
-            itemPrice = entity.getCourseEntity().getPrice();
         } else if (entity.getRoadmap() != null) {
             itemDto = new ItemDto(
                     entity.getRoadmap().getId(),
@@ -52,11 +50,8 @@ public class BillDetailsMapper {
                     entity.getRoadmap().getDiscount(),
                     "Roadmap"
             );
-            itemPrice = entity.getRoadmap().getPrice();
         }
-        BigDecimal totalPrice = itemPrice.multiply(BigDecimal.valueOf(entity.getQuantity()));
-        dto.setPrice(totalPrice);
-
+        dto.setPrice(entity.getPrice());
         dto.setItem(itemDto);
         return dto;
     }
@@ -72,24 +67,15 @@ public class BillDetailsMapper {
 
         if (dto.getItem() != null) {
             ItemDto item = dto.getItem();
-            BigDecimal itemPrice = BigDecimal.ZERO;
             if ("Course".equals(item.getType())) {
                 Optional<CourseEntity> courseEntity = courseRepository.findById(item.getId());
-                if (courseEntity.isPresent()) {
-                    entity.setCourseEntity(courseEntity.get());
-                    itemPrice = courseEntity.get().getPrice();
-                }
+                courseEntity.ifPresent(entity::setCourseEntity);
             } else if ("Roadmap".equals(item.getType())) {
                 Optional<RoadmapEntity> roadmapEntity = roadmapRepository.findById(item.getId());
-                if (roadmapEntity.isPresent()) {
-                    entity.setRoadmap(roadmapEntity.get());
-                    itemPrice = roadmapEntity.get().getPrice();
-                }
+                roadmapEntity.ifPresent(entity::setRoadmap);
             }
-            BigDecimal totalPrice = itemPrice.multiply(BigDecimal.valueOf(dto.getQuantity()));
-            entity.setPrice(totalPrice);
         }
-
+        entity.setPrice(dto.getPrice());
         return entity;
     }
 }

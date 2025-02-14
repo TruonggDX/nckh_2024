@@ -9,65 +9,8 @@ export default function MenuItems(props) {
 		<div className="main-nav-one">
 			<nav>
 				<ul>
-					<li className="has-dropdown" style={{position: 'static'}}>
-						<Link className="nav-link" href="#">Home</Link>
-
-						<ul className="megamenu-hub">
-							<li>
-								<ul className="">
-									<li>
-										<Link href="/">Main Home</Link>
-									</li>
-									<li>
-										<Link href="/home-2">Online Course </Link>
-										<span className="popular">Popular</span>
-									</li>
-									<li className="upcoming-menu">
-										<Link href="/home-3">Course Hub</Link>
-										<span>Upcoming</span>
-									</li>
-									<li className="upcoming-menu">
-										<Link href="/home-4">Distance Learning</Link>
-										<span>Upcoming</span>
-									</li>
-									<li className="upcoming-menu">
-										<Link href="/home-5">Single Instructor</Link>
-										<span>Upcoming</span>
-									</li>
-								</ul>
-								<ul className="">
-									<li className="upcoming-menu">
-										<Link href="/home-6">Language Academy</Link>
-										<span>Upcoming</span>
-									</li>
-									<li className="upcoming-menu">
-										<Link href="/home-7">Gym Instructor</Link>
-										<span>Upcoming</span>
-									</li>
-									<li className="upcoming-menu">
-										<Link href="/home-8">Kitchen Coach</Link>
-										<span>Upcoming</span>
-									</li>
-									<li className="upcoming-menu">
-										<Link href="/home-9">Course Portal</Link>
-										<span>Upcoming</span>
-									</li>
-									<li className="upcoming-menu">
-										<Link href="/home-10">Business Coach</Link>
-										<span>Upcoming</span>
-									</li>
-								</ul>
-								<div className="absolute-image-shape shape-image">
-									<Image className=" shape one" src="/images/nav/02.png" data-speed="0.04" data-revert="true" alt="nav" width={47} height={42} />
-									<Image className=" shape two" src="/images/nav/03.png" data-speed="0.04" alt="nav" width={166} height={166} />
-								</div>
-								<div className="nav-mega-image">
-									<Link href="/course/cloud-computing-masterclass">
-										<Image src="/images/nav/01.jpg" alt="nav" width={495} height={229} />
-									</Link>
-								</div>
-							</li>
-						</ul>
+					<li>
+						<Link className="nav-link" href="/">Trang chủ</Link>
 					</li>
 
 					<li className="has-dropdown">
@@ -114,7 +57,7 @@ export default function MenuItems(props) {
 								</ul>
 								<ul className="">
 									<li className="parent"><a href="#">Others</a></li>
-									<li><Link href="/instructor/registration">Become an Instructor</Link></li>
+									<li><Link href="#">Become an Instructor</Link></li>
 									<li><Link href="/instructor/1">Instructor Profile</Link></li>
 									<li><Link href="/instructor">Instructor</Link></li>
 									<li><Link href="/pricing">Membership Plan</Link></li>

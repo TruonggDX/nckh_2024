@@ -105,7 +105,7 @@ export default function MobileMenuItems(props) {
 							<a href="#" className="main" onClick={() => { openMobileMenu('home'); }}>Home</a>
 							<ul className={`submenu mm-collapse ${home && 'mm-show'}`}>
 								<li><Link className="mobile-menu-link" href="/">Main Home</Link></li>
-								<li><Link className="mobile-menu-link" href="/home-2">Online Course</Link></li>
+								<li><Link className="mobile-menu-link" href="/pages">Online Course</Link></li>
 							</ul>
 						</li>
 						<li className={`has-droupdown ${page && 'mm-active'}`}>
