@@ -76,7 +76,7 @@ export default function SignUpModule() {
                                                value={formData.password} onChange={handleChange} required/>
                                     </div>
                                     <button type="submit" className="rts-btn btn-primary">Đăng ký</button>
-                                    <p>Bạn đã có tài khoản? <Link href="/signin">Đăng nhập</Link></p>
+                                    <p>Bạn đã có tài khoản? <Link href="/pages/login">Đăng nhập</Link></p>
                                 </form>
                                 {message && <p>{message}</p>}
                             </div>

@@ -8,6 +8,7 @@ import com.hunre.it.webstudyonline.mapper.RoleMapper;
 import com.hunre.it.webstudyonline.model.dto.AccountDto;
 import com.hunre.it.webstudyonline.model.dto.ImageDto;
 import com.hunre.it.webstudyonline.model.dto.RoleDto;
+import com.hunre.it.webstudyonline.model.dto.auth.AuthDto;
 import com.hunre.it.webstudyonline.model.request.ChagePasswordRequest;
 import com.hunre.it.webstudyonline.model.request.UpdateAccountForm;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
@@ -15,6 +16,7 @@ import com.hunre.it.webstudyonline.model.response.ResponsePage;
 import com.hunre.it.webstudyonline.repository.AccountRepository;
 import com.hunre.it.webstudyonline.repository.ImageRepository;
 import com.hunre.it.webstudyonline.repository.RoleRepository;
+import com.hunre.it.webstudyonline.security.service.JwtService;
 import com.hunre.it.webstudyonline.service.IAccountService;
 import com.hunre.it.webstudyonline.service.UploadImageFile;
 import com.hunre.it.webstudyonline.utils.Constant;
@@ -44,6 +46,8 @@ import java.util.stream.Collectors;
 public class IAccountServiceImpl implements IAccountService {
     @Autowired
     private AccountMapper accountMapper;
+    @Autowired
+    private JwtService jwtService;
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
@@ -197,15 +201,13 @@ public class IAccountServiceImpl implements IAccountService {
     @Override
     public BaseResponse<AccountDto> getAccount() {
         BaseResponse<AccountDto> response = new BaseResponse<>();
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null || !authentication.isAuthenticated()) {
+        AuthDto authDto = jwtService.decodeToken();
+        if (authDto == null) {
             response.setCode(HttpStatus.UNAUTHORIZED.value());
             response.setMessage(Constant.HTTP_MESSAGE.FAILED);
             return response;
         }
-        if (authentication.getPrincipal() instanceof UserDetails){
-            UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-            String email = userDetails.getUsername();
+            String email = authDto.getEmail();
             AccountEntity account = accountRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Account not found"));
             AccountDto accountDto = accountMapper.toDto(account);
             Set<RoleDto>roleDtos =account.getRoles().stream().map(roleMapper::toDto).collect(Collectors.toSet());
@@ -215,7 +217,6 @@ public class IAccountServiceImpl implements IAccountService {
             response.setData(accountDto);
             response.setCode(HttpStatus.OK.value());
             response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
-        }
 
         return response;
     }

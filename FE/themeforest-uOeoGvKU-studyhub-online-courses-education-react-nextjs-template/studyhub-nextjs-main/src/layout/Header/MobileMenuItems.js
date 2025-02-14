@@ -155,7 +155,7 @@ export default function MobileMenuItems(props) {
 								<li><Link className="mobile-menu-link" href="/instructor/1">Instructor Profile</Link></li>
 								<li><Link className="mobile-menu-link" href="/instructor">Instructor</Link></li>
 								<li><Link className="mobile-menu-link" href="/pricing">Membership Plan</Link></li>
-								<li><Link className="mobile-menu-link" href="/signin">Sign In</Link></li>
+								<li><Link className="mobile-menu-link" href="/pages/login">Sign In</Link></li>
 								<li><Link className="mobile-menu-link" href="/signup">Registration</Link></li>
 							</ul>
 						</li>
@@ -192,7 +192,7 @@ export default function MobileMenuItems(props) {
 				</nav>
 
 				<div className="buttons-area">
-					<Link href="/signin" className="rts-btn btn-border">Log In</Link>
+					<Link href="/pages/login" className="rts-btn btn-border">Log In</Link>
 					<Link href="/signup" className="rts-btn btn-primary">Sign Up</Link>
 				</div>
 

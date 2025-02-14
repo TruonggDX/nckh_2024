@@ -34,7 +34,7 @@ export default function CourseDetailsAreaFour(props) {
 								</div>
 								<div className="single-course-top">
 									<span>Get Started</span>
-									<Link href="/signin" className="rts-btn btn-primary">Login to Enroll</Link>
+									<Link href="/pages/login" className="rts-btn btn-primary">Login to Enroll</Link>
 								</div>
 							</div>
 

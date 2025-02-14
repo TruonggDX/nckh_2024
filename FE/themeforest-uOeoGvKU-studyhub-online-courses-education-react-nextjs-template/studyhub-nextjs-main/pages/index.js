@@ -2,7 +2,7 @@ import Footer from '@/layout/Footer';
 import Header from '@/layout/Header';
 import Preloader from '@/components/Preloader';
 import dynamic from 'next/dynamic';
- 
+
 const HomeTwoModule = dynamic(() => import('@/modules/HomeTwo'), {
   loading: () => <Preloader />,
 });

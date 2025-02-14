@@ -142,7 +142,7 @@ export default function Header( props ) {
 										{
 											!admin ?
 											<div className="buttons-area">
-												<Link href="/signin" className="rts-btn btn-border">Đăng nhập</Link>
+												<Link href="/login" className="rts-btn btn-border">Đăng nhập</Link>
 												<Link href="/signup" className="rts-btn btn-primary">Đăng ký</Link>
 											</div> : 
 											<div className="studyhub__header__quickaction__item">
