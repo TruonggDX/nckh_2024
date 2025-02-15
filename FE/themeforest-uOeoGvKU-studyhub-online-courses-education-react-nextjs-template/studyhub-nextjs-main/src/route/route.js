@@ -7,7 +7,6 @@ async function login (req) {
     return getUser()
 }
 async function getUser () {
-    localStorage.removeItem('jwtToken');
     const decodedResponse = await axiosInstance.get('/api/account/getUser');
     return decodedResponse.data;
 }

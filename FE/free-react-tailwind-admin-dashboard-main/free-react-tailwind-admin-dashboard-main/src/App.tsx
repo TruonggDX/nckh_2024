@@ -124,6 +124,22 @@ function App() {
             </>
           }
         />
+
+
+
+
+        {/*<Route*/}
+        {/*  path="/account"*/}
+        {/*  element={*/}
+        {/*    <>*/}
+        {/*      <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />*/}
+        {/*      <AccountList />*/}
+        {/*    </>*/}
+        {/*  }*/}
+        {/*/>*/}
+
+
+
         <Route
           path="/profile"
           element={

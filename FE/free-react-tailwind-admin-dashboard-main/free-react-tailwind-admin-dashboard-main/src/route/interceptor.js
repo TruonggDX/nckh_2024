@@ -9,8 +9,12 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const accessToken = localStorage.getItem("jwtToken");
 
-    if (config.url !== '/auth/login' && accessToken) {
-      config.headers['Authorization'] = `Bearer ${accessToken}`;
+    if (config.url !== '/auth/login') {
+      if (accessToken) {
+        config.headers['Authorization'] = `Bearer ${accessToken}`;
+      }else {
+        window.location.href = "http://localhost:3000/login";
+      }
     }
 
     return config;

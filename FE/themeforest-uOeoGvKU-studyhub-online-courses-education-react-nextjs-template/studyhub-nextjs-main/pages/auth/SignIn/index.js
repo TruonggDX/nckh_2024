@@ -19,7 +19,14 @@ export default function SignInModule() {
   const handleLogin = (e) => {
     e.preventDefault();
     api.login({email: email, password: password}).then((response) => {
-      console.log(response);
+      const roles = response.data.roles
+      for (const rolesKey of roles) {
+          if (rolesKey.code === "ADMIN"){
+            window.location.href="http://localhost:3001/"
+            return;
+          }
+      }
+      router.push('/');
     })
   };
 
