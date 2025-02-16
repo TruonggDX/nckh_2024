@@ -89,7 +89,7 @@ public class IAccountServiceImpl implements IAccountService {
     @Override
     public ResponsePage<List<AccountDto>> findUserByCondition(Pageable pageable, String fullname, String email) {
         ResponsePage<List<AccountDto>> responsePage = new ResponsePage<>();
-        Page<AccountEntity> page= accountRepository.findByCondition(fullname, email,   pageable);
+        Page<AccountEntity> page = accountRepository.findByCondition(fullname, email, pageable);
         List<AccountDto> accountDtos = page.getContent().stream().map(accountMapper::toDto).collect(Collectors.toList());
         responsePage.setPageNumber(pageable.getPageNumber());
         responsePage.setPageSize(pageable.getPageSize());
@@ -102,7 +102,7 @@ public class IAccountServiceImpl implements IAccountService {
     @Override
     public ResponsePage<List<AccountDto>> findUserByRole(Pageable pageable, String fullname, String email, String roleCode) {
         ResponsePage<List<AccountDto>> responsePage = new ResponsePage<>();
-        Page<AccountEntity> page= accountRepository.findByRoleCode(fullname, email,roleCode,pageable);
+        Page<AccountEntity> page = accountRepository.findByRoleCode(fullname, email, roleCode, pageable);
         List<AccountDto> accountDtos = page.getContent().stream().map(accountMapper::toDto).collect(Collectors.toList());
         responsePage.setPageNumber(pageable.getPageNumber());
         responsePage.setPageSize(pageable.getPageSize());
@@ -117,14 +117,14 @@ public class IAccountServiceImpl implements IAccountService {
         BaseResponse<AccountDto> response = new BaseResponse<>();
         try {
             Utils<Long> utils = LongUtils.strToLong(id);
-            if (utils.getT()== null){
+            if (utils.getT() == null) {
                 response.setCode(utils.getCode());
                 response.setMessage(utils.getMsg());
                 return response;
             }
             Long AccountId = utils.getT();
             Optional<AccountEntity> check = accountRepository.findById(AccountId);
-            if (check.isEmpty()){
+            if (check.isEmpty()) {
                 response.setCode(HttpStatus.BAD_REQUEST.value());
                 response.setMessage(Constant.HTTP_MESSAGE.NOTFOUND);
                 return response;
@@ -132,7 +132,7 @@ public class IAccountServiceImpl implements IAccountService {
             AccountEntity accountEntity = check.get();
             accountEntity.setFullname(updateAccountForm.getFullName());
             Set<RoleEntity> RoleEntities = roleServiceImpl.findByRoleCode(updateAccountForm.getRoleCode());
-            for (RoleEntity roleEntity : RoleEntities){
+            for (RoleEntity roleEntity : RoleEntities) {
                 accountEntity.setRoles(RoleEntities);
             }
             accountRepository.save(accountEntity);
@@ -144,8 +144,7 @@ public class IAccountServiceImpl implements IAccountService {
                     images = new ImagesEntity();
                     images.setAccountEntity(accountEntity);
                 }
-                ImageDto imageDTO = new ImageDto();
-                imageFile.uploadImage(file);
+                ImageDto imageDTO = imageFile.uploadImage(file);
                 images.setUrl(imageDTO.getUrl());
                 images.setType(file.getContentType());
                 images.setPublicId(imageDTO.getPublicId());
@@ -159,7 +158,7 @@ public class IAccountServiceImpl implements IAccountService {
             response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
             response.setCode(HttpStatus.OK.value());
             response.setData(accountDto);
-        }catch (Exception e){
+        } catch (Exception e) {
             response.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.setMessage(e.getMessage());
         }
@@ -170,14 +169,14 @@ public class IAccountServiceImpl implements IAccountService {
     public BaseResponse<AccountDto> delete(String id) {
         BaseResponse<AccountDto> response = new BaseResponse<>();
         Utils<Long> utils = LongUtils.strToLong(id);
-        if (utils.getT()== null){
+        if (utils.getT() == null) {
             response.setCode(utils.getCode());
             response.setMessage(utils.getMsg());
             return response;
         }
         Long AccountId = utils.getT();
         Optional<AccountEntity> check = accountRepository.findById(AccountId);
-        if (check.isEmpty()){
+        if (check.isEmpty()) {
             response.setCode(HttpStatus.BAD_REQUEST.value());
             response.setMessage(Constant.HTTP_MESSAGE.NOTFOUND);
             return response;
@@ -192,7 +191,7 @@ public class IAccountServiceImpl implements IAccountService {
     }
 
     @Override
-    public AccountDto findById(Long id){
+    public AccountDto findById(Long id) {
         AccountEntity accountEntity = accountRepository.findById(id).orElseThrow(() -> new RuntimeException("Account not found"));
         AccountDto accountDto = accountMapper.toDto(accountEntity);
         return accountDto;
@@ -207,16 +206,16 @@ public class IAccountServiceImpl implements IAccountService {
             response.setMessage(Constant.HTTP_MESSAGE.FAILED);
             return response;
         }
-            String email = authDto.getEmail();
-            AccountEntity account = accountRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Account not found"));
-            AccountDto accountDto = accountMapper.toDto(account);
-            Set<RoleDto>roleDtos =account.getRoles().stream().map(roleMapper::toDto).collect(Collectors.toSet());
-            Set<Long> roleId = account.getRoles().stream().map(RoleEntity::getId).collect(Collectors.toSet());
-            accountDto.setRoleIds(roleId);
-            accountDto.setRoles(roleDtos);
-            response.setData(accountDto);
-            response.setCode(HttpStatus.OK.value());
-            response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
+        String email = authDto.getEmail();
+        AccountEntity account = accountRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("Account not found"));
+        AccountDto accountDto = accountMapper.toDto(account);
+        Set<RoleDto> roleDtos = account.getRoles().stream().map(roleMapper::toDto).collect(Collectors.toSet());
+        Set<Long> roleId = account.getRoles().stream().map(RoleEntity::getId).collect(Collectors.toSet());
+        accountDto.setRoleIds(roleId);
+        accountDto.setRoles(roleDtos);
+        response.setData(accountDto);
+        response.setCode(HttpStatus.OK.value());
+        response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
 
         return response;
     }

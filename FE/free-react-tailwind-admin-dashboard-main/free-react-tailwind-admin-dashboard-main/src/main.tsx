@@ -6,6 +6,19 @@ import './css/style.css';
 import 'jsvectormap/dist/css/jsvectormap.css';
 import 'flatpickr/dist/flatpickr.min.css';
 
+const urlParams = new URLSearchParams(window.location.search);
+const token = urlParams.get('token');
+
+if (token) {
+  localStorage.setItem('jwtToken', token);
+  console.log('token final', token);
+  window.history.replaceState({}, document.title, window.location.pathname);
+}
+
+const accessToken = localStorage.getItem('jwtToken');
+if (!accessToken) {
+  window.location.href = 'http://localhost:3000/login';
+}
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Router>

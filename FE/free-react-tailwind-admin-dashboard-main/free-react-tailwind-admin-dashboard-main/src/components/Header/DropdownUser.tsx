@@ -1,9 +1,22 @@
-import { useState } from 'react';
+import {  useState } from 'react';
 import { Link } from 'react-router-dom';
 import ClickOutside from '../ClickOutside';
 import UserOne from '../../images/user/user-01.png';
   const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+    // const urlParams = new URLSearchParams(window.location.search);
+    // const token = urlParams.get('token');
+    //
+    // if (token) {
+    //   localStorage.setItem('jwtToken', token);
+    //   console.log('token final',token)
+    //   window.history.replaceState({}, document.title, window.location.pathname);
+    // }
+    const handleLogout = () => {
+      localStorage.removeItem('jwtToken');
+      window.location.href = 'http://localhost:3000/login';
+    };
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
       <Link
@@ -71,7 +84,7 @@ import UserOne from '../../images/user/user-01.png';
               </Link>
             </li>
           </ul>
-          <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+          <button onClick={handleLogout} className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
             <svg
               className="fill-current"
               width="22"

@@ -11,7 +11,7 @@ import MobileMenuItems from './MobileMenuItems';
 
 export default function Header( props ) {
 	const {headerClass, headerLogo, topbarEnable, categoryEnable, menuItemsLeft, authenticationHeader} = props;
-	const [isVisible, setIsVisible] = useState(false);	
+	const [isVisible, setIsVisible] = useState(false);
 	const [menuModalOpen, setMenuModalOpen] = useState(false);
 	const [modalOpen, setModalOpen] = useState(false);
 	const [searchModal, setSearchModal] = useState(false);
@@ -47,12 +47,12 @@ export default function Header( props ) {
 		const total = calculateTotalPrice();
 		setTotalPrice(total);
 	}, [selectedCourses, addedToCart]);
-	
+
 	function handleCartToggle() {
 		setCartModalOpen(!cartModalOpen);
 		setModalOpen(!modalOpen);
 	}
-	
+
 	function handleMenuToggle() {
 		setMenuModalOpen(!menuModalOpen);
 		setModalOpen(!modalOpen);
@@ -72,13 +72,13 @@ export default function Header( props ) {
 
 	const admin = useSelector((state) => state.user.admin);
 
-	useEffect(() => {
-		// Load user from localStorage on mount
-		const storedUser = localStorage.getItem('user');
-		if (storedUser) {
-			dispatch(setUserData(JSON.parse(storedUser)));
-		}
-	}, [dispatch]);
+	// useEffect(() => {
+	// 	// Load user from localStorage on mount
+	// 	const storedUser = localStorage.getItem('user');
+	// 	if (storedUser) {
+	// 		dispatch(setUserData(JSON.parse(storedUser)));
+	// 	}
+	// }, [dispatch]);
 
 	useEffect(() => {
 		setAuthorDropdown(false);
@@ -115,7 +115,7 @@ export default function Header( props ) {
 									{
 										menuItemsLeft && <MenuItems />
 									}
-									
+
 								</div>
 
 								{
@@ -141,76 +141,76 @@ export default function Header( props ) {
 										</div>
 										{
 											!admin ?
-											<div className="buttons-area">
-												<Link href="/login" className="rts-btn btn-border">Đăng nhập</Link>
-												<Link href="/signup" className="rts-btn btn-primary">Đăng ký</Link>
-											</div> : 
-											<div className="studyhub__header__quickaction__item">
-												<button 
-													className="studyhub__header__quickaction__link"
-													onClick={() => setAuthorDropdown(!authorDropdown)}
-												>
-													<Image className="user-img" src="/images/avatar/user.svg" width={50} height={50} alt="user" />
-												</button>
-												{
-													authorDropdown &&
-													<div className="studyhub__header__popup studyhub__header__popup--author">
-														<div className="studyhub__header__popup__header">
-															<div className="studyhub__header__popup__header__img">
-																<Image src="/images/avatar/user.svg" width={74} height={74} alt="user" />
+												<div className="buttons-area">
+													<Link href="/login" className="rts-btn btn-border">Đăng nhập</Link>
+													<Link href="/signup" className="rts-btn btn-primary">Đăng ký</Link>
+												</div> :
+												<div className="studyhub__header__quickaction__item">
+													<button
+														className="studyhub__header__quickaction__link"
+														onClick={() => setAuthorDropdown(!authorDropdown)}
+													>
+														<Image className="user-img" src="/images/avatar/user.svg" width={50} height={50} alt="user" />
+													</button>
+													{
+														authorDropdown &&
+														<div className="studyhub__header__popup studyhub__header__popup--author">
+															<div className="studyhub__header__popup__header">
+																<div className="studyhub__header__popup__header__img">
+																	<Image src="/images/avatar/user.svg" width={74} height={74} alt="user" />
+																</div>
+																<div className="studyhub__header__popup__header__content">
+																	<h3 className="studyhub__header__popup__header__title">{admin.firstName} {admin.lastName}</h3>
+																	<span className="studyhub__header__popup__header__subtitle">{admin.designation}</span>
+																</div>
 															</div>
-															<div className="studyhub__header__popup__header__content">
-																<h3 className="studyhub__header__popup__header__title">{admin.firstName} {admin.lastName}</h3>
-																<span className="studyhub__header__popup__header__subtitle">{admin.designation}</span>
+															<div className="studyhub__header__popup__content">
+																<ul className="studyhub__header__popup__items">
+																	<li className="studyhub__header__popup__item">
+																		<Link className="studyhub__header__popup__link" href="/dashboard/profile">
+																			<i className="uil uil-user"></i>
+																			Profile
+																		</Link>
+																	</li>
+																	<li className="studyhub__header__popup__item">
+																		<Link className="studyhub__header__popup__link" href="/dashboard/assignments">
+																			<i className="uil uil-users-alt"></i>
+																			Assignments
+																		</Link>
+																	</li>
+																	<li className="studyhub__header__popup__item">
+																		<Link className="studyhub__header__popup__link" href="/dashboard/announcements">
+																			<i className="uil uil-cog"></i>
+																			Announcements
+																		</Link>
+																	</li>
+																	<li className="studyhub__header__popup__item">
+																		<Link className="studyhub__header__popup__link" href="/dashboard/certificate">
+																			<i className="uil uil-bell"></i>
+																			Certificate
+																		</Link>
+																	</li>
+																	<li className="studyhub__header__popup__item">
+																		<Link className="studyhub__header__popup__link" href="/dashboard/withdrawals">
+																			<i className="uil uil-dollar-alt"></i>
+																			Withdrawals
+																		</Link>
+																	</li>
+																</ul>
+															</div>
+															<div className="studyhub__header__popup__footer">
+																<button
+																	className="studyhub__header__popup__footer__link"
+																	onClick={handleLogout}
+																>
+																	<i className="uil uil-arrow-up-left"></i>Logout
+																</button>
 															</div>
 														</div>
-														<div className="studyhub__header__popup__content">
-															<ul className="studyhub__header__popup__items">
-																<li className="studyhub__header__popup__item">
-																	<Link className="studyhub__header__popup__link" href="/dashboard/profile">
-																		<i className="uil uil-user"></i>
-																		Profile
-																	</Link>
-																</li>
-																<li className="studyhub__header__popup__item">
-																	<Link className="studyhub__header__popup__link" href="/dashboard/assignments">
-																		<i className="uil uil-users-alt"></i>
-																		Assignments
-																	</Link>
-																</li>
-																<li className="studyhub__header__popup__item">
-																	<Link className="studyhub__header__popup__link" href="/dashboard/announcements">
-																		<i className="uil uil-cog"></i>
-																		Announcements
-																	</Link>
-																</li>
-																<li className="studyhub__header__popup__item">
-																	<Link className="studyhub__header__popup__link" href="/dashboard/certificate">
-																		<i className="uil uil-bell"></i>
-																		Certificate
-																	</Link>
-																</li>
-																<li className="studyhub__header__popup__item">
-																	<Link className="studyhub__header__popup__link" href="/dashboard/withdrawals">
-																		<i className="uil uil-dollar-alt"></i>
-																		Withdrawals
-																	</Link>
-																</li>
-															</ul>
-														</div>
-														<div className="studyhub__header__popup__footer">
-															<button 
-																className="studyhub__header__popup__footer__link"
-																onClick={handleLogout}
-															>
-																<i className="uil uil-arrow-up-left"></i>Logout
-															</button>
-														</div>
-													</div>
-												}
-											</div>
+													}
+												</div>
 										}
-										
+
 										<div className="menu-btn" id="menu-btn" onClick={handleMenuToggle}>
 											<svg width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 												<rect y="14" width="20" height="2" fill="#1F1F25"></rect>
@@ -220,7 +220,7 @@ export default function Header( props ) {
 										</div>
 									</div>
 								}
-								
+
 							</div>
 						</div>
 					</div>
@@ -304,7 +304,7 @@ export default function Header( props ) {
 				</div>
 			</div>
 			{/* cart area end */}
-			
+
 			{/* Search Modal Start */}
 			<div className={`search-input-area ${searchModal ? 'show' :''}`}>
 				<div className="container">

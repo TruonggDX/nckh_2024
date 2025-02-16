@@ -42,7 +42,6 @@ public class UploadImageFileImpl implements UploadImageFile {
         imageDTO.setUrl(uploadResult.get("url").toString());
         imageDTO.setPublicId(uploadResult.get("public_id").toString());
         imageDTO.setType(file.getContentType());
-
         return imageDTO;
     }
     @Override
