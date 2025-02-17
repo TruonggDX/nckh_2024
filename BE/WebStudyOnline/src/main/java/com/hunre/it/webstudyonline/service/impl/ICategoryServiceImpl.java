@@ -54,8 +54,8 @@ public class ICategoryServiceImpl implements ICategoryService {
             return response;
         }
         CategoryEntity category = categoryMapper.toEntity(categoryDto);
-        category = categoryRepository.save(category);
         category.setDeleted(false);
+        category = categoryRepository.save(category);
         response.setCode(HttpStatus.CREATED.value());
         response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
         response.setData(categoryMapper.toDto(category));

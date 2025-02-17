@@ -14,6 +14,7 @@ public class CourseEntity extends AbstractEntity {
     private String name;
     private BigDecimal price;
     private String description;
+    private Integer discount;
     private String status;
 
     @ManyToOne
@@ -73,6 +74,14 @@ public class CourseEntity extends AbstractEntity {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public Integer getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Integer discount) {
+        this.discount = discount;
     }
 
     public String getDescription() {

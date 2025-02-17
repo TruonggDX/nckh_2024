@@ -10,6 +10,7 @@ public class CourseDto {
     private BigDecimal price;
     private String description;
     private String status;
+    private Integer discount;
     private Long categoryId;
     private String imageUrl;
 
@@ -27,6 +28,14 @@ public class CourseDto {
 
     public void setCode(String code) {
         this.code = code;
+    }
+
+    public Integer getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Integer discount) {
+        this.discount = discount;
     }
 
     public String getName() {

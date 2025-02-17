@@ -11,7 +11,6 @@ const token = urlParams.get('token');
 
 if (token) {
   localStorage.setItem('jwtToken', token);
-  console.log('token final', token);
   window.history.replaceState({}, document.title, window.location.pathname);
 }
 
