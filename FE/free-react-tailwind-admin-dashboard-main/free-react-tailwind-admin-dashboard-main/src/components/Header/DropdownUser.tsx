@@ -1,22 +1,43 @@
-import {  useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ClickOutside from '../ClickOutside';
 import UserOne from '../../images/user/user-01.png';
-  const DropdownUser = () => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+import api from '../../route/route.js';
 
-    // const urlParams = new URLSearchParams(window.location.search);
-    // const token = urlParams.get('token');
-    //
-    // if (token) {
-    //   localStorage.setItem('jwtToken', token);
-    //   console.log('token final',token)
-    //   window.history.replaceState({}, document.title, window.location.pathname);
-    // }
-    const handleLogout = () => {
-      localStorage.removeItem('jwtToken');
-      window.location.href = 'http://localhost:3000/login';
+const DropdownUser = () => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const handleLogout = () => {
+    localStorage.removeItem('jwtToken');
+    window.location.href = 'http://localhost:3000/login';
+  };
+
+  const [account, setAccount] = useState({
+    id: '',
+    code: '',
+    email: '',
+    fullName: '',
+    phone: '',
+    imageUrl: '',
+  });
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await api.getUser();
+        setAccount({
+          id: response.data.id || '',
+          code: response.data.code || '',
+          fullName: response.data.fullName || '',
+          phone: response.data.phone || '',
+          email: response.data.email || '',
+          imageUrl: response.data.imageUrl || '',
+        });
+      } catch (error) {
+        console.error('Failed to fetch user:', error);
+      }
     };
+
+    fetchUser();
+  }, []);
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
       <Link
@@ -26,13 +47,25 @@ import UserOne from '../../images/user/user-01.png';
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Thomas Anree
+            {account.fullName}
           </span>
-          <span className="block text-xs">UX Designer</span>
+          <span className="block text-xs">{account.code}</span>
         </span>
 
-        <span className="h-12 w-12 rounded-full">
-          <img src={UserOne} alt="User" />
+        <span
+          style={{
+            width: 50,
+            height: 50,
+            borderRadius: '50%',
+            overflow: 'hidden',
+          }}
+          className="h-12 w-12 rounded-full"
+        >
+          <img
+            src={account.imageUrl || UserOne}
+            alt="User"
+            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+          />
         </span>
 
         <svg
@@ -84,7 +117,10 @@ import UserOne from '../../images/user/user-01.png';
               </Link>
             </li>
           </ul>
-          <button onClick={handleLogout} className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+          <button
+            onClick={handleLogout}
+            className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+          >
             <svg
               className="fill-current"
               width="22"
