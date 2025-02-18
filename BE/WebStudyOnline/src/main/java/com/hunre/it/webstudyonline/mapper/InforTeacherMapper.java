@@ -15,6 +15,8 @@ import org.springframework.stereotype.Component;
 public class InforTeacherMapper {
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private AccountMapper accountMapper;
 
     public InforTeacherEntity toInforTeacherEntity(AddInforTeacherForm addInforTeacherForm) {
         AccountEntity  accountEntity = accountRepository.findById(addInforTeacherForm.getAccountId()).orElseThrow(() -> new RuntimeException("Account not found"));
@@ -32,6 +34,8 @@ public class InforTeacherMapper {
         inforTeacherDto.setAddress(inforTeacherEntity.getAddress());
         inforTeacherDto.setBirthday(inforTeacherEntity.getBirthday().toString());
         inforTeacherDto.setExperience(inforTeacherEntity.getExperience());
+        inforTeacherDto.setAccountDto(accountMapper.toDto(inforTeacherEntity.getAccount()));
+
         return inforTeacherDto;
     }
 }

@@ -3,17 +3,27 @@ package com.hunre.it.webstudyonline.controller.api;
 import com.hunre.it.webstudyonline.model.dto.InforTeacherDto;
 import com.hunre.it.webstudyonline.model.request.AddInforTeacherForm;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
+import com.hunre.it.webstudyonline.model.response.ResponsePage;
 import com.hunre.it.webstudyonline.service.IInforTeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/inforTeacher")
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"})
 public class ApiInforTeacher {
     @Autowired
     private IInforTeacherService inforTeacherService;
+
+    @GetMapping("/list")
+    public ResponseEntity<ResponsePage<List<InforTeacherDto>>> getAll(Pageable pageable) {
+        ResponsePage<List<InforTeacherDto>> responsePage = inforTeacherService.getAll(pageable);
+        return ResponseEntity.ok(responsePage);
+    }
 
     @PostMapping("/add")
     public ResponseEntity<BaseResponse<InforTeacherDto>> addInforTeacher(@RequestBody AddInforTeacherForm addInforTeacherForm){

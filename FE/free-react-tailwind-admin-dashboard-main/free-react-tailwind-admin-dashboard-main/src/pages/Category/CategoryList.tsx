@@ -2,16 +2,17 @@ import { useEffect, useState } from 'react';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb.tsx';
 import { Pencil, Trash2 } from 'lucide-react';
 import '../../assets/index.css';
-import { addCategory, deleteCategory, getCategoryById, listCategories, updateCategory } from '../../service/Category.js';
+import { addCategory, deleteCategory, getCategoryById, listCategories, updateCategory } from '../../service/CategoryService.js';
 import { confirmDelete, showAlert } from '../../utils/swalUtils.js';
+import {Category} from '../../types/Category.ts'
 
 const CategoryList = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [totalCategories, setTotalCategories] = useState(0);
-  const [category, setCategory] = useState({ code: '', name: '' });
+  const [category, setCategory] = useState({ id:'',code: '', name: '' });
   const [isEditing, setIsEditing] = useState(false);
   const [error, setError] = useState({ code: '', name: '' });
   const [disabled, setDisabled] = useState(true);
@@ -42,10 +43,10 @@ const CategoryList = () => {
     }
   };
 
-  const handlePageChange = (pageNumber) => {
+  const handlePageChange = (pageNumber:number) => {
     setCurrentPage(pageNumber);
   };
-  const handleEdit = (id) => {
+  const handleEdit = (id:number) => {
     getCategoryById(id).then((response: any) => {
       setCategory(response.data);
       setIsEditing(true);
@@ -61,20 +62,20 @@ const CategoryList = () => {
           setDisabled(true)
           getAll();
           showAlert('Cập nhật thành công!', 'Danh mục đã được cập nhật.', 'success');
-          setCategory({ code: '', name: '' });
+          setCategory({id:'', code: '', name: '' });
         }).catch((error: any) => console.error(error));
       } else {
         addCategory(category).then(() => {
           setModalOpen(false);
           getAll();
           showAlert('Thêm thành công!', 'Thêm danh mục thành công.', 'success');
-          setCategory({ code: '', name: '' });
+          setCategory({id:'', code: '', name: '' });
         }).catch((error: any) => console.error(error));
       }
     }
   };
 
-  const handleRemove = (id) => {
+  const handleRemove = (id:number) => {
     confirmDelete('Bạn chắc chắn muốn xóa danh mục này?', 'Hành động này không thể hoàn tác!', () => {
       deleteCategory(id).then(() => {
         getAll();
@@ -123,10 +124,10 @@ const CategoryList = () => {
                   <td className="py-4 px-6">{category.code}</td>
                   <td className="py-4 px-6">{category.name}</td>
                   <td className="py-4 px-4 flex gap-4">
-                    <button className="hover:text-primary">
+                    <button className="text-yellow-600 hover:text-yellow-800 transition">
                       <Pencil onClick={() => handleEdit(category.id)} size={20} />
                     </button>
-                    <button className="hover:text-danger">
+                    <button className="text-red-600 hover:text-red-800 transition">
                       <Trash2 onClick={() => handleRemove(category.id)} size={20} />
                     </button>
                   </td>
@@ -174,7 +175,7 @@ const CategoryList = () => {
             </div>
             <div className="flex gap-4">
               <button className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700" onClick={handleSave}>Lưu</button>
-              <button className="w-full bg-gray-500 text-white py-2 rounded hover:bg-gray-600" onClick={() => { setCategory({ code: '', name: '' }); setModalOpen(false); }}>Hủy</button>
+              <button className="w-full bg-gray-500 text-white py-2 rounded hover:bg-gray-600" onClick={() => { setCategory({id:'', code: '', name: '' }); setModalOpen(false); }}>Hủy</button>
             </div>
           </div>
         </div>

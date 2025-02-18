@@ -2,6 +2,8 @@ package com.hunre.it.webstudyonline.mapper;
 
 import com.hunre.it.webstudyonline.entity.CertificateEntity;
 import com.hunre.it.webstudyonline.model.dto.CertificateDto;
+import com.hunre.it.webstudyonline.repository.AccountRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,6 +19,10 @@ public class CertificateMapper {
         certificateDto.setIssueDate(certificateEntity.getIssueDate());
         certificateDto.setCertificateStatus(certificateEntity.getCertificateStatus());
         certificateDto.setTeacherId(certificateEntity.getTeacherEntity().getId());
+        if (certificateEntity.getTeacherEntity() != null &&
+                certificateEntity.getTeacherEntity().getAccount() != null) {
+            certificateDto.setTeacherName(certificateEntity.getTeacherEntity().getAccount().getFullname());
+        }
         return certificateDto;
     }
     public CertificateEntity toEntity(CertificateDto certificateDto) {

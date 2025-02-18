@@ -26,7 +26,6 @@ export const confirmDelete = async (title, text, confirmCallback) => {
       confirmCallback();
       MySwal.fire({
         title: 'Xóa thành công!',
-        text: 'Danh mục đã được xóa.',
         icon: 'success',
         confirmButtonText: 'OK',
         customClass: {

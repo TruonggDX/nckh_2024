@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/certificate")
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"})
 public class ApiCertificate {
     @Autowired
     private ICertificateService iCertificateService;
@@ -23,7 +24,7 @@ public class ApiCertificate {
         ResponsePage<List<CertificateDto>> responsePage = iCertificateService.getAllCertificates(pageable);
         return ResponseEntity.ok(responsePage);
     }
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<BaseResponse<CertificateDto>> create(@Valid @RequestBody CertificateDto certificate) {
         BaseResponse<CertificateDto> category = iCertificateService.addCertificate(certificate);
         return ResponseEntity.ok(category);

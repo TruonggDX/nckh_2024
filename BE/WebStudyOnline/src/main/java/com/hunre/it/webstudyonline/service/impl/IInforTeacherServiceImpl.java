@@ -7,16 +7,20 @@ import com.hunre.it.webstudyonline.model.dto.AccountDto;
 import com.hunre.it.webstudyonline.model.dto.InforTeacherDto;
 import com.hunre.it.webstudyonline.model.request.AddInforTeacherForm;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
+import com.hunre.it.webstudyonline.model.response.ResponsePage;
 import com.hunre.it.webstudyonline.repository.InforTeacherRepository;
 import com.hunre.it.webstudyonline.service.IInforTeacherService;
 import com.hunre.it.webstudyonline.utils.Constant;
 import com.hunre.it.webstudyonline.utils.LongUtils;
 import com.hunre.it.webstudyonline.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,6 +31,19 @@ public class IInforTeacherServiceImpl implements IInforTeacherService {
     private InforTeacherMapper inforTeacherMapper;
     @Autowired
     private InforTeacherRepository inforTeacherRepository;
+
+    @Override
+    public ResponsePage<List<InforTeacherDto>> getAll(Pageable pageable) {
+        ResponsePage<List<InforTeacherDto>> responsePage = new ResponsePage<>();
+        Page<InforTeacherEntity> page = inforTeacherRepository.findAllInforTeachers(pageable);
+        List<InforTeacherDto> inforTeacherDtos = page.getContent().stream().map(inforTeacherMapper::toInforTeacherDto).toList();
+        responsePage.setPageNumber(pageable.getPageNumber());
+        responsePage.setPageSize(pageable.getPageSize());
+        responsePage.setTotalElements(page.getTotalElements());
+        responsePage.setTotalPages(page.getTotalPages());
+        responsePage.setContent(inforTeacherDtos);
+        return responsePage;
+    }
 
     @Override
     public BaseResponse<InforTeacherDto> getInforTeacherById(String id) {

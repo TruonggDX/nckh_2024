@@ -10,6 +10,15 @@ public class CertificateDto {
     private String issueDate;
     private String certificateStatus;
     private Long teacherId;
+    private String teacherName;
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
+    }
 
     public Long getId() {
         return id;

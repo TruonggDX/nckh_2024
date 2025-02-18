@@ -9,6 +9,19 @@ public class InforTeacherDto {
     private String address;
     private Integer experience;
     private LocalDate birthday;
+    private AccountDto accountDto;
+
+    public void setBirthday(LocalDate birthday) {
+        this.birthday = birthday;
+    }
+
+    public AccountDto getAccountDto() {
+        return accountDto;
+    }
+
+    public void setAccountDto(AccountDto accountDto) {
+        this.accountDto = accountDto;
+    }
 
     public Long getId() {
         return id;
