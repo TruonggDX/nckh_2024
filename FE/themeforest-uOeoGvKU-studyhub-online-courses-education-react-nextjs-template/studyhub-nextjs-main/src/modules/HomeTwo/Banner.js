@@ -1,10 +1,22 @@
 import useShapeMove from "@/hooks/useShapeMove";
 import Image from "next/image";
-import { useRef } from 'react';
+import {useEffect, useRef, useState} from 'react';
+import api from '/src/route/route';
+
 
 export default function Banner() {
 	const shapeMoveRef = useRef(null);
-  	useShapeMove(shapeMoveRef);
+	const [categories, setCategories] = useState([]);
+
+	useShapeMove(shapeMoveRef);
+
+	useEffect(() => {
+		getAllCategory();
+	}, []);
+
+	function getAllCategory() {
+		api.getCategory().then(res => setCategories(res.content));
+	}
 
 	return (
 		<div className="banner-two-flow-1920">
@@ -20,10 +32,10 @@ export default function Banner() {
 									</div>
 									<h1 className="title-banner">
 										Welcome to Your Online
-										<span>Learning Journey</span>
+										<span> Learning Journey</span>
 										<Image src="/images/banner/06.png" alt="banner" width="243" height="14" />
 									</h1>
-									<p className="disc">We Have 30k+ Online Courses & 300K+ Online Registered Student.</p>
+									<p className="disc">Chào mừng đến với Bình Nguyên vô tận.</p>
 									<form action="#">
 										<div className="category-search-input">
 											<div className="select-banner-search-left">
@@ -34,73 +46,22 @@ export default function Banner() {
 													<path d="M15 12H12V15H15V12Z" fill="#553CDF" />
 												</svg>
 												<select className="nice-select" name="price">
-													<option>All Category</option>
-													<option value="asc">Design</option>
-													<option value="desc">Development</option>
-													<option value="pop">Popularity</option>
-													<option value="low">Price</option>
-													<option value="high">Stars</option>
-												</select>
+													<option value="">Danh mục</option>
+													{categories.map((category, index) => (
+														<option key={index} value={category.id}>{category.name}</option>
+													))}												</select>
 											</div>
-											<input type="email" placeholder="Find Your Course" required />
+											<input type="email" placeholder="Tìm khóa học" required />
 											<button>Search</button>
 										</div>
 									</form>
 									<div className="banner-tags-wrapper">
 										{/* single tags wrapper */}
-										<div className="single-tags-banner">
-											<p>UI/UX Design</p>
-										</div>
-										{/* single tags wrapper end */}
-										{/* single tags wrapper */}
-										<div className="single-tags-banner">
-											<p>Web Design</p>
-										</div>
-										{/* single tags wrapper end */}
-										{/* single tags wrapper */}
-										<div className="single-tags-banner">
-											<p>Marketing</p>
-										</div>
-										{/* single tags wrapper end */}
-										{/* single tags wrapper */}
-										<div className="single-tags-banner">
-											<p>Digital Marketing</p>
-										</div>
-										{/* single tags wrapper end */}
-										{/* single tags wrapper */}
-										<div className="single-tags-banner">
-											<p>Finance</p>
-										</div>
-										{/* single tags wrapper end */}
-										{/* single tags wrapper */}
-										<div className="single-tags-banner">
-											<p>Dancing</p>
-										</div>
-										{/* single tags wrapper end */}
-										{/* single tags wrapper */}
-										<div className="single-tags-banner">
-											<p>Lifestyle</p>
-										</div>
-										{/* single tags wrapper end */}
-										{/* single tags wrapper */}
-										<div className="single-tags-banner">
-											<p>Music</p>
-										</div>
-										{/* single tags wrapper end */}
-										{/* single tags wrapper */}
-										<div className="single-tags-banner">
-											<p>Business</p>
-										</div>
-										{/* single tags wrapper end */}
-										{/* single tags wrapper */}
-										<div className="single-tags-banner">
-											<p>SEO</p>
-										</div>
-										{/* single tags wrapper end */}
-										{/* single tags wrapper */}
-										<div className="single-tags-banner">
-											<p>Java</p>
-										</div>
+										{categories.map((category, index) => (
+											<div className="single-tags-banner">
+												<p>{category.name}</p>
+											</div>
+										))}
 										{/* single tags wrapper end */}
 									</div>
 								</div>
@@ -127,7 +88,7 @@ export default function Banner() {
 					<div className="review-single two">
 						<Image src="/images/banner/08.png" alt="banner" width="36" height="34" />
 						<div className="info-right">
-							<h6 className="title">100+
+							<h6 className="title">10+
 							</h6>
 							<span>Online Course</span>
 						</div>

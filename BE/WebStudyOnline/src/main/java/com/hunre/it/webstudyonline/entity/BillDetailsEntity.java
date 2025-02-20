@@ -24,10 +24,6 @@ public class BillDetailsEntity extends AbstractEntity {
     @ToString.Exclude
     private CourseEntity courseEntity;
 
-    @ManyToOne
-    @JoinColumn(name = "roadmap_id")
-    @ToString.Exclude
-    private RoadmapEntity roadmap;
 
 
     public Integer getQuantity() {
@@ -60,13 +56,5 @@ public class BillDetailsEntity extends AbstractEntity {
 
     public void setCourseEntity(CourseEntity courseEntity) {
         this.courseEntity = courseEntity;
-    }
-
-    public RoadmapEntity getRoadmap() {
-        return roadmap;
-    }
-
-    public void setRoadmap(RoadmapEntity roadmap) {
-        this.roadmap = roadmap;
     }
 }

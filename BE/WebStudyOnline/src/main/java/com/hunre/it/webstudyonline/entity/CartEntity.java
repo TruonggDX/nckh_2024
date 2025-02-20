@@ -18,24 +18,12 @@ public class CartEntity extends AbstractEntity {
     @JoinColumn(name = "course_id")
     private CourseEntity course;
 
-    @ManyToOne
-    @JoinColumn(name = "roadmap_id")
-    private RoadmapEntity roadmap;
-
     public CourseEntity getCourse() {
         return course;
     }
 
     public void setCourse(CourseEntity course) {
         this.course = course;
-    }
-
-    public RoadmapEntity getRoadmap() {
-        return roadmap;
-    }
-
-    public void setRoadmap(RoadmapEntity roadmap) {
-        this.roadmap = roadmap;
     }
 
     public AccountEntity getAccount() {

@@ -8,6 +8,7 @@ import com.hunre.it.webstudyonline.model.dto.auth.AuthDto;
 import com.hunre.it.webstudyonline.model.dto.auth.LoginUserDto;
 import com.hunre.it.webstudyonline.model.dto.auth.RegisterUserDto;
 import com.hunre.it.webstudyonline.model.dto.auth.VerifyUserDto;
+import com.hunre.it.webstudyonline.model.response.BaseResponse;
 import com.hunre.it.webstudyonline.model.response.LoginResponse;
 import com.hunre.it.webstudyonline.security.service.JwtService;
 import com.hunre.it.webstudyonline.service.IAuthService;
@@ -28,8 +29,8 @@ public class ApiAuth {
 
 
     @PostMapping("/signup")
-    public ResponseEntity<RegisterUserDto> signup(@RequestBody RegisterUserDto input) {
-        RegisterUserDto userDTO = iAuthService.signup(input);
+    public ResponseEntity<BaseResponse<RegisterUserDto>> signup(@RequestBody RegisterUserDto input) {
+        BaseResponse<RegisterUserDto> userDTO = iAuthService.signup(input);
         return ResponseEntity.ok(userDTO);
     }
 

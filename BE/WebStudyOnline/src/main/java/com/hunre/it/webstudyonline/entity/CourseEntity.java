@@ -13,33 +13,31 @@ public class CourseEntity extends AbstractEntity {
     private String code;
     private String name;
     private BigDecimal price;
+    @Column(length = 2000)
     private String description;
     private Integer discount;
     private String status;
+
+    public String getAim() {
+        return aim;
+    }
+
+    public void setAim(String aim) {
+        this.aim = aim;
+    }
 
     @ManyToOne
     @JoinColumn(name = "category_id")
     @EqualsAndHashCode.Exclude
     private CategoryEntity categoryEntity;
 
-    @ManyToMany(mappedBy = "course")
-    private Set<RoadmapEntity> roadmap = new HashSet<>();
-
     @OneToMany(mappedBy = "course")
     private Set<CartEntity> cart = new HashSet<>();
-
-    public Set<RoadmapEntity> getRoadmap() {
-        return roadmap;
-    }
-
-    public void setRoadmap(Set<RoadmapEntity> roadmap) {
-        this.roadmap = roadmap;
-    }
 
     public Set<CartEntity> getCart() {
         return cart;
     }
-
+    public String aim;
     public void setCart(Set<CartEntity> cart) {
         this.cart = cart;
     }

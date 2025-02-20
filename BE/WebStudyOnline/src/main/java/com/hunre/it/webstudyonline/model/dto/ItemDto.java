@@ -8,15 +8,13 @@ public class ItemDto {
     private String description;
     private BigDecimal price;
     private Integer discount;
-    private String type;
 
-    public ItemDto(Long id, String name, String description, BigDecimal price, Integer discount, String type) {
+    public ItemDto(Long id, String name, String description, BigDecimal price, Integer discount) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.discount = discount;
-        this.type = type;
     }
 
     public Long getId() {
@@ -56,13 +54,5 @@ public class ItemDto {
 
     public void setDiscount(Integer discount) {
         this.discount = discount;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 }

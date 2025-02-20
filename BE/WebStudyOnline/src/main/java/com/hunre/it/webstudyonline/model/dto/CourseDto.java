@@ -13,6 +13,15 @@ public class CourseDto {
     private Integer discount;
     private Long categoryId;
     private String imageUrl;
+    private String aim;
+
+    public String getAim() {
+        return aim;
+    }
+
+    public void setAim(String aim) {
+        this.aim = aim;
+    }
 
     public Long getId() {
         return id;

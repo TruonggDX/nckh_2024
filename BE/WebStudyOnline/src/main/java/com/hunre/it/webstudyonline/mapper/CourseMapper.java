@@ -16,11 +16,13 @@ public class CourseMapper {
         courseDto.setStatus(courseEntity.getStatus());
         courseDto.setDiscount(courseEntity.getDiscount());
         courseDto.setCategoryId(courseEntity.getCategoryEntity().getId());
+        courseDto.setAim(courseEntity.getAim());
         return courseDto;
     }
     public CourseEntity toEntity(CourseDto courseDto){
         CourseEntity courseEntity = new CourseEntity();
         courseEntity.setId(courseDto.getId());
+        courseEntity.setAim(courseDto.getAim());
         courseEntity.setCode(courseDto.getCode());
         courseEntity.setName(courseDto.getName());
         courseEntity.setPrice(courseDto.getPrice());

@@ -1,16 +1,15 @@
 package com.hunre.it.webstudyonline.model.dto.auth;
 
 public class VerifyUserDto {
-    private String email;
     private String verificationCode;
+    private RegisterUserDto registerUserDto;
 
-
-    public String getEmail() {
-        return email;
+    public RegisterUserDto getRegisterUserDto() {
+        return registerUserDto;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setRegisterUserDto(RegisterUserDto registerUserDto) {
+        this.registerUserDto = registerUserDto;
     }
 
     public String getVerificationCode() {
