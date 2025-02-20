@@ -17,6 +17,7 @@ import com.hunre.it.webstudyonline.repository.ImageRepository;
 import com.hunre.it.webstudyonline.service.ICourseService;
 import com.hunre.it.webstudyonline.service.UploadImageFile;
 import com.hunre.it.webstudyonline.utils.Constant;
+import com.hunre.it.webstudyonline.utils.GenerateCode;
 import com.hunre.it.webstudyonline.utils.LongUtils;
 import com.hunre.it.webstudyonline.utils.Utils;
 import jakarta.transaction.Transactional;
@@ -85,6 +86,7 @@ public class ICourseServiceImpl implements ICourseService {
             }
             courseEntity.setCategoryEntity(checkCate.get());
             courseEntity.setDeleted(false);
+            courseEntity.setCode(GenerateCode.generateUniqueCode("C"));
             courseEntity = courseRepository.save(courseEntity);
             courseDto.setId(courseEntity.getId());
             courseDto.setCode(courseEntity.getCode());

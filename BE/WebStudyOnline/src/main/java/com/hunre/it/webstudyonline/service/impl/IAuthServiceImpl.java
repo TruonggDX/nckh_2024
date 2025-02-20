@@ -26,10 +26,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -108,6 +106,7 @@ public class IAuthServiceImpl implements IAuthService {
         ).collect(Collectors.toSet());
         account.setRoles(roles);
         account.setEnabled(true);
+        account.setCode("UID"+ LocalDateTime.now().getYear()+00001);
         accountRepository.save(account);
     }
 

@@ -8,6 +8,7 @@ import com.hunre.it.webstudyonline.model.response.ResponsePage;
 import com.hunre.it.webstudyonline.repository.CategoryRepository;
 import com.hunre.it.webstudyonline.service.ICategoryService;
 import com.hunre.it.webstudyonline.utils.Constant;
+import com.hunre.it.webstudyonline.utils.GenerateCode;
 import com.hunre.it.webstudyonline.utils.LongUtils;
 import com.hunre.it.webstudyonline.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,7 @@ public class ICategoryServiceImpl implements ICategoryService {
             return response;
         }
         CategoryEntity category = categoryMapper.toEntity(categoryDto);
+        category.setCode(GenerateCode.generateUniqueCode("CATE"));
         category.setDeleted(false);
         category = categoryRepository.save(category);
         response.setCode(HttpStatus.CREATED.value());

@@ -8,6 +8,7 @@ import com.hunre.it.webstudyonline.model.response.ResponsePage;
 import com.hunre.it.webstudyonline.repository.ExamRepository;
 import com.hunre.it.webstudyonline.service.IExamService;
 import com.hunre.it.webstudyonline.utils.Constant;
+import com.hunre.it.webstudyonline.utils.GenerateCode;
 import com.hunre.it.webstudyonline.utils.LongUtils;
 import com.hunre.it.webstudyonline.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ public class IExamServiceImpl implements IExamService {
     public BaseResponse<ExamDto> addExam(ExamDto examDto) {
         BaseResponse<ExamDto> response = new BaseResponse<>();
         ExamEntity examEntity = examMapper.toEntity(examDto);
+        examEntity.setCode(GenerateCode.generateUniqueCode("EXAM"));
         examEntity.setDeleted(false);
         examEntity = exampRepository.save(examEntity);
         response.setData(examMapper.toDto(examEntity));

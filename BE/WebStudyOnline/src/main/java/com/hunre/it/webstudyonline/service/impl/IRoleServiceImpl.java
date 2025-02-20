@@ -55,6 +55,7 @@ public class IRoleServiceImpl implements IRoleService {
         }
 
         RoleEntity roleEntity = roleMapper.toRoleEntity(role);
+        roleEntity.setCode(roleEntity.getName().toUpperCase());
         roleEntity = roleRepository.save(roleEntity);
         role.setId(roleEntity.getId());
         response.setData(roleMapper.toDto(roleEntity));

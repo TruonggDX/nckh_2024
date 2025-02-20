@@ -8,6 +8,7 @@ import com.hunre.it.webstudyonline.model.response.ResponsePage;
 import com.hunre.it.webstudyonline.repository.BillRepository;
 import com.hunre.it.webstudyonline.service.IBillService;
 import com.hunre.it.webstudyonline.utils.Constant;
+import com.hunre.it.webstudyonline.utils.GenerateCode;
 import com.hunre.it.webstudyonline.utils.LongUtils;
 import com.hunre.it.webstudyonline.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +44,7 @@ public class IBillServiceImpl implements IBillService {
     public BaseResponse<BillDto> createBill(BillDto billDto) {
         BaseResponse<BillDto> response = new BaseResponse<>();
         BillEntity billEntity = billMapper.toEntity(billDto);
+        billEntity.setCode(GenerateCode.generateUniqueCode("BILL"));
         billEntity.setDeleted(false);
         billRepository.save(billEntity);
         response.setData(billMapper.toDto(billEntity));

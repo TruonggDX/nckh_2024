@@ -11,6 +11,7 @@ import com.hunre.it.webstudyonline.repository.GradeRepository;
 import com.hunre.it.webstudyonline.security.service.JwtService;
 import com.hunre.it.webstudyonline.service.IGradeService;
 import com.hunre.it.webstudyonline.utils.Constant;
+import com.hunre.it.webstudyonline.utils.GenerateCode;
 import com.hunre.it.webstudyonline.utils.LongUtils;
 import com.hunre.it.webstudyonline.utils.Utils;
 import jakarta.transaction.Transactional;
@@ -77,6 +78,7 @@ public class IGradeServiceImpl implements IGradeService {
         BaseResponse<GradeDto> response = new BaseResponse<>();
         GradeEntity gradeEntity = gradeMapper.toEntity(gradeDto);
         gradeEntity.setDeleted(false);
+        gradeEntity.setCode(GenerateCode.generateUniqueCode("GR"));
         gradeRepository.save(gradeEntity);
         response.setData(gradeMapper.toDto(gradeEntity));
         response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
