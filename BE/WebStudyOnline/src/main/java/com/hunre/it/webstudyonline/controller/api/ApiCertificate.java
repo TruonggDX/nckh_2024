@@ -50,10 +50,9 @@ public class ApiCertificate {
             @RequestParam(required = false) String issuingOrganization,
             @RequestParam(required = false) String certificateType,
             @RequestParam(required = false) String certificateNumber,
-            @RequestParam(required = false) String certificateStatus,
             Pageable pageable) {
         ResponsePage<List<CertificateDto>> response = iCertificateService.findByCertificateAttribute(
-                certificateName, issuingOrganization, certificateType, certificateNumber, certificateStatus, pageable);
+                certificateName, issuingOrganization, certificateType, certificateNumber, pageable);
         return ResponseEntity.ok(response);
     }
 }

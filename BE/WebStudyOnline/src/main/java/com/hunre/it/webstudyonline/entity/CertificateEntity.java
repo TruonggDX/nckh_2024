@@ -24,8 +24,6 @@ public class CertificateEntity extends AbstractEntity{
     @Column(name = "issue_date")
     private String issueDate;
 
-    @Column(name = "status")
-    private String certificateStatus;
 
     @ManyToOne
     @JoinColumn(name = "teacher_id")
@@ -78,14 +76,6 @@ public class CertificateEntity extends AbstractEntity{
 
     public void setIssueDate(String issueDate) {
         this.issueDate = issueDate;
-    }
-
-    public String getCertificateStatus() {
-        return certificateStatus;
-    }
-
-    public void setCertificateStatus(String certificateStatus) {
-        this.certificateStatus = certificateStatus;
     }
 
     public InforTeacherEntity getTeacherEntity() {

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { API_KEY,getToken } from '../config/Config.js';
+import { API_KEY,getToken } from '../config/Config.ts';
 
 const api = `${API_KEY}/api/inforTeacher`;
 export const getAllTeacher = async (page,size) => {

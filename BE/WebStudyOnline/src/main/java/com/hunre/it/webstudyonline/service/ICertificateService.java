@@ -13,5 +13,5 @@ public interface ICertificateService {
     BaseResponse<CertificateDto> updateCertificate(String id,CertificateDto certificateDto);
     BaseResponse<CertificateDto> deleteCertificate(String id);
     BaseResponse<CertificateDto> getCertificateById(String id);
-    ResponsePage<List<CertificateDto>> findByCertificateAttribute(String certificateName,String issuingOrganization,String certificateType,String certificateNumber,String certificateStatus,Pageable pageable);
+    ResponsePage<List<CertificateDto>> findByCertificateAttribute(String certificateName,String issuingOrganization,String certificateType,String certificateNumber,Pageable pageable);
 }

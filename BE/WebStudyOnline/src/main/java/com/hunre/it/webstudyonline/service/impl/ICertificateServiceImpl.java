@@ -108,9 +108,9 @@ public class ICertificateServiceImpl implements ICertificateService {
     }
 
     @Override
-    public ResponsePage<List<CertificateDto>> findByCertificateAttribute(String certificateName, String issuingOrganization, String certificateType, String certificateNumber, String certificateStatus, Pageable pageable) {
+    public ResponsePage<List<CertificateDto>> findByCertificateAttribute(String certificateName, String issuingOrganization, String certificateType, String certificateNumber, Pageable pageable) {
         ResponsePage<List<CertificateDto>> responsePage = new ResponsePage<>();
-        Page<CertificateEntity> page = certificateRepository.findCertificateByAttribute(certificateName,issuingOrganization,certificateType,certificateNumber,certificateStatus,pageable);
+        Page<CertificateEntity> page = certificateRepository.findCertificateByAttribute(certificateName,issuingOrganization,certificateType,certificateNumber,pageable);
         List<CertificateDto> certificateDtos = page.getContent().stream().map(certificateMapper::toDto).toList();
         responsePage.setPageNumber(pageable.getPageNumber());
         responsePage.setPageSize(pageable.getPageSize());

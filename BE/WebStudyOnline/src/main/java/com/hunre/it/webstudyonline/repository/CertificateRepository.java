@@ -16,7 +16,6 @@ public interface CertificateRepository extends JpaRepository<CertificateEntity,L
             "AND (:certificateName IS NULL OR c.certificateName LIKE %:certificateName%)" +
             "AND (:issuingOrganization IS NULL OR c.issuingOrganization LIKE %:issuingOrganization%)" +
             "AND (:certificateType IS NULL OR c.certificateType LIKE %:certificateType%)" +
-            "AND (:certificateNumber IS NULL OR c.certificateNumber LIKE %:certificateNumber%)" +
-            "AND (:certificateStatus IS NULL OR c.certificateStatus LIKE %:certificateStatus%)")
-    Page<CertificateEntity> findCertificateByAttribute(String certificateName,String issuingOrganization,String certificateType,String certificateNumber,String certificateStatus,Pageable pageable);
+            "AND (:certificateNumber IS NULL OR c.certificateNumber LIKE %:certificateNumber%)")
+    Page<CertificateEntity> findCertificateByAttribute(String certificateName,String issuingOrganization,String certificateType,String certificateNumber,Pageable pageable);
 }

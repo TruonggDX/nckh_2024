@@ -8,7 +8,6 @@ public class CertificateDto {
     private String certificateType;
     private String certificateNumber;
     private String issueDate;
-    private String certificateStatus;
     private Long teacherId;
     private String teacherName;
 
@@ -76,13 +75,6 @@ public class CertificateDto {
         this.issueDate = issueDate;
     }
 
-    public String getCertificateStatus() {
-        return certificateStatus;
-    }
-
-    public void setCertificateStatus(String certificateStatus) {
-        this.certificateStatus = certificateStatus;
-    }
 
     public Long getTeacherId() {
         return teacherId;

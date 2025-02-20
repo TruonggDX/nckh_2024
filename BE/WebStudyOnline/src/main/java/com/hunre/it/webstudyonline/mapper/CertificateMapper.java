@@ -17,7 +17,6 @@ public class CertificateMapper {
         certificateDto.setCertificateType(certificateEntity.getCertificateType());
         certificateDto.setCertificateNumber(certificateEntity.getCertificateNumber());
         certificateDto.setIssueDate(certificateEntity.getIssueDate());
-        certificateDto.setCertificateStatus(certificateEntity.getCertificateStatus());
         certificateDto.setTeacherId(certificateEntity.getTeacherEntity().getId());
         if (certificateEntity.getTeacherEntity() != null &&
                 certificateEntity.getTeacherEntity().getAccount() != null) {
@@ -34,7 +33,6 @@ public class CertificateMapper {
         certificateEntity.setCertificateType(certificateDto.getCertificateType());
         certificateEntity.setCertificateNumber(certificateDto.getCertificateNumber());
         certificateEntity.setIssueDate(certificateDto.getIssueDate());
-        certificateEntity.setCertificateStatus(certificateDto.getCertificateStatus());
         return certificateEntity;
     }
 }

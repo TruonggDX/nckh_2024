@@ -1,6 +1,7 @@
 package com.hunre.it.webstudyonline.service.impl;
 
 import com.hunre.it.webstudyonline.entity.CategoryEntity;
+import com.hunre.it.webstudyonline.entity.CourseDetailsEntity;
 import com.hunre.it.webstudyonline.entity.CourseEntity;
 import com.hunre.it.webstudyonline.entity.ImagesEntity;
 import com.hunre.it.webstudyonline.mapper.CourseMapper;
@@ -10,6 +11,7 @@ import com.hunre.it.webstudyonline.model.dto.ImageDto;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
 import com.hunre.it.webstudyonline.model.response.ResponsePage;
 import com.hunre.it.webstudyonline.repository.CategoryRepository;
+import com.hunre.it.webstudyonline.repository.CourseDetailsRepository;
 import com.hunre.it.webstudyonline.repository.CourseRepository;
 import com.hunre.it.webstudyonline.repository.ImageRepository;
 import com.hunre.it.webstudyonline.service.ICourseService;
@@ -45,6 +47,8 @@ public class ICourseServiceImpl implements ICourseService {
     private ImageMapper imageMapper;
     @Autowired
     private ImageRepository imageRepository;
+    @Autowired
+    private CourseDetailsRepository courseDetailsRepository;
 
     @Override
     public ResponsePage<List<CourseDto>> getCourses(Pageable pageable) {
@@ -168,6 +172,11 @@ public class ICourseServiceImpl implements ICourseService {
         CourseEntity course = courseEntity.get();
         course.setDeleted(true);
         course = courseRepository.save(course);
+        List<CourseDetailsEntity> courseDetailsEntities = courseDetailsRepository.findByCourseId(course.getId()).stream().map(courseDetailsEntity -> {
+            courseDetailsEntity.setDeleted(true);
+            return courseDetailsEntity;
+        }).toList();
+        courseDetailsRepository.saveAll(courseDetailsEntities);
         CourseDto courseDto = courseMapper.toDto(course);
         List<ImagesEntity> imagesEntity = imageRepository.findByCourseId(id);
         if (imagesEntity.isEmpty()){
