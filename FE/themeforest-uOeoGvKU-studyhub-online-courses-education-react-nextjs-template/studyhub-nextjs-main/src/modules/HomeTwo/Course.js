@@ -52,9 +52,9 @@ export default function Course() {
 							<div className="title-area-left-style">
 								<div className="pre-title">
 									<Image src="/images/banner/bulb.png" alt="icon" width="22" height="22" />
-									<span>Courses</span>
+									<span>Các khóa học</span>
 								</div>
-								<h2 className="title mb--5">Explore Featured Courses</h2>
+								<h2 className="title mb--5">Best seller</h2>
 								<p className="disc">
 									You'll find something to spark your curiosity and enhance
 								</p>

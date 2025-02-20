@@ -21,12 +21,9 @@ export default function SignInModule() {
     api.login({email: email, password: password}).then((response) => {
       const roles = response.data.roles
       const tokens = localStorage.getItem('jwtToken')
-      console.log('token',tokens)
-      console.log('rp',response)
       for (const rolesKey of roles) {
         console.log(rolesKey)
           if (rolesKey.code === "ADMIN"){
-            // window.location.href="http://localhost:3001/"
             window.location.href = `http://localhost:3001/?token=${tokens}`;
             return;
           }
@@ -34,13 +31,6 @@ export default function SignInModule() {
       router.push('/');
     })
   };
-
-  // useEffect(() => {
-  //   if (admin) {
-  //     setMessage('You are already logged in.');
-  //     router.push('/dashboard');
-  //   }
-  // }, []);
 
   return (
     <div className="login-registration-wrapper">

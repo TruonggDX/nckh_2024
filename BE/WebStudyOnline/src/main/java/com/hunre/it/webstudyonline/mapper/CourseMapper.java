@@ -1,9 +1,6 @@
 package com.hunre.it.webstudyonline.mapper;
 import com.hunre.it.webstudyonline.entity.CourseEntity;
 import com.hunre.it.webstudyonline.model.dto.CourseDto;
-import com.hunre.it.webstudyonline.model.dto.auth.AuthDto;
-import com.hunre.it.webstudyonline.security.service.JwtService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -21,15 +18,15 @@ public class CourseMapper {
         courseDto.setStatus(courseEntity.getStatus());
         courseDto.setDiscount(courseEntity.getDiscount());
         courseDto.setCategoryId(courseEntity.getCategoryEntity().getId());
-        courseDto.setCreatedDate(courseEntity.getCreatedDate());
         courseDto.setCreatedBy(courseEntity.getCreatedBy());
+        courseDto.setCreatedDate(courseEntity.getCreatedDate());
+        courseDto.setAim(courseEntity.getAim());
         return courseDto;
     }
-
-
     public CourseEntity toEntity(CourseDto courseDto){
         CourseEntity courseEntity = new CourseEntity();
         courseEntity.setId(courseDto.getId());
+        courseEntity.setAim(courseDto.getAim());
         courseEntity.setCode(courseDto.getCode());
         courseEntity.setName(courseDto.getName());
         courseEntity.setPrice(courseDto.getPrice());

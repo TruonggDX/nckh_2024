@@ -4,7 +4,6 @@ package com.hunre.it.webstudyonline.model.dto;
 public class BillDto {
     private Long id;
     private String code;
-    private String type;
     private Long accountId;
 
     public Long getId() {
@@ -21,14 +20,6 @@ public class BillDto {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public Long getAccountId() {

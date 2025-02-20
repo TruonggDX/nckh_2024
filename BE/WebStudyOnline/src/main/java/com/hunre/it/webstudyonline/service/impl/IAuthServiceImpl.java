@@ -10,13 +10,16 @@ import com.hunre.it.webstudyonline.model.dto.AccountDto;
 import com.hunre.it.webstudyonline.model.dto.auth.LoginUserDto;
 import com.hunre.it.webstudyonline.model.dto.auth.RegisterUserDto;
 import com.hunre.it.webstudyonline.model.dto.auth.VerifyUserDto;
+import com.hunre.it.webstudyonline.model.response.BaseResponse;
 import com.hunre.it.webstudyonline.repository.AccountRepository;
 import com.hunre.it.webstudyonline.repository.RoleRepository;
 import com.hunre.it.webstudyonline.service.IAuthService;
 import com.hunre.it.webstudyonline.service.IEmailService;
+import com.hunre.it.webstudyonline.utils.Constant;
 import jakarta.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -51,30 +54,21 @@ public class IAuthServiceImpl implements IAuthService {
 
 
     @Override
-    public RegisterUserDto signup(RegisterUserDto registerUserDto) {
-        AccountEntity account = new AccountEntity(
-                registerUserDto.getCode(),
-                registerUserDto.getFullname(),
-                passwordEncoder.encode(registerUserDto.getPassword()),
-                registerUserDto.getEmail(),
-                registerUserDto.getPhone()
-        );
-        account.setEnabled(false);
-        account.setDeleted(false);
-        Set<RoleEntity> roles = registerUserDto.getRoleIds().stream().map(
-                roleId -> roleRepository.findById(roleId).orElseThrow(() -> new UsernameNotFoundException("Role not found"))
-        ).collect(Collectors.toSet());
-        account.setRoles(roles);
+    public BaseResponse<RegisterUserDto> signup(RegisterUserDto registerUserDto) {
+        BaseResponse<RegisterUserDto> response  = new BaseResponse<>();
         String verificationCode = generateVerificationCode();
 
         IMap<String, String> otpMap = hazelcastInstance.getMap("otpCodes");
         otpMap.put(registerUserDto.getEmail(), verificationCode, 60, TimeUnit.SECONDS);
         try {
-            sendVerificationEmail(account, verificationCode);
+            sendVerificationEmail(registerUserDto.getEmail(), verificationCode);
+            response.setData(registerUserDto);
+            response.setCode(HttpStatus.OK.value());
+            response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
         } catch (Exception e) {
             throw new RuntimeException("Failed to send verification email", e);
         }
-        return authMapper.convertToDTO(accountRepository.save(account));
+        return response;
     }
 
     @Override
@@ -95,31 +89,35 @@ public class IAuthServiceImpl implements IAuthService {
 
     @Override
     public void verifyUser(VerifyUserDto verifyUserDto) {
-        Optional<AccountEntity> optionalUser = accountRepository.findByEmail(verifyUserDto.getEmail());
-        if (optionalUser.isEmpty()){
-            throw new RuntimeException("User not found");
-        }
-        AccountEntity user = optionalUser.get();
         IMap<String, String> otpMap = hazelcastInstance.getMap("otpCodes");
-        String storedCode = otpMap.get(verifyUserDto.getEmail());
+        String storedCode = otpMap.get(verifyUserDto.getRegisterUserDto().getEmail());
         if (storedCode == null || !storedCode.equals(verifyUserDto.getVerificationCode())){
             throw new RuntimeException("Invalid or expired verification code");
         }
-        user.setEnabled(true);
-        accountRepository.save(user);
+        AccountEntity account = new AccountEntity(
+                verifyUserDto.getRegisterUserDto().getCode(),
+                verifyUserDto.getRegisterUserDto().getFullname(),
+                passwordEncoder.encode(verifyUserDto.getRegisterUserDto().getPassword()),
+                verifyUserDto.getRegisterUserDto().getEmail(),
+                verifyUserDto.getRegisterUserDto().getPhone()
+        );
+        account.setEnabled(false);
+        account.setDeleted(false);
+        Set<RoleEntity> roles = verifyUserDto.getRegisterUserDto().getRoleIds().stream().map(
+                roleId -> roleRepository.findById(roleId).orElseThrow(() -> new UsernameNotFoundException("Role not found"))
+        ).collect(Collectors.toSet());
+        account.setRoles(roles);
+        account.setEnabled(true);
+        accountRepository.save(account);
     }
 
     @Override
     public void resendVerificationCode(String email) {
         Optional<AccountEntity> optionalUser = accountRepository.findByEmail(email);
-        if (optionalUser.isEmpty()){
-            throw new RuntimeException("User not found");
-        }
-
-        AccountEntity user = optionalUser.get();
-        if (user.isEnabled()) {
+        if (optionalUser.isPresent()){
             throw new RuntimeException("Account is already verified");
         }
+
         IMap<String, String> otpMap = hazelcastInstance.getMap("otpCodes");
         String verificationCode = otpMap.get(email);
         if (verificationCode == null) {
@@ -127,7 +125,7 @@ public class IAuthServiceImpl implements IAuthService {
             otpMap.put(email, verificationCode, 60, TimeUnit.SECONDS);
         }
         try {
-            sendVerificationEmail(user, verificationCode);
+            sendVerificationEmail(email, verificationCode);
         } catch (Exception e) {
             throw new RuntimeException("Failed to send verification email", e);
         }
@@ -135,7 +133,7 @@ public class IAuthServiceImpl implements IAuthService {
     }
 
     @Override
-    public void sendVerificationEmail(AccountEntity account, String verificationCode) {
+    public void sendVerificationEmail(String email, String verificationCode) {
         String subject = "Account Verification";
         String htmlMessage = "<html>"
                 + "<body style=\"font-family: Arial, sans-serif;\">"
@@ -151,7 +149,7 @@ public class IAuthServiceImpl implements IAuthService {
                 + "</html>";
 
         try {
-            emailService.sendVerificationEmail(account.getEmail(), subject, htmlMessage);
+            emailService.sendVerificationEmail(email, subject, htmlMessage);
         } catch (MessagingException e) {
             e.printStackTrace();
         }

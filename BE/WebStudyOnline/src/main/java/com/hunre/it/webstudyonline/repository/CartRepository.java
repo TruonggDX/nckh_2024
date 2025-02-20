@@ -20,6 +20,4 @@ public interface CartRepository extends JpaRepository<CartEntity,Long> {
     @Query("select c from CartEntity c where c.account.email =:email and c.course.id =:courseId and c.account.deleted = false ")
     Optional<CartEntity> findByEmailAndCourseId(String email, Long courseId);
 
-    @Query("select c from CartEntity c where c.account.email =:email and c.roadmap.id =:roadmapId and c.account.deleted = false ")
-    Optional<CartEntity> findByEmailAndRoadmapId(String email,Long roadmapId);
 }

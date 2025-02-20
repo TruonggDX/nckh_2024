@@ -43,11 +43,7 @@ public class ICartServiceImpl implements ICartService {
         List<CartDto> cartDtos = new ArrayList<>();
         for (AddCartForm addCartForm : addCartForms) {
             Optional<CartEntity> check = null;
-            if (addCartForm.getType().equals("Course")){
-                check = cartRepository.findByEmailAndCourseId(email,addCartForm.getItemId());
-            }else if (addCartForm.getType().equals("Roadmap")) {
-                check = cartRepository.findByEmailAndRoadmapId(email, addCartForm.getItemId());
-            }
+            check = cartRepository.findByEmailAndCourseId(email,addCartForm.getItemId());
             if (check.isEmpty()) {
                 CartEntity cartEntity = cartMapper.toEntity(email, addCartForm);
                 cartEntity = cartRepository.save(cartEntity);

@@ -11,7 +11,7 @@ export default function SingleCategoryTwo( props ) {
 			</div>
 			<div className="information">
 				<h5 className="title">{Title || 'Development'}</h5>
-				<span>{categoryCount || '130'}+ Courses</span>
+				<span>{categoryCount || '130'}</span>
 			</div>
 		</Link>
 	)

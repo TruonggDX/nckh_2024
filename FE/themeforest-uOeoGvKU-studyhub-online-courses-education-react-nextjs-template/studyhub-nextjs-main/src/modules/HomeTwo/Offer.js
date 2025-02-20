@@ -12,11 +12,11 @@ export default function Offer() {
 							<div className="title-area-left-style">
 								<div className="pre-title">
 									<Image src="/images/banner/bulb-4.png" alt="icon" width="22" height="22" />
-									<span>New Course </span>
+									<span>TOEIC </span>
 								</div>
-								<h2 className="title">Enroll Now and Save Big <br />
-									on Quality Learning</h2>
-								<Link href="/course" className="rts-btn btn-primary-white">View Course</Link>
+								<h2 className="title">Chuẩn đầu ra tiếng anh<br />
+									Tăng cơ hội việc làm</h2>
+								<Link href="/course" className="rts-btn btn-primary-white">Xem thêm</Link>
 							</div>
 						</div>
 					</div>
@@ -25,10 +25,10 @@ export default function Offer() {
 							<div className="title-area-left-style">
 								<div className="pre-title">
 									<Image src="/images/banner/bulb-5.png" alt="icon" width="22" height="22" />
-									<span>New Course </span>
+									<span>Học theo lộ trình </span>
 								</div>
-								<h2 className="title">Limited-Time Offer: Enroll <br /> Today for Big Savings</h2>
-								<Link href="/course" className="rts-btn btn-primary hov--white">Enroll Now</Link>
+								<h2 className="title">Giảm lên đến: 30%<br /> Tiết kiệm hơn</h2>
+								<Link href="/course" className="rts-btn btn-primary hov--white">Đăng kí ngay</Link>
 							</div>
 						</div>
 					</div>

@@ -5,13 +5,13 @@ import Link from "next/link";
 import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import api from "../../../src/route/route";
 
 export default function SignUpModule() {
     const [users, setUsers] = useState(Users);
-    const [formData, setFormData] = useState({ fullname: '', email: '', phone: '', password: '' });
+    const [formData, setFormData] = useState({ fullname: '', email: '', phone: '', password: '',"roleIds": [2] });
     const [message, setMessage] = useState('');
-    const [otp, setOtp] = useState(new Array(6).fill(''));
-    const [generatedOtp, setGeneratedOtp] = useState('');
+    const [dataOtp, setDataOtp] = useState({verificationCode: '',registerUserDto: ''});
     const [isOtpModalVisible, setIsOtpModalVisible] = useState(false);
     const dispatch = useDispatch();
     const router = useRouter();
@@ -19,32 +19,37 @@ export default function SignUpModule() {
     const handleChange = (e) => {
         const { id, value } = e.target;
         setFormData((prevData) => ({ ...prevData, [id]: value }));
+        setDataOtp((prevData) => ({ ...prevData, registerUserDto: formData }));
+    };
+    const verificationCode = (e) => {
+        const { id, value } = e.target;
+        const updatedDataOtp = { ...dataOtp, [id]: value };
+        setDataOtp(updatedDataOtp);
     };
 
     const handleSignUp = (e) => {
         e.preventDefault();
-        if (users.some(user => user.email === formData.email)) {
-            setMessage('Email is already registered.');
-            return;
-        }
-        const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
-        setGeneratedOtp(otpCode);
-        console.log('OTP:', otpCode);
-        setIsOtpModalVisible(true);
+        document.getElementById("btnSignup").disabled = true;
+        api.signUp(formData).then((response) => {
+            if (response.code === 200) {
+                setIsOtpModalVisible(true);
+            }else {
+                document.getElementById("btnSignup").disabled = false;
+            }
+        })
     };
 
-    const handleOtpSubmit = () => {
-        if (otp.join('') === generatedOtp) {
-            const newUser = { id: users.length + 1, fullname: formData.fullname, email: formData.email, phone: formData.phone, password: formData.password };
-            setUsers([...users, newUser]);
-            dispatch(setUserData(newUser));
-            setMessage('Registration successful!');
-            setIsOtpModalVisible(false);
-            router.push('/signin');
-        } else {
-            setMessage('Invalid OTP. Please try again.');
-        }
+    const handleOtpSubmit = (e) => {
+        e.preventDefault();
+        api.verifyOtp(dataOtp).then((response) => {
+            if (response === "Account verified successfully") {
+                router.push("/login");
+            }
+        })
     };
+    const resendCode = () => {
+        api.resendCode(formData.email)
+    }
 
     return (
         <div style={{ position: 'relative' }}> {/* Relative positioning for the overlay */}
@@ -75,8 +80,8 @@ export default function SignUpModule() {
                                         <input id="password" type="password" placeholder="Nhập mật khẩu của bạn"
                                                value={formData.password} onChange={handleChange} required/>
                                     </div>
-                                    <button type="submit" className="rts-btn btn-primary">Đăng ký</button>
-                                    <p>Bạn đã có tài khoản? <Link href="/pages/login">Đăng nhập</Link></p>
+                                    <button type="submit" id="btnSignup" className="rts-btn btn-primary">Đăng ký</button>
+                                    <p>Bạn đã có tài khoản? <Link href="/login">Đăng nhập</Link></p>
                                 </form>
                                 {message && <p>{message}</p>}
                             </div>
@@ -122,20 +127,14 @@ export default function SignUpModule() {
                             justifyContent: 'center',
                             gap: '20px',
                         }}>
-                            {Array(6).fill('').map((_, idx) => (
                                 <input
-                                    key={idx}
+                                    id="verificationCode"
                                     type="text"
-                                    maxLength="1"
-                                    value={otp[idx] || ''}
-                                    onChange={(e) => {
-                                        let newOtp = [...otp];
-                                        newOtp[idx] = e.target.value;
-                                        setOtp(newOtp);
-                                    }}
+                                    maxLength="6"
                                     required
+                                    onChange={verificationCode}
                                     style={{
-                                        width: '45px',
+                                        width: '60%',
                                         height: '45px',
                                         textAlign: 'center',
                                         fontSize: '18px',
@@ -148,7 +147,6 @@ export default function SignUpModule() {
                                     onFocus={(e) => e.target.style.background = 'rgba(255, 255, 255, 0.8)'}
                                     onBlur={(e) => e.target.style.background = '#ffffff'}
                                 />
-                            ))}
                         </div>
                         <div style={{
                             display: 'flex',
@@ -163,7 +161,7 @@ export default function SignUpModule() {
                                 padding: '10px 15px',
                                 cursor: 'pointer',
                                 transition: 'background 0.3s',
-                            }}>Verify
+                            }}>Xác nhận
                             </button>
                             <button className="rts-btn btn-secondary" style={{
                                 backgroundColor: '#ffc107',
@@ -173,7 +171,8 @@ export default function SignUpModule() {
                                 padding: '10px 15px',
                                 cursor: 'pointer',
                                 transition: 'background 0.3s',
-                            }}>Gửi lại mã
+                            }}
+                            onClick={resendCode}>Gửi lại mã
                             </button>
                         </div>
                     </div>
