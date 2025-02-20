@@ -17,11 +17,12 @@ import DefaultLayout from './layout/DefaultLayout';
 import CategoryList from './pages/Category/CategoryList.tsx';
 import CourseList from './pages/Course/CourseList.tsx';
 import AddCourse from './pages/Course/AddCourse.tsx';
-import RoadmapList from './pages/Roadmap/RoadmapList.tsx';
-import AddRoadmap from './pages/Roadmap/AddRoadmap.tsx';
+import BillList from './pages/Bill/BillList.tsx';
 import AccountList from './pages/Account/AccountList.tsx';
 import CertificateList from './pages/Certificate/CertificateList.tsx';
 import AddCertificate from './pages/Certificate/AddCertificate.tsx';
+import ShowCourse from './pages/Course/ShowCourse.tsx';
+import GradeList from './pages/Grade/GradeList.tsx';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -86,20 +87,29 @@ function App() {
           }
         />
         <Route
-          path="/roadmap"
+          path="/showDetails/:id"
           element={
             <>
               <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <RoadmapList />
+              <ShowCourse />
             </>
           }
         />
         <Route
-          path="/addRoadmap"
+          path="/updateCourse/:id"
           element={
             <>
               <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <AddRoadmap />
+              <ShowCourse isEditMode/>
+            </>
+          }
+        />
+        <Route
+          path="/bill"
+          element={
+            <>
+              <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <BillList />
             </>
           }
         />
@@ -122,7 +132,15 @@ function App() {
             </>
           }
         />
-
+        <Route
+          path="/grade"
+          element={
+            <>
+              <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <GradeList />
+            </>
+          }
+        />
 
 
 

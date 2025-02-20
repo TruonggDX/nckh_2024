@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/cart")
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"})
 public class ApiCart {
     @Autowired
     private ICartServiceImpl cartService;

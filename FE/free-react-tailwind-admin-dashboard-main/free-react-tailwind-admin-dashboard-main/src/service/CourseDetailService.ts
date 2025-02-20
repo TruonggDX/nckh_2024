@@ -1,8 +1,9 @@
 import axios from "axios";
 import { API_KEY,getToken } from '../config/Config.ts';
+import { CourseDetails } from '../types/CourseDetails.ts';
 
 const api = `${API_KEY}/api/coursedetails`
-export const getCourseDetails = async (id) => {
+export const getCourseDetails = async (id:number) => {
   const token = getToken();
   try {
     const response = await axios.get(`${api}/list/${id}`, {
@@ -12,5 +13,41 @@ export const getCourseDetails = async (id) => {
   }catch(err) {
     console.log(err);
     throw err;
+  }
+};
+export const updateCourseDetails = async (id:number,courseDetailsDto:CourseDetails) =>{
+  const token = getToken();
+  try {
+    const response = await axios.put(`${api}/update/${id}`,courseDetailsDto,{
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+    return response.data;
+  }catch (error){
+    console.error(error)
+    throw error;
+  }
+};
+export const findById = async (id:number) =>{
+  const token = getToken();
+  try {
+    const response = await axios.get(`${api}/findById/${id}`,{
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+    return response.data
+  }catch (error){
+    console.error(error)
+    throw error;
+  }
+}
+export const deleteCourseDetail= async (id:number) =>{
+  const token = getToken();
+  try {
+    const response = await axios.delete(`${api}/delete/${id}`,{
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+    return response.data;
+  }catch (error){
+    console.error(error)
+    throw error;
   }
 }

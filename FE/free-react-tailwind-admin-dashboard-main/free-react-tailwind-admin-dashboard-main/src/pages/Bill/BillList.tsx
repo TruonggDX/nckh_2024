@@ -1,7 +1,7 @@
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb.tsx';
 import { Eye, Pencil, Trash2 } from 'lucide-react';
 
-const RoadmapList = () => {
+const BillList = () => {
   return (
     <>
       <Breadcrumb pageName="Danh sách lộ trình" />
@@ -80,4 +80,4 @@ const RoadmapList = () => {
   );
 }
 
-export default RoadmapList;
+export default BillList;

@@ -2,7 +2,6 @@ package com.hunre.it.webstudyonline.service.impl;
 
 import com.hunre.it.webstudyonline.entity.CourseDetailsEntity;
 import com.hunre.it.webstudyonline.entity.CourseEntity;
-import com.hunre.it.webstudyonline.entity.ImagesEntity;
 import com.hunre.it.webstudyonline.mapper.CourseDetailsMapper;
 import com.hunre.it.webstudyonline.model.dto.CourseDetailsDto;
 import com.hunre.it.webstudyonline.model.dto.ImageDto;
@@ -20,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -118,14 +116,58 @@ public class ICourseDetailsServiceImpl implements ICourseDetailsService {
 
     @Override
     public BaseResponse<CourseDetailsDto> deleteCourseDetails(String id) {
-        return handleCourseDetailsRequest(id,true);
+        BaseResponse<CourseDetailsDto> response = new BaseResponse<>();
+        Utils<Long> utils = LongUtils.strToLong(id);
+        if (utils.getT() == null) {
+            response.setCode(utils.getCode());
+            response.setMessage(utils.getMsg());
+            return response;
+        }
+        Long courseDetailsId = utils.getT();
+        Optional<CourseDetailsEntity> courseDetailsEntity = courseDetailsRepository.findById(courseDetailsId);
+        if (courseDetailsEntity.isEmpty()) {
+            response.setCode(HttpStatus.BAD_REQUEST.value());
+            response.setMessage(Constant.HTTP_MESSAGE.NOTFOUND);
+            return response;
+        }
+        CourseDetailsEntity detailsEntity = courseDetailsEntity.get();
+        detailsEntity.setDeleted(true);
+        courseDetailsRepository.save(detailsEntity);
+//        uploadImageFile.deleteImage(detailsEntity.getPublicId());
+//        courseDetailsRepository.delete(detailsEntity);
+        CourseDetailsDto dto = courseDetailsMapper.toDto(detailsEntity);
+        dto.setCourseId(detailsEntity.getCourseEntity().getId());
+        response.setData(dto);
+        response.setCode(HttpStatus.OK.value());
+        response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
+        return response;
+
     }
 
     @Override
     public BaseResponse<CourseDetailsDto> getCourseDetailsById(String id) {
-       return handleCourseDetailsRequest(id,false);
+        BaseResponse<CourseDetailsDto> response = new BaseResponse<>();
+        Utils<Long> utils = LongUtils.strToLong(id);
+        if (utils.getT() == null) {
+            response.setCode(utils.getCode());
+            response.setMessage(utils.getMsg());
+            return response;
+        }
+        Long courseDetailsId = utils.getT();
+        Optional<CourseDetailsEntity> courseDetailsEntity = courseDetailsRepository.findById(courseDetailsId);
+        if (courseDetailsEntity.isEmpty()) {
+            response.setCode(HttpStatus.BAD_REQUEST.value());
+            response.setMessage(Constant.HTTP_MESSAGE.NOTFOUND);
+            return response;
+        }
+        CourseDetailsEntity detailsEntity = courseDetailsEntity.get();
+        CourseDetailsDto dto = courseDetailsMapper.toDto(detailsEntity);
+        dto.setCourseId(detailsEntity.getCourseEntity().getId());
+        response.setData(dto);
+        response.setCode(HttpStatus.OK.value());
+        response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
+        return response;
     }
-
     @Override
     public BaseResponse<CourseDetailsDto> updateRecord(String id,MultipartFile file) {
         BaseResponse<CourseDetailsDto> response = new BaseResponse<>();
@@ -162,31 +204,4 @@ public class ICourseDetailsServiceImpl implements ICourseDetailsService {
         ImageDto imageDTO = uploadImageFile.uploadvideo(file);
         return  imageDTO;
     }
-
-    public BaseResponse<CourseDetailsDto> handleCourseDetailsRequest(String id, boolean isDelete) {
-        BaseResponse<CourseDetailsDto> response = new BaseResponse<>();
-        Utils<Long> utils = LongUtils.strToLong(id);
-        if (utils.getT() == null) {
-            response.setCode(utils.getCode());
-            response.setMessage(utils.getMsg());
-            return response;
-        }
-        Long courseDetailsId = utils.getT();
-        Optional<CourseDetailsEntity> courseDetailsEntity = courseDetailsRepository.findById(courseDetailsId);
-        if (courseDetailsEntity.isEmpty()) {
-            response.setCode(HttpStatus.BAD_REQUEST.value());
-            response.setMessage(Constant.HTTP_MESSAGE.NOTFOUND);
-            return response;
-        }
-        CourseDetailsEntity detailsEntity = courseDetailsEntity.get();
-        uploadImageFile.deleteImage(detailsEntity.getPublicId());
-        courseDetailsRepository.delete(detailsEntity);
-        CourseDetailsDto dto = courseDetailsMapper.toDto(detailsEntity);
-        dto.setCourseId(detailsEntity.getCourseEntity().getId());
-        response.setData(dto);
-        response.setCode(HttpStatus.OK.value());
-        response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
-        return response;
-    }
-
 }

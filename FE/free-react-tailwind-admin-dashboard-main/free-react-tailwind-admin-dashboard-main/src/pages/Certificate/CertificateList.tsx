@@ -7,15 +7,16 @@ import {
   deleteCertificateById,
   updateCertificate,
 
-} from '../../service/CertificateService.js';
+} from '../../service/CertificateService.ts';
 import { confirmDelete, showAlert } from '../../utils/swalUtils';
 import { getAllTeacher } from '../../service/TeacherService';
 import { Certificate } from '../../types/Certificate.ts';
+import { Teacher } from '../../types/Teacher.ts';
 
 const CertificateList = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalEdit, setModalEdit] = useState(false);
-  const [teacher, setTeacher] = useState([]);
+  const [teacher, setTeacher] = useState<Teacher[]>([]);
 
   const [certificate, setCertificate] = useState<Certificate[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
@@ -34,11 +35,12 @@ const CertificateList = () => {
     teacherName:''
   });
   useEffect(() => {
+    void setItemsPerPage;
     getAll();
   }, [currentPage, itemsPerPage]);
 
   useEffect(() => {
-    getAllTeacher().then((response: any) => {
+    getAllTeacher(currentPage,itemsPerPage).then((response: any) => {
       setTeacher(response.content);
     });
   }, []);
@@ -95,7 +97,7 @@ const CertificateList = () => {
     });
   };
   const handleSave = () => {
-    updateCertificate(data.id, data)
+    updateCertificate(Number(data.id), {...data,id:Number(data.id),teacherId:Number(data.teacherId)})
       .then(() => {
         setModalEdit(false);
         getAll();
@@ -120,7 +122,6 @@ const CertificateList = () => {
                   <th className="py-4 px-6 font-semibold">Số chứng chỉ</th>
                   <th className="py-4 px-6 font-semibold">Tên chứng chỉ</th>
                   <th className="py-4 px-6 font-semibold">Loại chứng chỉ</th>
-                  <th className="py-4 px-6 font-semibold">Trạng thái</th>
                   <th className="py-4 px-6 font-semibold">Giáo viên</th>
                   <th className="py-4 px-6 font-semibold">Thao tác</th>
                 </tr>
@@ -139,9 +140,6 @@ const CertificateList = () => {
                     </td>
                     <td className="py-4 px-6">{certificate.certificateName}</td>
                     <td className="py-4 px-6">{certificate.certificateType}</td>
-                    <td className="py-4 px-6">
-                      {certificate.certificateStatus}
-                    </td>
                     <td className="py-4 px-6">{certificate.teacherName}</td>
                     <td className="py-4 px-6 flex gap-4">
                       <button
@@ -272,19 +270,7 @@ const CertificateList = () => {
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
-            <div className="mb-4 flex gap-4">
-              <div className="w-1/2">
-                <label className="block text-gray-700 font-medium">
-                  Trạng thái
-                </label>
-                <input
-                  type="text"
-                  name="status"
-                  value={data.certificateStatus}
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                />
-              </div>
-              <div className="w-1/2">
+              <div className="mb-4">
                 <label className="block text-gray-700 font-medium">
                   Ngày cấp
                 </label>
@@ -295,7 +281,6 @@ const CertificateList = () => {
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
-            </div>
             <div className="mb-4">
               <label className="block text-gray-700 font-medium">
                 Giảng viên
@@ -397,25 +382,8 @@ const CertificateList = () => {
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
             </div>
-            <div className="mb-4 flex gap-4">
 
-              <div className="w-1/2">
-                <label className="block text-gray-700 font-medium">
-                  Trạng thái <span className="text-meta-1">*</span>
-                </label>
-                <select
-                  value={data.certificateStatus}
-                  onChange={(e) => setData({ ...data, certificateStatus: e.target.value })}
-                  className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                >
-                  <option value="" disabled selected>
-                    Chọn trạng thái
-                  </option>
-                  <option value="active">Hoạt động</option>
-                  <option value="expired">Hết hạn</option>
-                </select>
-              </div>
-              <div className="w-1/2">
+              <div className="mb-4">
                 <label className="block text-gray-700 font-medium">
                   Ngày cấp
                 </label>
@@ -429,7 +397,6 @@ const CertificateList = () => {
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
-            </div>
 
             <div className="mb-4">
               <label className="block text-gray-700 font-medium">

@@ -1,9 +1,10 @@
 import axios from 'axios';
-import {API_KEY,getToken} from '../config/Config.js'
+import {API_KEY,getToken} from '../config/Config.ts'
+import { Course } from '../types/Course.ts';
 
 const api = `${API_KEY}/api/course`;
 
-export const getCourses = async (page, size) => {
+export const getCourses = async (page:number, size:number): Promise<Course[]> => {
   const token = getToken();
   try {
     const response = await axios.get(`${api}/list`,{
@@ -17,7 +18,7 @@ export const getCourses = async (page, size) => {
   }
 };
 
-export const findCouseById = async (id) => {
+export const findCouseById = async (id:number) => {
   const token = getToken();
   try {
     const response = await axios.get(`${api}/findById/${id}`, {
@@ -29,7 +30,7 @@ export const findCouseById = async (id) => {
     throw error;
   }
 }
-export const deleteCourse = async (id) => {
+export const deleteCourse = async (id:number) => {
   const token = getToken();
   try {
     const response = await axios.delete(`${api}/delete/${id}`, {

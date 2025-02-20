@@ -87,6 +87,9 @@ public class ICourseServiceImpl implements ICourseService {
             courseEntity.setDeleted(false);
             courseEntity = courseRepository.save(courseEntity);
             courseDto.setId(courseEntity.getId());
+            courseDto.setCode(courseEntity.getCode());
+            courseDto.setCreatedBy(courseEntity.getCreatedBy());
+            courseDto.setCreatedDate(courseEntity.getCreatedDate());
             if (file != null && !file.isEmpty()) {
                 ImageDto imageDto = imageFile.uploadImage(file);
                 ImagesEntity imagesEntity = imageMapper.toEntity(imageDto);

@@ -100,7 +100,7 @@ const Profile = () => {
           setOpenModal(false);
           showAlert('Thành công!', 'Đổi mật khẩu thành công.', 'success');
           setTimeout(() => {
-            alert('Vui lòng đăng nhập lại');
+            alert('Vui lòng đăng nhập lại !');
             localStorage.removeItem('jwtToken');
             window.location.href = 'http://localhost:3000/login';
           }, 4000);

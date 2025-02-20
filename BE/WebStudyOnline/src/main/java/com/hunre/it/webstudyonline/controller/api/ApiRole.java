@@ -14,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/role")
+@CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"})
 public class ApiRole {
     @Autowired
     private IRoleService roleService;

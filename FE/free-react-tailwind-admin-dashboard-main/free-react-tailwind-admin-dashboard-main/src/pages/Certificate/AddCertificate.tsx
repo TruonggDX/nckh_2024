@@ -1,17 +1,17 @@
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb.tsx';
-import { useEffect, useState } from 'react';
-import { getAllTeacher } from '../../service/TeacherService.js';
-import { addCertificate } from '../../service/CertificateService.js';
+import React, { useEffect, useState } from 'react';
+import { getAllTeacher } from '../../service/TeacherService.ts';
+import { addCertificate } from '../../service/CertificateService.ts';
 import { useNavigate } from 'react-router-dom';
+import { Teacher } from '../../types/Teacher.ts';
 const AddCertificate = () => {
-  const [teacher, setTeacher] = useState([]);
+  const [teacher, setTeacher] = useState<Teacher[]>([]);
   const [certificateName, setCertificateName] = useState('');
   const [description, setDescription] = useState('');
   const [issuingOrganization, setIssuingOrganization] = useState('');
   const [certificateType, setCertificateType] = useState('');
   const [certificateNumber, setCertificateNumber] = useState('');
   const [issueDate, setIssueDate] = useState('');
-  const [certificateStatus, setCertificateStatus] = useState('');
   const [teacherId, setTeacherId] = useState('');
   const [error, setError] = useState({
     certificateName:'',
@@ -20,24 +20,22 @@ const AddCertificate = () => {
     certificateType:'',
     certificateNumber:'',
     issueDate:'',
-    certificateStatus:'',
     teacherId:''
   });
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    getAllTeacher().then((response: any) => {
+    getAllTeacher(0,0).then((response: any) => {
       setTeacher(response.content);
     });
   }, []);
 
-  const handleSave = (e) =>{
+  const handleSave = (e: React.FormEvent) =>{
     e.preventDefault();
     if (isValid()){
-      const certificate = {certificateName,description,issuingOrganization,certificateType,certificateNumber,issueDate,certificateStatus,teacherId};
-      console.log(certificate);
-      addCertificate(certificate).then((response: any) => {
+      const certificate = {id:0,certificateName,description,issuingOrganization,certificateType,certificateNumber,issueDate,teacherName:'', teacherId: Number(teacherId)};
+      addCertificate(certificate).then(() => {
         navigate('/certificate');
       }).catch((error: any) => {
         console.log(error);
@@ -82,12 +80,6 @@ const AddCertificate = () => {
       errorCopy.issueDate = '';
     } else {
       errorCopy.issueDate = 'Ngày cấp không được để trống';
-      valid = false;
-    }
-    if (certificateStatus.trim()) {
-      errorCopy.certificateStatus = '';
-    } else {
-      errorCopy.certificateStatus = 'Trạng thái không được để trống';
       valid = false;
     }
     if (teacherId.trim()) {
@@ -173,19 +165,6 @@ const AddCertificate = () => {
                 {error.issueDate && <div className='invalid-feedback'>{error.issueDate}</div>}
               </div>
 
-              <div className="mb-4.5">
-                <label className="mb-2.5 block text-black dark:text-white">
-                  Trạng thái <span className="text-meta-1">*</span>
-                </label>
-                <select value={certificateStatus} onChange={(e) => setCertificateStatus(e.target.value)} className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
-                  <option value="" disabled selected>
-                    Chọn trạng thái
-                  </option>
-                  <option value="active">Hoạt động</option>
-                  <option value="expired">Hết hạn</option>
-                </select>
-                {error.certificateStatus && <div className='invalid-feedback'>{error.certificateStatus}</div>}
-              </div>
               <div className="mb-4.5">
                 <label className="mb-2.5 block text-black dark:text-white">
                   Mô tả <span className="text-meta-1">*</span>

@@ -21,6 +21,7 @@ public class CourseDetailsMapper {
         courseDetailsEntity.setName(courseDetailsDto.getName());
         courseDetailsEntity.setDescription(courseDetailsDto.getDescription());
         courseDetailsEntity.setPeriod(courseDetailsDto.getPeriod());
+//        courseDetailsEntity.setUrl();
         return courseDetailsEntity;
     }
 }

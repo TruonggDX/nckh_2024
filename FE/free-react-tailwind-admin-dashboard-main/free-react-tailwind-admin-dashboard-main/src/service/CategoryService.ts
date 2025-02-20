@@ -1,9 +1,9 @@
 import axios from "axios";
 import { API_KEY, getToken } from '../config/Config.ts';
-
+import { Category } from '../types/Category';
 const apiListCategories = `${API_KEY}/api/category`;
 
-export const listCategories = async (page, size) => {
+export const listCategories = async (page:number, size:number): Promise<Category[]> => {
   const token = getToken();
   try {
     const response = await axios.get(`${apiListCategories}/list`, {
@@ -17,7 +17,7 @@ export const listCategories = async (page, size) => {
   }
 };
 
-export const deleteCategory = async (id) => {
+export const deleteCategory = async (id:number) => {
   const token = getToken();
   try {
     const response = await axios.delete(`${apiListCategories}/delete/${id}`, {
@@ -29,7 +29,7 @@ export const deleteCategory = async (id) => {
     throw error;
   }
 };
-export const getCategoryById = async (id) => {
+export const getCategoryById = async (id:number) => {
   const token = getToken();
   try {
     const response = await axios.get(`${apiListCategories}/findById/${id}`, {
@@ -41,7 +41,7 @@ export const getCategoryById = async (id) => {
     throw error;
   }
 }
-export const updateCategory = async (id, category) => {
+export const updateCategory = async (id:number, category: Category) => {
   const token = getToken();
   try {
     const response = await axios.put(`${apiListCategories}/update/${id}`, category, {
@@ -53,7 +53,7 @@ export const updateCategory = async (id, category) => {
     throw error;
   }
 }
-export const addCategory =async (category) => {
+export const addCategory =async (category:Category) => {
   const token = getToken();
   try {
     const response = await axios.post(`${apiListCategories}`,category, {

@@ -3,7 +3,6 @@ export interface Certificate {
   certificateNumber: string;
   certificateName: string;
   certificateType: string;
-  certificateStatus: string;
   teacherName: string;
   description:string;
   issuingOrganization:string;

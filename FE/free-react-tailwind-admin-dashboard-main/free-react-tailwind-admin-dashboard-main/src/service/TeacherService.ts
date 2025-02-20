@@ -1,8 +1,9 @@
 import axios from 'axios';
 import { API_KEY,getToken } from '../config/Config.ts';
+import { Teacher } from '../types/Teacher.ts';
 
 const api = `${API_KEY}/api/inforTeacher`;
-export const getAllTeacher = async (page,size) => {
+export const getAllTeacher = async (page:number,size:number):Promise<Teacher> => {
     const token = getToken();
     try {
       const response = await axios.get(`${api}/list`,{

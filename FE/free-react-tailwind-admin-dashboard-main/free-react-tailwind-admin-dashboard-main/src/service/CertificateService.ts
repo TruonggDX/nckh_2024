@@ -1,8 +1,9 @@
 import axios from "axios";
 import { API_KEY,getToken } from '../config/Config.ts';
+import { Certificate } from '../types/Certificate.ts';
 
 const api = `${API_KEY}/api/certificate`
-export const getAllCertificates = async (page,size) => {
+export const getAllCertificates = async (page:number,size:number):Promise<Certificate> => {
   const token = getToken();
   try {
     const response = await axios.get(`${api}/list`,{
@@ -15,7 +16,7 @@ export const getAllCertificates = async (page,size) => {
     throw err;
   }
 }
-export const addCertificate = async (certificate) => {
+export const addCertificate = async (certificate:Certificate) => {
   const token = getToken();
   try {
     const response = await axios.post(`${api}/create`,certificate,{
@@ -27,7 +28,7 @@ export const addCertificate = async (certificate) => {
     throw error;
   }
 }
-export const findCertificateById = async (id) => {
+export const findCertificateById = async (id:number) => {
   const token = getToken();
   try {
     const response = await axios.get(`${api}/findById/${id}`, {
@@ -39,7 +40,7 @@ export const findCertificateById = async (id) => {
     throw error;
   }
 }
-export const updateCertificate = async (id, certificate) => {
+export const updateCertificate = async (id:number, certificate:Certificate) => {
   const token = getToken();
   try {
     const response = await axios.put(`${api}/update/${id}`,certificate,{
@@ -51,7 +52,7 @@ export const updateCertificate = async (id, certificate) => {
     throw error;
   }
 }
-export const deleteCertificateById = async (id) => {
+export const deleteCertificateById = async (id:number) => {
   const token = getToken();
   try {
     const response = await axios.delete(`${api}/delete/${id}`, {
