@@ -1,10 +1,12 @@
 package com.hunre.it.webstudyonline.service.impl;
 
+import com.hunre.it.webstudyonline.entity.BillDetailsEntity;
 import com.hunre.it.webstudyonline.entity.BillEntity;
 import com.hunre.it.webstudyonline.mapper.BillMapper;
 import com.hunre.it.webstudyonline.model.dto.BillDto;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
 import com.hunre.it.webstudyonline.model.response.ResponsePage;
+import com.hunre.it.webstudyonline.repository.BillDetailsRepository;
 import com.hunre.it.webstudyonline.repository.BillRepository;
 import com.hunre.it.webstudyonline.service.IBillService;
 import com.hunre.it.webstudyonline.utils.Constant;
@@ -26,6 +28,8 @@ public class IBillServiceImpl implements IBillService {
     private BillRepository billRepository;
     @Autowired
     private BillMapper billMapper;
+    @Autowired
+    private BillDetailsRepository billDetailsRepository;
 
     @Override
     public ResponsePage<List<BillDto>> getAll(Pageable pageable) {
@@ -38,6 +42,24 @@ public class IBillServiceImpl implements IBillService {
         responsePage.setTotalPages(page.getTotalPages());
         responsePage.setContent(billDtos);
         return responsePage;
+    }
+
+    @Override
+    public BaseResponse<List<BillDto>> getBillByAccountId(String accountId) {
+        BaseResponse<List<BillDto>> response = new BaseResponse<>();
+        Utils<Long> utils = LongUtils.strToLong(accountId);
+        if (utils.getT() == null) {
+            response.setCode(utils.getCode());
+            response.setMessage(utils.getMsg());
+            return response;
+        }
+        Long accountIds = utils.getT();
+        List<BillEntity> billEntities = billRepository.findAllByAccountId(accountIds);
+        List<BillDto> dtos = billEntities.stream().map(billMapper::toDto).toList();
+        response.setCode(HttpStatus.OK.value());
+        response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
+        response.setData(dtos);
+        return response;
     }
 
     @Override
@@ -55,14 +77,6 @@ public class IBillServiceImpl implements IBillService {
 
     @Override
     public BaseResponse<BillDto> getById(String id) {
-        return handle(id,false);
-    }
-
-    @Override
-    public BaseResponse<BillDto> deleteById(String id) {
-        return handle(id,true);
-    }
-    public BaseResponse<BillDto> handle(String id, boolean isDelete) {
         BaseResponse<BillDto> response = new BaseResponse<>();
         Utils<Long> utils = LongUtils.strToLong(id);
         if (utils.getT() == null) {
@@ -78,10 +92,38 @@ public class IBillServiceImpl implements IBillService {
             return response;
         }
         BillEntity billEntity = bill.get();
-        if (isDelete) {
-            billEntity.setDeleted(true);
+        BillDto dto = billMapper.toDto(billEntity);
+        response.setData(dto);
+        response.setCode(HttpStatus.OK.value());
+        response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
+        return response;
+    }
+
+    @Override
+    public BaseResponse<BillDto> deleteById(String id) {
+        BaseResponse<BillDto> response = new BaseResponse<>();
+        Utils<Long> utils = LongUtils.strToLong(id);
+        if (utils.getT() == null) {
+            response.setCode(utils.getCode());
+            response.setMessage(utils.getMsg());
+            return response;
         }
+        Long billId = utils.getT();
+        Optional<BillEntity> bill = billRepository.findById(billId);
+        if (bill.isEmpty()) {
+            response.setCode(HttpStatus.BAD_REQUEST.value());
+            response.setMessage(Constant.HTTP_MESSAGE.NOTFOUND);
+            return response;
+        }
+        BillEntity billEntity = bill.get();
+        billEntity.setDeleted(true);
         billEntity = billRepository.save(billEntity);
+
+        List<BillDetailsEntity> list = billDetailsRepository.findByBillId(billId).stream().map(billDetailsEntity -> {
+            billDetailsEntity.setDeleted(true);
+            return billDetailsEntity;
+        }).toList();
+        billDetailsRepository.saveAll(list);
         BillDto dto = billMapper.toDto(billEntity);
         response.setData(dto);
         response.setCode(HttpStatus.OK.value());

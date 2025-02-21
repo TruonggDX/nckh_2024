@@ -24,6 +24,11 @@ public class ApiBill {
         ResponsePage<List<BillDto>> responsePage = iBillService.getAll(pageable);
         return ResponseEntity.ok(responsePage);
     }
+    @GetMapping("/list/{accountId}")
+    public ResponseEntity<BaseResponse<List<BillDto>>> getBillByAccountId(@PathVariable String accountId) {
+        BaseResponse<List<BillDto>> responsePage = iBillService.getBillByAccountId(accountId);
+        return ResponseEntity.ok(responsePage);
+    }
     @PostMapping("/create")
     public ResponseEntity<BaseResponse<BillDto>> create(@Valid @RequestBody BillDto billDto) {
         BaseResponse<BillDto> bill = iBillService.createBill(billDto);

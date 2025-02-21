@@ -5,6 +5,15 @@ public class BillDto {
     private Long id;
     private String code;
     private Long accountId;
+    private String accountName;
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
 
     public Long getId() {
         return id;

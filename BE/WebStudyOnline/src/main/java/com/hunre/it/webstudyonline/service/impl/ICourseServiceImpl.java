@@ -120,7 +120,6 @@ public class ICourseServiceImpl implements ICourseService {
                 return response;
             }
             Long courseId = utils.getT();
-            CourseEntity course = courseMapper.toEntity(courseDto);
             Optional<CourseEntity> checkCourse = courseRepository.findById(courseId);
             if (checkCourse.isEmpty()) {
                 response.setCode(HttpStatus.BAD_REQUEST.value());
@@ -133,6 +132,7 @@ public class ICourseServiceImpl implements ICourseService {
                 response.setMessage(Constant.HTTP_MESSAGE.NOTFOUND);
                 return response;
             }
+            CourseEntity course = courseMapper.toEntity(courseDto);
             course.setCategoryEntity(checkCate.get());
             course.setDeleted(false);
             course = courseRepository.save(course);

@@ -6,7 +6,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface BillRepository extends JpaRepository<BillEntity,Long> {
     @Query(value = "SELECT b FROM BillEntity b WHERE b.deleted=false ")
     Page<BillEntity> findAllByDeletedFalse(Pageable pageable);
+    @Query(value = "SELECT b FROM BillEntity b WHERE b.deleted=false AND b.accountEntity.id=:accountId")
+    List<BillEntity> findAllByAccountId(Long accountId);
 }

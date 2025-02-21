@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface IBillService {
     ResponsePage<List<BillDto>> getAll(Pageable pageable);
+    BaseResponse<List<BillDto>> getBillByAccountId(String accountId);
     BaseResponse<BillDto> createBill(BillDto billDto);
     BaseResponse<BillDto> getById(String id);
     BaseResponse<BillDto> deleteById(String id);
