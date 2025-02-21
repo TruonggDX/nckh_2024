@@ -47,9 +47,10 @@ export default function Banner() {
 												</svg>
 												<select className="nice-select" name="price">
 													<option value="">Danh mục</option>
-													{categories.map((category, index) => (
-														<option key={index} value={category.id}>{category.name}</option>
-													))}												</select>
+													{categories.map((category) => (
+														<option value={category.id}>{category.name}</option>
+													))}
+												</select>
 											</div>
 											<input type="email" placeholder="Tìm khóa học" required />
 											<button>Search</button>
@@ -57,8 +58,8 @@ export default function Banner() {
 									</form>
 									<div className="banner-tags-wrapper">
 										{/* single tags wrapper */}
-										{categories.map((category, index) => (
-											<div className="single-tags-banner">
+										{categories.map((category) => (
+											<div key={category.id} className="single-tags-banner">
 												<p>{category.name}</p>
 											</div>
 										))}

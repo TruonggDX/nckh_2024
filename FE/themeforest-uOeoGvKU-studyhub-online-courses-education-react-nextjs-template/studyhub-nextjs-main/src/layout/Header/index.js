@@ -8,7 +8,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import HeaderCategory from './Category';
 import MenuItems from './MenuItems';
 import MobileMenuItems from './MobileMenuItems';
-
+import api from "/src/route/route"
+import {useRouter} from "next/router";
 export default function Header( props ) {
 	const {headerClass, headerLogo, topbarEnable, categoryEnable, menuItemsLeft, authenticationHeader} = props;
 	const [isVisible, setIsVisible] = useState(false);
@@ -19,6 +20,8 @@ export default function Header( props ) {
 	const [authorDropdown, setAuthorDropdown] = useState(false);
 
 	const [totalPrice, setTotalPrice] = useState(0);
+	const [check, setCheck] = useState(0);
+	const router = useRouter();
 
 	const addedToCart = useSelector((state) => state.product);
 	const selectedCourses = Courses.filter(course => addedToCart.addedProducts.some(product => product.id === course.id));
@@ -30,7 +33,16 @@ export default function Header( props ) {
 	};
 	const handleLogout = () => {
 		dispatch(clearUserData());
+		localStorage.removeItem('jwtToken');
+		router.push('/login');
 	};
+	useEffect(() => {
+		const a =  localStorage.getItem('jwtToken')
+		if (a != null) {
+			setCheck(1)
+		}
+	},[])
+
 
 	// Calculate total price
 	const calculateTotalPrice = () => {
@@ -70,7 +82,7 @@ export default function Header( props ) {
 		setCartModalOpen(false)
 	}
 
-	const admin = useSelector((state) => state.user.admin);
+	// const admin = useSelector((state) => state.user.admin);
 
 	// useEffect(() => {
 	// 	// Load user from localStorage on mount
@@ -140,7 +152,7 @@ export default function Header( props ) {
 											</div>
 										</div>
 										{
-											!admin ?
+											 check!=1 ?
 												<div className="buttons-area">
 													<Link href="/login" className="rts-btn btn-border">Đăng nhập</Link>
 													<Link href="/signup" className="rts-btn btn-primary">Đăng ký</Link>
@@ -160,8 +172,8 @@ export default function Header( props ) {
 																	<Image src="/images/avatar/user.svg" width={74} height={74} alt="user" />
 																</div>
 																<div className="studyhub__header__popup__header__content">
-																	<h3 className="studyhub__header__popup__header__title">{admin.firstName} {admin.lastName}</h3>
-																	<span className="studyhub__header__popup__header__subtitle">{admin.designation}</span>
+																	{/*<h3 className="studyhub__header__popup__header__title">{admin.firstName} {admin.lastName}</h3>*/}
+																	{/*<span className="studyhub__header__popup__header__subtitle">{admin.designation}</span>*/}
 																</div>
 															</div>
 															<div className="studyhub__header__popup__content">
