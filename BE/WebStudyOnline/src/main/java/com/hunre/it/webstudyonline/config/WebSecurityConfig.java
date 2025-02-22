@@ -54,7 +54,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/exam/findById/**","/api/exam/findByAttribute").permitAll()
                         .requestMatchers("/api/exam","/api/exam/update/**").hasAnyRole("ADMIN")
                         .requestMatchers("/api/exam_details/**").permitAll()
-                        .requestMatchers("/api/bill/delete/**").hasAnyRole("ADMIN")
+                        .requestMatchers("/api/bill/delete/**","api/bill/findBillByAttribute").hasAnyRole("ADMIN")
                         .requestMatchers("/api/bill/findById/**","/api/bill/list/**","/api/bill/create/**").authenticated()
                         .requestMatchers("/api/bill_details/create").authenticated()
                         .requestMatchers("/api/bill_details/list/**").authenticated()

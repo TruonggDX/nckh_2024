@@ -1,6 +1,5 @@
 package com.hunre.it.webstudyonline.model.request;
 
-import com.hunre.it.webstudyonline.model.dto.RoleDto;
 import jakarta.validation.constraints.NotBlank;
 
 import java.util.Set;
@@ -8,7 +7,7 @@ import java.util.Set;
 public class UpdateAccountForm {
     @NotBlank(message = "Please enter full name")
     private String fullName;
-    private Set<String> roleCode ;
+    private Set<Long> roleId ;
     private String imageUrl;
 
     public String getFullName() {
@@ -19,12 +18,12 @@ public class UpdateAccountForm {
         this.fullName = fullName;
     }
 
-    public Set<String> getRoleCode() {
-        return roleCode;
+    public Set<Long> getRoleId() {
+        return roleId;
     }
 
-    public void setRoleCode(Set<String> roleCode) {
-        this.roleCode = roleCode;
+    public void setRoleId(Set<Long> roleId) {
+        this.roleId = roleId;
     }
 
     public String getImageUrl() {

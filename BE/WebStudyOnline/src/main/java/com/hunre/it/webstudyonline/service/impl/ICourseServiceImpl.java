@@ -132,7 +132,14 @@ public class ICourseServiceImpl implements ICourseService {
                 response.setMessage(Constant.HTTP_MESSAGE.NOTFOUND);
                 return response;
             }
-            CourseEntity course = courseMapper.toEntity(courseDto);
+            CourseEntity course = checkCourse.get();
+            if (courseDto.getName() != null) course.setName(courseDto.getName());
+            if (courseDto.getPrice() != null) course.setPrice(courseDto.getPrice());
+            if (courseDto.getDescription() != null) course.setDescription(courseDto.getDescription());
+            if (courseDto.getStatus() != null) course.setStatus(courseDto.getStatus());
+            if (courseDto.getDiscount() != null) course.setDiscount(courseDto.getDiscount());
+            if (courseDto.getAim() != null) course.setAim(courseDto.getAim());
+
             course.setCategoryEntity(checkCate.get());
             course.setDeleted(false);
             course = courseRepository.save(course);
@@ -219,4 +226,5 @@ public class ICourseServiceImpl implements ICourseService {
         response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
         return response;
     }
+
 }

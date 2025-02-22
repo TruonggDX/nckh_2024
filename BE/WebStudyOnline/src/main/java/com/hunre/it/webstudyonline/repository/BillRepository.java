@@ -13,4 +13,8 @@ public interface BillRepository extends JpaRepository<BillEntity,Long> {
     Page<BillEntity> findAllByDeletedFalse(Pageable pageable);
     @Query(value = "SELECT b FROM BillEntity b WHERE b.deleted=false AND b.accountEntity.id=:accountId")
     List<BillEntity> findAllByAccountId(Long accountId);
+    @Query(value = "SELECT b FROM BillEntity b WHERE b.deleted=false " +
+            "AND (:code IS NULL OR b.code LIKE %:code%)" +
+            "AND (:accountName IS NULL OR b.accountEntity.fullname LIKE %:accountName%)")
+    Page<BillEntity> findBillByCodeAndAccountName(String code, String accountName, Pageable pageable);
 }

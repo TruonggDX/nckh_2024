@@ -45,6 +45,19 @@ public class IBillServiceImpl implements IBillService {
     }
 
     @Override
+    public ResponsePage<List<BillDto>> getBillByAttribute(String code, String accountName, Pageable pageable) {
+        ResponsePage<List<BillDto>> responsePage = new ResponsePage<>();
+        Page<BillEntity> page = billRepository.findBillByCodeAndAccountName(code, accountName, pageable);
+        List<BillDto> billDtos = page.getContent().stream().map(billMapper::toDto).toList();
+        responsePage.setPageNumber(pageable.getPageNumber());
+        responsePage.setPageSize(pageable.getPageSize());
+        responsePage.setTotalElements(page.getTotalElements());
+        responsePage.setTotalPages(page.getTotalPages());
+        responsePage.setContent(billDtos);
+        return responsePage;
+    }
+
+    @Override
     public BaseResponse<List<BillDto>> getBillByAccountId(String accountId) {
         BaseResponse<List<BillDto>> response = new BaseResponse<>();
         Utils<Long> utils = LongUtils.strToLong(accountId);

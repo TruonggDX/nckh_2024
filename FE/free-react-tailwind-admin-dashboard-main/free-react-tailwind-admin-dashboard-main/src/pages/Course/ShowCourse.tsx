@@ -1,6 +1,6 @@
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb.tsx';
 import { useNavigate, useParams } from 'react-router-dom';
-import { findCouseById } from '../../service/CourseService.ts';
+import {findCouseById, updateCourseById } from '../../service/CourseService.ts';
 import {
   deleteCourseDetail,
   findById,
@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 import { Course } from '../../types/Course.ts';
 import { CourseDetails } from '../../types/CourseDetails.ts';
 import { Pencil, Trash2 } from 'lucide-react';
-import { confirmDelete, showAlert } from '../../utils/swalUtils.ts';
+import { confirmDelete, showAlert, showLoadingThenExecute } from '../../utils/swalUtils.ts';
 import { listCategories } from '../../service/CategoryService.ts';
 import { Category } from '../../types/Category.ts';
 import { formatDateToInput, formatInputToISO } from '../../utils/dateUtils.ts';
@@ -32,11 +32,14 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
     imageUrl: '',
     createdDate: '',
   });
+  const [file,setFile] = useState<File | null>(null);
+
   const [lesson, setLesson] = useState<CourseDetails>();
   const [openModal, setOpenModal] = useState(false);
   const [categories, setCategories] = useState<Category[]>([]);
   const [courseDetails, setCourseDetails] = useState<CourseDetails[]>([]);
   const [isEditing, setIsEditing] = useState(false);
+
 
   useEffect(() => {
     findCouseById(Number(id))
@@ -73,6 +76,26 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
       setIsEditing(true);
     });
   };
+  const handleUpdateCourse = (id: number) => {
+    console.log('id update',id);
+    showLoadingThenExecute(async () => {
+      const formData = new FormData();
+      if (file){
+        formData.append("file", file);
+      }
+      formData.append("name", data.name);
+      formData.append("description", data.description);
+      formData.append("price", data.price.toString());
+      formData.append("discount", data.discount.toString());
+      formData.append("status", data.status);
+      formData.append("categoryId", data.categoryId.toString());
+      formData.append("aim", data.aim);
+
+      await updateCourseById(id,formData);
+    }, "Cập nhật thành công!", "Có lỗi xảy ra, vui lòng thử lại.", "/course");
+  }
+
+
   const handleRemove = (id: number) => {
     confirmDelete(
       'Bạn chắc chắn xóa bài học này ?',
@@ -110,6 +133,7 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
     setIsEditing(false);
     setOpenModal(true);
   };
+
   return (
     <>
       <Breadcrumb
@@ -128,6 +152,11 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
                 </label>
                 <input
                   type="file"
+                  onChange={(e) => {
+                    if (e.target.files && e.target.files.length > 0) {
+                      setFile(e.target.files[0]);
+                    }
+                  }}
                   className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
                 />
               </div>
@@ -143,9 +172,7 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
                     name="name"
                     value={data?.code}
                     readOnly={!isEditMode}
-                    onChange={(e) =>
-                      setData((prev) => ({ ...prev, code: e.target.value }))
-                    }
+                    disabled
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -171,7 +198,7 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
                     Giá khóa học
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     name="number"
                     value={data?.price}
                     readOnly={!isEditMode}
@@ -249,40 +276,42 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
                   </div>
                 </div>
               </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 font-medium">
-                  Mục tiêu điểm
-                </label>
-                <input
-                  type="text"
-                  name="status"
-                  value={data?.aim}
-                  readOnly={!isEditMode}
-                  onChange={(e) =>
-                    setData((prev) => ({ ...prev, aim: e.target.value }))
-                  }
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                />
+              <div className="mb-4 flex gap-4">
+                <div className="w-1/2">
+                  <label className="block text-gray-700 font-medium">
+                    Mục tiêu điểm
+                  </label>
+                  <input
+                    type="text"
+                    name="status"
+                    value={data?.aim}
+                    readOnly={!isEditMode}
+                    onChange={(e) =>
+                      setData((prev) => ({ ...prev, aim: e.target.value }))
+                    }
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+                <div className="w-1/2">
+                  <label className="block text-gray-700 font-medium">
+                    Ngày tạo
+                  </label>
+                  <input
+                    type="datetime-local"
+                    name="createdDate"
+                    disabled
+                    value={formatDateToInput(data?.createdDate)}
+                    readOnly={!isEditMode}
+                    onChange={(e) =>
+                      setData((prev) => ({
+                        ...prev,
+                        createdDate: formatInputToISO(e.target.value),
+                      }))
+                    }
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
               </div>
-              <div className="mb-4">
-                <label className="block text-gray-700 font-medium">
-                  Ngày tạo
-                </label>
-                <input
-                  type="datetime-local"
-                  name="createdDate"
-                  value={formatDateToInput(data?.createdDate)}
-                  readOnly={!isEditMode}
-                  onChange={(e) =>
-                    setData((prev) => ({
-                      ...prev,
-                      createdDate: formatInputToISO(e.target.value),
-                    }))
-                  }
-                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                />
-              </div>
-
               <div className="mb-4">
                 <label className="block text-gray-700 font-medium">Mô tả</label>
                 <textarea
@@ -298,6 +327,7 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 ></textarea>
               </div>
+              <button hidden={!isEditMode} onClick={() => handleUpdateCourse(data.id)} className="w-40 h-12 bg-primary text-white py-2 rounded hover:bg-blue-700 mb-4 float-right">Cập nhật</button>
             </div>
           </div>
 
@@ -306,6 +336,7 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
               Chi tiết nội dung khóa học
             </h2>
             <button
+              hidden={!isEditMode}
               onClick={handleAdd}
               style={{ width: 150, height: 50 }}
               className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 mb-4"
@@ -454,7 +485,8 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
                     name: '',
                     period: '',
                     url: '',
-                  });setOpenModal(false)
+                  });
+                  setOpenModal(false);
                 }}
               >
                 Hủy

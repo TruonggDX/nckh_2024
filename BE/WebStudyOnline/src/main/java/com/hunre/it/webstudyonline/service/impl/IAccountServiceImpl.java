@@ -35,10 +35,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.management.relation.Role;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -131,10 +128,18 @@ public class IAccountServiceImpl implements IAccountService {
             }
             AccountEntity accountEntity = check.get();
             accountEntity.setFullname(updateAccountForm.getFullName());
-            Set<RoleEntity> RoleEntities = roleServiceImpl.findByRoleCode(updateAccountForm.getRoleCode());
-            for (RoleEntity roleEntity : RoleEntities) {
-                accountEntity.setRoles(RoleEntities);
+//            Set<RoleEntity> RoleEntities = roleServiceImpl.findByRoleCode(updateAccountForm.getRoleCode());
+//            for (RoleEntity roleEntity : RoleEntities) {
+//                accountEntity.setRoles(RoleEntities);
+//            }
+            Set<RoleEntity> roleEntities = new HashSet<>();
+            for (Long roleId : updateAccountForm.getRoleId()) {
+                RoleEntity roleEntity = roleRepository.findById(roleId).orElseThrow();
+                if (roleEntity != null) {
+                    roleEntities.add(roleEntity);
+                }
             }
+            accountEntity.setRoles(roleEntities);
             accountRepository.save(accountEntity);
             ImagesEntity images = imageRepository.findByAccountId(AccountId);
             if (file != null && !file.isEmpty()) {

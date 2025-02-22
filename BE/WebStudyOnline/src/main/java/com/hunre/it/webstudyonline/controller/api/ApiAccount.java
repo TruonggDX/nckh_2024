@@ -43,7 +43,7 @@ public class ApiAccount {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<BaseResponse<AccountDto>> update(@ModelAttribute @Valid UpdateAccountForm updateAccountForm, @PathVariable String id, @RequestParam("file") MultipartFile file) {
+    public ResponseEntity<BaseResponse<AccountDto>> update(@ModelAttribute @Valid UpdateAccountForm updateAccountForm, @PathVariable String id, @RequestParam(value = "file",required = false) MultipartFile file) {
         BaseResponse<AccountDto> response = accountService.update(id, updateAccountForm,file);
         return ResponseEntity.ok(response);
     }
@@ -67,5 +67,10 @@ public class ApiAccount {
     public ResponseEntity<BaseResponse<?>> updatePass(@PathVariable String id, @RequestBody ChagePasswordRequest chagePasswordRequest) {
         BaseResponse<?> response = accountService.changePassword(id, chagePasswordRequest);
         return ResponseEntity.ok(response);
+    }
+    @GetMapping("/findById/{id}")
+    public ResponseEntity<AccountDto> findById(@PathVariable Long id) {
+        AccountDto accountDto = accountService.findById(id);
+        return ResponseEntity.ok(accountDto);
     }
 }

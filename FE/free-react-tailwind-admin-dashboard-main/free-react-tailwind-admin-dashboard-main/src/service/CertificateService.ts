@@ -64,3 +64,25 @@ export const deleteCertificateById = async (id:number) => {
     throw error;
   }
 }
+export const getCertificatesByAtribute = async (filters: any, page: number, size: number) => {
+  const token = getToken();
+  const params = {
+    certificateName: filters.certificateName || '',
+    issuingOrganization: filters.issuingOrganization || '',
+    certificateType: filters.certificateType || '',
+    certificateNumber: filters.certificateNumber || '',
+    page: page,
+    size: size,
+  };
+
+  try {
+    const response = await axios.get(`${api}/findByAttribute`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+      params: params,
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

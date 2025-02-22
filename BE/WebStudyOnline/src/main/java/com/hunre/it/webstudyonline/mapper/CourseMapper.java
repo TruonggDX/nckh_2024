@@ -3,11 +3,6 @@ import com.hunre.it.webstudyonline.entity.CourseEntity;
 import com.hunre.it.webstudyonline.model.dto.CourseDto;
 import org.springframework.stereotype.Component;
 
-import java.security.SecureRandom;
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.stream.Collectors;
-
 @Component
 public class CourseMapper {
 
@@ -21,6 +16,7 @@ public class CourseMapper {
         courseDto.setStatus(courseEntity.getStatus());
         courseDto.setDiscount(courseEntity.getDiscount());
         courseDto.setCategoryId(courseEntity.getCategoryEntity().getId());
+        courseDto.setCategoryName(courseEntity.getCategoryEntity().getName());
         courseDto.setCreatedBy(courseEntity.getCreatedBy());
         courseDto.setCreatedDate(courseEntity.getCreatedDate());
         courseDto.setAim(courseEntity.getAim());

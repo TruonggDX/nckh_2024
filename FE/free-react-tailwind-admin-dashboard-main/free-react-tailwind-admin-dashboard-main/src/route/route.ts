@@ -1,7 +1,6 @@
-import axiosInstance from "../route/interceptor.js";
+import axiosInstance from "./interceptor.ts";
 
-async function getUser () {
+export async function getUser () {
   const decodedResponse = await axiosInstance.get('/api/account/getUser');
   return decodedResponse.data;
 }
-export default { getUser};
