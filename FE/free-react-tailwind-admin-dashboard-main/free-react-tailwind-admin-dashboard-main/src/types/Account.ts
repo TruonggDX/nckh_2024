@@ -7,7 +7,5 @@ export interface Account {
   fullName: string;
   phone: string;
   roles: Role[];
-  enabled: boolean;
-  roleIds: number[];
   imageUrl: string;
 }

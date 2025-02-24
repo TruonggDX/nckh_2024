@@ -1,7 +1,9 @@
 
-export const formatDateToInput = (isoString:any) => {
+export const formatDateToInput = (isoString: any) => {
   if (!isoString) return "";
-  return new Date(isoString).toISOString().slice(0, 16);
+  const localDate = new Date(isoString);
+  const localISOString = new Date(localDate.getTime() - localDate.getTimezoneOffset() * 60000).toISOString();
+  return localISOString.slice(0, 16);
 };
 
 export const formatInputToISO = (inputValue:any) => {

@@ -42,3 +42,35 @@ export const deleteCourse = async (id:number) => {
     throw error;
   }
 }
+export const createCourse = async (formData: FormData) => {
+  const token = getToken();
+
+  try {
+    const response = await axios.post(`${api}`, formData, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data'
+      }
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+export const updateCourseById = async (id:number,formData:FormData) =>{
+  const token = getToken();
+  try {
+    const response = await axios.put(`${api}/update/${id}`, formData, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    return response.data;
+  }catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

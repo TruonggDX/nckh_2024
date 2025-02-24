@@ -16,7 +16,11 @@ async function verifyOtp (req) {
 }
 async function getUser () {
     const decodedResponse = await axiosInstance.get('/api/account/getUser');
-    return decodedResponse.data;
+    if(decodedResponse.data.code  === 401) {
+        alert("Vui lòng đăng nhập!")
+    }else {
+        return decodedResponse.data;
+    }
 }
 async function resendCode(req){
     const response = await axiosInstance.post(`/auth/resend?email=${req}`);

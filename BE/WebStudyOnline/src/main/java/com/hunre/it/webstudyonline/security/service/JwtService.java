@@ -17,7 +17,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import javax.crypto.SecretKey;
 import java.util.*;
 import java.util.function.Function;
@@ -34,7 +35,7 @@ public class JwtService {
 
     @Autowired
     private RoleRepository roleRepository;
-
+    private static final Logger log = LoggerFactory.getLogger(JwtService.class);
 
     public String generateToken(AccountDto accountDto) {
         Map<String, Object> claims = new HashMap<>();
@@ -99,16 +100,15 @@ public class JwtService {
 
 
     public AuthDto decodeToken() {
-
-        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            throw new IllegalArgumentException("Authorization header không hợp lệ hoặc không tồn tại");
-        }
-        String token = authorizationHeader.substring(7);
-
-
         try {
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+            String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+            if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+                log.warn("Authorization header không hợp lệ hoặc không tồn tại");
+                return null;
+            }
+
+            String token = authorizationHeader.substring(7);
             Claims claims = Jwts.parser()
                     .setSigningKey(generateKey())
                     .build()
@@ -123,14 +123,15 @@ public class JwtService {
             authDTO.setRoles(roles.stream()
                     .map(roleName -> {
                         RoleEntity roleEntity = roleRepository.findByName(roleName);
-                        return new RoleDto(roleEntity.getId(),roleEntity.getCode(), roleEntity.getName());
+                        return new RoleDto(roleEntity.getId(), roleEntity.getCode(), roleEntity.getName());
                     })
                     .collect(Collectors.toSet()));
 
             return authDTO;
 
         } catch (Exception e) {
-            throw new IllegalArgumentException("Token không hợp lệ hoặc đã hết hạn");
+            log.error("Lỗi khi decode token: {}", e.getMessage()); // Ghi log lỗi
+            return null; // Trả về null để không làm gián đoạn luồng xử lý
         }
     }
 

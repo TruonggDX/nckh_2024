@@ -17,6 +17,15 @@ public class CourseDto {
     private String createdBy;
     private LocalDateTime createdDate;
     private String aim;
+    private String categoryName;
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
 
     public String getCreatedBy() {
         return createdBy;

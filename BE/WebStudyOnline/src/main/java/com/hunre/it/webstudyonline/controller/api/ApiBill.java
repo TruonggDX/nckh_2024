@@ -24,16 +24,34 @@ public class ApiBill {
         ResponsePage<List<BillDto>> responsePage = iBillService.getAll(pageable);
         return ResponseEntity.ok(responsePage);
     }
+
+    @GetMapping("/findBillByAttribute")
+    public ResponseEntity<ResponsePage<List<BillDto>>> getBillByAttribute(
+            @RequestParam(required = false) String code,
+            @RequestParam(required = false) String accountName,
+            Pageable pageable) {
+        ResponsePage<List<BillDto>> responsePage = iBillService.getBillByAttribute(code,accountName,pageable);
+        return ResponseEntity.ok(responsePage);
+    }
+
+    @GetMapping("/list/{accountId}")
+    public ResponseEntity<BaseResponse<List<BillDto>>> getBillByAccountId(@PathVariable String accountId) {
+        BaseResponse<List<BillDto>> responsePage = iBillService.getBillByAccountId(accountId);
+        return ResponseEntity.ok(responsePage);
+    }
+
     @PostMapping("/create")
     public ResponseEntity<BaseResponse<BillDto>> create(@Valid @RequestBody BillDto billDto) {
         BaseResponse<BillDto> bill = iBillService.createBill(billDto);
         return ResponseEntity.ok(bill);
     }
+
     @GetMapping("/findById/{id}")
     public ResponseEntity<BaseResponse<BillDto>> getById(@PathVariable String id) {
         BaseResponse<BillDto> category = iBillService.getById(id);
         return ResponseEntity.ok(category);
     }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<BaseResponse<BillDto>> delete(@PathVariable String id) {
         BaseResponse<BillDto> baseResponse = iBillService.deleteById(id);

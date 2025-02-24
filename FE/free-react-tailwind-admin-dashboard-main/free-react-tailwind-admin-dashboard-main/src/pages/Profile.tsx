@@ -1,21 +1,26 @@
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
 import { FaUser, FaPhone, FaEnvelope, FaIdCard } from 'react-icons/fa';
 import userThree from '../images/user/user-03.png';
-import { useEffect, useState } from 'react';
-import api from '../route/route';
-import { changePassword } from '../service/AccountService.js';
-import { showAlert } from '../utils/swalUtils';
+import React, { useEffect, useState } from 'react';
+import { getUser } from '../route/route';
+import { changePassword, updateAccount } from '../service/AccountService.ts';
+import { showAlert, showLoadingThenExecute } from '../utils/swalUtils';
+import { Account } from '../types/Account.ts';
+import Select from 'react-select';
+import { Role } from '../types/Role.ts';
+import { getAllRole } from '../service/RoleService.ts';
 
 const Profile = () => {
-  const [account, setAccount] = useState({
-    id: '',
+  const [file, setFile] = useState<File | null>(null);
+  const [data, setData] = useState<Account>({
+    id: 0,
     code: '',
     email: '',
     fullName: '',
     phone: '',
+    roles: [],
     imageUrl: '',
   });
-
   const [password, setPassword] = useState('');
   const [passwordNew, setPasswordNew] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -24,6 +29,24 @@ const Profile = () => {
     passwordNew: '',
     confirmPassword,
   });
+  const [role, setRole] = useState<Role[]>([]);
+  const [openModal, setOpenModal] = useState(false);
+  const [selectedRoles, setSelectedRoles] = useState<number[]>([]);
+
+  useEffect(() => {
+    getAllRole(0, 0).then((reponse: any) => {
+      setRole(reponse.content);
+    });
+    if (data?.roles) {
+      setSelectedRoles(data.roles.map((role) => role.id));
+    }
+  }, [data]);
+  useEffect(() => {
+    getUser().then((response) => {
+      console.log(response.data);
+      setData(response.data);
+    });
+  }, []);
 
   function isValid() {
     let valid = true;
@@ -54,49 +77,21 @@ const Profile = () => {
     return valid;
   }
 
-  const [openModal, setOpenModal] = useState(false);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await api.getUser();
-        setAccount({
-          id: response.data.id || '',
-          code: response.data.code || '',
-          fullName: response.data.fullName || '',
-          phone: response.data.phone || '',
-          email: response.data.email || '',
-          imageUrl: response.data.imageUrl || '',
-        });
-      } catch (error) {
-        console.error('Failed to fetch user:', error);
-      }
-    };
-
-    fetchUser();
-  }, []);
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setAccount({
-      ...account,
-      [name]: value,
-    });
-  };
-
-  const handleShowModal = (e) => {
+  const handleShowModal = (e: React.FormEvent) => {
     e.preventDefault();
     setOpenModal(true);
   };
   const handleSave = () => {
-    if (isValid()){
+    if (isValid()) {
       const changePasswordRequest = {
+        id: 0,
         oldPassword: password,
         newPassword: passwordNew,
         confirmPassword: confirmPassword,
       };
 
-      changePassword(account.id, changePasswordRequest)
-        .then((response: any) => {
+      changePassword(Number(data.id), changePasswordRequest)
+        .then(() => {
           setOpenModal(false);
           showAlert('Thành công!', 'Đổi mật khẩu thành công.', 'success');
           setTimeout(() => {
@@ -111,147 +106,194 @@ const Profile = () => {
     }
   };
 
+  const handleUpdate = (id: number) => {
+    if (!data) return;
+    try {
+      const formData = new FormData();
+      formData.append('fullName', data.fullName);
+      selectedRoles.forEach((roleId) =>
+        formData.append('roleId', roleId.toString()),
+      );
+      if (file) {
+        formData.append('file', file);
+      }
+      showLoadingThenExecute(
+        async () => {
+          await updateAccount(id, formData);
+        },
+        'Cập nhật thành công!',
+        'Có lỗi xảy ra !',
+        '/profile',
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return (
     <>
       <div className="mx-auto max-w-270">
         <Breadcrumb pageName="Thông tin cá nhân" />
 
-        <div className="grid grid-cols-1 gap-8">
-          <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
-            <div className="p-7">
-              <form action="#">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-5.5">
-                  <input value={account.id} hidden />
-                  <div className="col-span-1">
-                    <div className="mb-5.5">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="code"
-                      >
-                        <FaIdCard className="inline-block mr-2" /> Mã tài khoản
-                      </label>
-                      <div className="relative">
-                        <input
-                          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                          type="text"
-                          name="code"
-                          id="code"
-                          value={account.code}
-                          readOnly
-                        />
-                      </div>
-                    </div>
-                    <div className="mb-5.5">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="fullName"
-                      >
-                        <FaUser className="inline-block mr-2" /> Họ và tên
-                      </label>
-                      <div className="relative">
-                        <input
-                          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                          type="text"
-                          name="fullName"
-                          id="fullName"
-                          value={account.fullName}
-                          onChange={handleChange}
-                        />
-                      </div>
-                    </div>
-                    <div className="mb-5.5">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="phone"
-                      >
-                        <FaPhone className="inline-block mr-2" /> Số điện thoại
-                      </label>
-                      <div className="relative">
-                        <input
-                          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                          type="text"
-                          name="phone"
-                          id="phone"
-                          value={account.phone}
-                          readOnly
-                        />
-                      </div>
-                    </div>
-                    <div className="mb-5.5">
-                      <label
-                        className="mb-3 block text-sm font-medium text-black dark:text-white"
-                        htmlFor="email"
-                      >
-                        <FaEnvelope className="inline-block mr-2" /> Email
-                      </label>
-                      <div className="relative">
-                        <input
-                          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                          type="email"
-                          name="email"
-                          id="email"
-                          value={account.email}
-                          readOnly
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Photo Upload Section */}
-                  <div className="flex flex-col items-center">
-                    <div className="h-32 w-32 rounded-full overflow-hidden mb-4">
-                      <img
-                        src={account.imageUrl || userThree}
-                        alt="User"
-                        className="object-cover h-full w-full"
-                      />
-                    </div>
-                    <span className="mb-1.5 text-black dark:text-white">
-                      Chỉnh sửa ảnh
-                    </span>
-                    <div
-                      id="FileUpload"
-                      className="relative mb-5.5 block w-full cursor-pointer appearance-none rounded border border-dashed border-primary bg-gray py-4 px-4 dark:bg-meta-4"
+        <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
+          <div className="p-7">
+            <form action="#">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-5.5">
+                <input value={data.id} hidden />
+                <input value={data.roles.join(',')} hidden />
+                <div className="col-span-1">
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="code"
                     >
+                      <FaIdCard className="inline-block mr-2" /> Mã tài khoản
+                    </label>
+                    <div className="relative">
                       <input
-                        type="file"
-                        accept="image/*"
-                        className="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none"
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        type="text"
+                        name="code"
+                        id="code"
+                        value={data.code}
+                        disabled
                       />
-                      <div className="flex flex-col items-center justify-center space-y-3">
-                        <span className="text-primary">
-                          Nhấp để tải ảnh lên
-                        </span>
-                        <p className="mt-1.5">SVG, PNG, JPG or GIF</p>
-                        <p></p>
-                      </div>
+                    </div>
+                  </div>
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="fullName"
+                    >
+                      <FaUser className="inline-block mr-2" /> Họ và tên
+                    </label>
+                    <div className="relative">
+                      <input
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        type="text"
+                        name="fullName"
+                        id="fullName"
+                        value={data.fullName}
+                        onChange={(e) =>
+                          setData((prev) =>
+                            prev ? { ...prev, fullName: e.target.value } : prev,
+                          )
+                        }
+                      />
+                    </div>
+                  </div>
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="phone"
+                    >
+                      <FaPhone className="inline-block mr-2" /> Số điện thoại
+                    </label>
+                    <div className="relative">
+                      <input
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        type="text"
+                        name="phone"
+                        id="phone"
+                        value={data.phone}
+                        disabled
+                      />
+                    </div>
+                  </div>
+                  <div hidden>
+                    <Select
+                      isMulti
+                      options={role.map((r) => ({
+                        value: r.id,
+                        label: r.name,
+                      }))}
+                      value={role
+                        .filter((r) => selectedRoles.includes(r.id))
+                        .map((r) => ({ value: r.id, label: r.name }))}
+                      onChange={(selectedOptions) =>
+                        setSelectedRoles(
+                          selectedOptions.map((option) => option.value),
+                        )
+                      }
+                    />
+                  </div>
+                  <div className="mb-5.5">
+                    <label
+                      className="mb-3 block text-sm font-medium text-black dark:text-white"
+                      htmlFor="email"
+                    >
+                      <FaEnvelope className="inline-block mr-2" /> Email
+                    </label>
+                    <div className="relative">
+                      <input
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                        type="email"
+                        name="email"
+                        id="email"
+                        value={data.email}
+                        disabled
+                      />
                     </div>
                   </div>
                 </div>
 
-                <div className="flex justify-end gap-4.5">
-                  <button
-                    className="flex justify-center rounded border border-stroke py-2 px-6 font-medium text-black hover:shadow-1 dark:border-strokedark dark:text-white"
-                    type="button"
+                <div className="flex flex-col items-center">
+                  <div className="h-32 w-32 rounded-full overflow-hidden mb-4">
+                    <img
+                      src={
+                        file
+                          ? URL.createObjectURL(file)
+                          : data.imageUrl || userThree
+                      }
+                      alt="User"
+                      className="object-cover h-full w-full"
+                    />
+                  </div>
+
+                  <span className="mb-1.5 text-black dark:text-white">
+                    Chỉnh sửa ảnh
+                  </span>
+
+                  <div
+                    id="FileUpload"
+                    className="relative mb-5.5 block w-full cursor-pointer appearance-none rounded border border-dashed border-primary bg-gray py-4 px-4 dark:bg-meta-4"
                   >
-                    Hủy
-                  </button>
-                  <button
-                    className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                    type="submit"
-                  >
-                    Lưu thông tin
-                  </button>
-                  <button
-                    onClick={handleShowModal}
-                    className="flex justify-center rounded bg-danger py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                    type="submit"
-                  >
-                    Đổi mật khẩu
-                  </button>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        if (e.target.files && e.target.files.length > 0) {
+                          const selectedFile = e.target.files[0];
+                          setFile(selectedFile);
+                        }
+                      }}
+                      className="absolute inset-0 z-50 m-0 h-full w-full cursor-pointer p-0 opacity-0 outline-none"
+                    />
+                    <div className="flex flex-col items-center justify-center space-y-3">
+                      <span className="text-primary">Nhấp để tải ảnh lên</span>
+                      <p className="mt-1.5">SVG, PNG, JPG hoặc GIF</p>
+                    </div>
+                  </div>
                 </div>
-              </form>
-            </div>
+              </div>
+
+              <div className="flex justify-end gap-4.5">
+                <button
+                  onClick={() => handleUpdate(Number(data.id))}
+                  className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                  type="button"
+                >
+                  Lưu thông tin
+                </button>
+                <button
+                  onClick={handleShowModal}
+                  className="flex justify-center rounded bg-danger py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                  type="button"
+                >
+                  Đổi mật khẩu
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -271,8 +313,9 @@ const Profile = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
-              {error.password && <div className='invalid-feedback'>{error.password}</div>}
-
+              {error.password && (
+                <div className="invalid-feedback">{error.password}</div>
+              )}
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 font-medium">
@@ -285,7 +328,9 @@ const Profile = () => {
                 onChange={(e) => setPasswordNew(e.target.value)}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
-              {error.passwordNew && <div className='invalid-feedback'>{error.passwordNew}</div>}
+              {error.passwordNew && (
+                <div className="invalid-feedback">{error.passwordNew}</div>
+              )}
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 font-medium">
@@ -298,8 +343,9 @@ const Profile = () => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
               />
-              {error.confirmPassword && <div className='invalid-feedback'>{error.confirmPassword}</div>}
-
+              {error.confirmPassword && (
+                <div className="invalid-feedback">{error.confirmPassword}</div>
+              )}
             </div>
             <div className="flex gap-4">
               <button

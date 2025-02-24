@@ -1,47 +1,96 @@
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb.tsx';
-import { Eye, Pencil, Trash2, X, CheckCircle, AlertCircle } from 'lucide-react';
-import { useState } from 'react';
-import { motion } from 'framer-motion';
-
+import { Pencil, Trash2,} from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Account } from '../../types/Account.ts';
+import { deleteAccount, findAccountById, getAllAccount, updateAccount } from '../../service/AccountService.ts';
+import { confirmDelete, showLoadingThenExecute } from '../../utils/swalUtils.ts';
+import { Role } from '../../types/Role.ts';
+import { getAllRole } from '../../service/RoleService.ts';
+import Select from "react-select";
 const AccountList = () => {
-  const [modalType, setModalType] = useState(null);
-  const [selectedAccount, setSelectedAccount] = useState(null);
+  const [accounts,setAccounts] = useState<Account[]>([]);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [totalAccount, setTotalAccount] = useState(0);
+  const [openModal,setOpenModal] = useState(false);
+  const [data,setData] = useState<Account>();
+  const [role,setRole] = useState<Role[]>([]);
 
-  const accounts = [
-    {
-      id: 1,
-      code: 'AC001',
-      name: 'Nguyễn Văn A',
-      image: 'link-to-image-1.jpg',
-      email: 'nguyenvana@example.com',
-      phone: '0123456789',
-      role: 'Quản trị viên'
-    },
-    {
-      id: 2,
-      code: 'AC002',
-      name: 'Trần Thị B',
-      image: 'link-to-image-2.jpg',
-      email: 'tranthib@example.com',
-      phone: '0987654321',
-      role: 'Người dùng'
+  const [file, setFile] = useState<File | null>(null);
+
+
+  useEffect(() => {
+    void setItemsPerPage;
+    getAccount();
+  }, [currentPage,itemsPerPage]);
+  function getAccount(){
+    getAllAccount(currentPage,itemsPerPage).then((response:any)=>{
+      setAccounts(response.content)
+      setTotalAccount(response.totalElements)
+    }).catch((e) =>console.error(e));
+  }
+  const [selectedRoles, setSelectedRoles] = useState<number[]>([]);
+
+  useEffect(() => {
+    getAllRole(0,0).then((reponse:any) =>{
+      setRole(reponse.content)
+    })
+    if (data?.roles) {
+      setSelectedRoles(data.roles.map((role) => role.id));
     }
-  ];
+  }, [data]);
 
-  const handleOpenModal = (type, account) => {
-    setSelectedAccount(account);
-    setModalType(type);
+
+  const totalPages = Math.ceil(totalAccount / itemsPerPage);
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    }
   };
 
-  const handleCloseModal = () => {
-    setModalType(null);
-    setSelectedAccount(null);
+  const handlePrevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
   };
 
-  const handleDelete = () => {
-    console.log(`Deleting account ID: ${selectedAccount.id}`);
-    handleCloseModal();
+  const handlePageChange = (pageNumber:number) => {
+    setCurrentPage(pageNumber);
   };
+  const handleRemove = (id:number) =>{
+    confirmDelete('Bạn chắc chắn xóa tài khoản này ?','Hành động này không thể hoàn tác !',() =>{
+      deleteAccount(id).then(() => {})
+      setAccounts((prev) => prev.filter(item => item.id !== id))
+    }).catch((error: any) => console.error(error));
+  }
+  const handleEdit = (id:number) =>{
+    findAccountById(id).then((response:any)=>{
+      setData(response)
+    })
+    setOpenModal(true);
+  }
+  const handleSaveData = async (id: number) => {
+    if (!data) return;
+    try {
+      const formData = new FormData();
+      formData.append("fullName", data.fullName);
+      selectedRoles.forEach(roleId => formData.append("roleId", roleId.toString()));
+      if (file) {
+        formData.append("file", file);
+      }
+      showLoadingThenExecute(async () => {
+        await updateAccount(id, formData);
+      },'Cập nhật thành công!','Có lỗi xảy ra !','/account')
+      setOpenModal(false);
+      getAccount()
+    } catch (error) {
+      console.error("Lỗi khi cập nhật tài khoản:", error);
+    }
+  };
+
+
+
 
   return (
     <>
@@ -53,9 +102,9 @@ const AccountList = () => {
               <thead>
               <tr className="bg-gray-100 text-gray-700">
                 <th className="py-4 px-6 font-semibold">STT</th>
-                <th className="py-4 px-6 font-semibold">Mã</th>
-                <th className="py-4 px-6 font-semibold">Tên</th>
+                <th className="py-4 px-6 font-semibold">Mã tài khoản</th>
                 <th className="py-4 px-6 font-semibold">Ảnh</th>
+                <th className="py-4 px-6 font-semibold">Họ tên</th>
                 <th className="py-4 px-6 font-semibold">Email</th>
                 <th className="py-4 px-6 font-semibold">Số điện thoại</th>
                 <th className="py-4 px-6 font-semibold">Quyền</th>
@@ -64,24 +113,41 @@ const AccountList = () => {
               </thead>
               <tbody>
               {accounts.map((account, index) => (
-                <tr key={account.id} className="hover:bg-gray-50 transition duration-200">
-                  <td className="py-4 px-6">{index + 1}</td>
-                  <td className="py-4 px-6">{account.code}</td>
-                  <td className="py-4 px-6">{account.name}</td>
+                <tr
+                  key={account.id}
+                  className="hover:bg-gray-50 transition duration-200"
+                >
                   <td className="py-4 px-6">
-                    <img src={account.image} alt={account.name} className="w-16 h-16 object-cover rounded" />
+                    {index + 1 + currentPage * itemsPerPage}
                   </td>
+
+                  <td className="py-4 px-6">{account.code}</td>
+                  <td className="py-4 px-6">
+                    <img
+                      src={account.imageUrl}
+                      className="w-16 h-16 object-cover rounded"
+                    />
+                  </td>
+                  <td className="py-4 px-6">{account.fullName}</td>
                   <td className="py-4 px-6">{account.email}</td>
                   <td className="py-4 px-6">{account.phone}</td>
-                  <td className="py-4 px-6">{account.role}</td>
-                  <td className="py-4 px-6 flex gap-4">
-                    <button className="text-blue-600 hover:text-blue-800 transition" onClick={() => handleOpenModal('view', account)}>
-                      <Eye size={20} />
-                    </button>
-                    <button className="text-yellow-600 hover:text-yellow-800 transition" onClick={() => handleOpenModal('edit', account)}>
+                  <td className="py-4 px-6">
+                    {account.roles.map((role) => role.name).join(',')}
+                  </td>
+                  <td
+                    style={{ marginTop: 15 }}
+                    className="py-4 px-6 flex gap-4"
+                  >
+                    <button
+                      onClick={() => handleEdit(account.id)}
+                      className="text-yellow-600 hover:text-yellow-800 transition"
+                    >
                       <Pencil size={20} />
                     </button>
-                    <button className="text-red-600 hover:text-red-800 transition" onClick={() => handleOpenModal('delete', account)}>
+                    <button
+                      onClick={() => handleRemove(account.id)}
+                      className="text-red-600 hover:text-red-800 transition"
+                    >
                       <Trash2 size={20} />
                     </button>
                   </td>
@@ -89,93 +155,156 @@ const AccountList = () => {
               ))}
               </tbody>
             </table>
+            <nav aria-label="Page navigation example">
+              <ul className="pagination justify-content-end">
+                <li
+                  className={`page-item ${currentPage === 0 ? 'disabled' : ''}`}
+                >
+                  <button
+                    className="page-link"
+                    onClick={handlePrevPage}
+                    disabled={currentPage === 0}
+                  >
+                    Previous
+                  </button>
+                </li>
+                {Array.from({ length: totalPages }, (_, index) => (
+                  <li
+                    className={`page-item ${
+                      currentPage === index ? 'active' : ''
+                    }`}
+                    key={index}
+                  >
+                    <button
+                      className="page-link"
+                      onClick={() => handlePageChange(index)}
+                    >
+                      {index + 1}
+                    </button>
+                  </li>
+                ))}
+                <li
+                  className={`page-item ${
+                    currentPage === totalPages - 1 ? 'disabled' : ''
+                  }`}
+                >
+                  <button
+                    className="page-link"
+                    onClick={handleNextPage}
+                    disabled={currentPage === totalPages - 1}
+                  >
+                    Next
+                  </button>
+                </li>
+              </ul>
+            </nav>
           </div>
         </div>
       </div>
 
-      {modalType === 'view' && selectedAccount && (
+      {openModal && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-          <motion.div
-            initial={{ scale: 0.7, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="bg-white p-6 rounded-xl shadow-xl w-[500px] relative"
+          <div
+            className="bg-white p-6 rounded-xl shadow-xl w-[700px] max-h-[80vh] overflow-y-auto relative scrollbar-thin scrollbar-thumb-rounded scrollbar-track-rounded scrollbar-thumb-gray-400 scrollbar-track-gray-200"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
-            <button className="absolute top-2 right-2 text-gray-600 hover:text-gray-800" onClick={handleCloseModal}>
-              <X size={24} />
-            </button>
-            <h3 className="text-xl font-semibold mb-4">Thông tin tài khoản</h3>
-            {['code', 'name', 'email', 'phone', 'role'].map((field) => (
-              <div className="mb-4" key={field}>
-                <label className="block text-gray-700 font-medium capitalize">{field}</label>
-                <input
-                  type="text"
-                  value={selectedAccount[field]}
-                  readOnly
-                  className="w-full rounded-lg border border-gray-300 py-2 px-4 text-black"
-                />
-              </div>
-            ))}
-            <button className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700" onClick={handleCloseModal}>
-              Đóng
-            </button>
-          </motion.div>
-        </div>
-      )}
-
-      {modalType === 'edit' && selectedAccount && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-          <motion.div
-            initial={{ scale: 0.7, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            className="bg-white p-6 rounded-xl shadow-xl w-[500px] relative"
-          >
-            <button className="absolute top-2 right-2 text-gray-600 hover:text-gray-800" onClick={handleCloseModal}>
-              <X size={24} />
-            </button>
             <h3 className="text-xl font-semibold mb-4">Chỉnh sửa tài khoản</h3>
-            {['name', 'email', 'phone', 'role'].map((field) => (
-              <div className="mb-4" key={field}>
-                <label className="block text-gray-700 font-medium capitalize">{field}</label>
+            <div className="mb-4 flex gap-4">
+              <div className="w-1/2">
+                <label className="block text-gray-700 font-medium">
+                  Mã tài khoản
+                </label>
                 <input
                   type="text"
-                  defaultValue={selectedAccount[field]}
-                  className="w-full rounded-lg border border-gray-300 py-2 px-4 text-black"
+                  disabled
+                  value={data?.code}
+                  name="number"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
               </div>
-            ))}
-            <div className="flex gap-4">
-              <button className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">Lưu</button>
-              <button className="w-full bg-gray-500 text-white py-2 rounded hover:bg-gray-600" onClick={handleCloseModal}>Hủy</button>
-            </div>
-          </motion.div>
-        </div>
-      )}
 
-      {modalType === 'delete' && selectedAccount && (
-        <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-          <motion.div
-            initial={{ y: -50, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            className="bg-white p-6 rounded-xl shadow-xl w-[400px] text-center"
-          >
-            <AlertCircle className="text-red-600 mx-auto mb-4" size={48} />
-            <h3 className="text-xl font-semibold mb-4">Xác nhận xóa</h3>
-            <p className="mb-6">Bạn có chắc chắn muốn xóa tài khoản <strong>{selectedAccount.name}</strong> không?</p>
-            <div className="flex gap-4 justify-center">
-              <button
-                className="flex items-center gap-2 bg-red-600 text-white py-2 px-4 rounded hover:bg-red-700"
-                onClick={handleDelete}
-              >
-                <CheckCircle size={20} /> Xóa
+              <div className="w-1/2">
+                <label className="block text-gray-700 font-medium">
+                  Họ và tên
+                </label>
+                <input
+                  type="text"
+                  value={data?.fullName}
+                  onChange={(e) => setData((prev) => prev ? { ...prev, fullName: e.target.value } : prev)}
+                  name="name"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+            </div>
+            <div className="mb-4 flex gap-4">
+              <div className="w-1/2">
+                <label className="block text-gray-700 font-medium">Email</label>
+                <input
+                  disabled
+                  value={data?.email}
+                  type="text"
+                  name="number"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+
+              <div className="w-1/2">
+                <label className="block text-gray-700 font-medium">
+                  Số điện thoại
+                </label>
+                <input
+                  disabled
+                  value={data?.phone}
+                  type="text"
+                  name="name"
+                  className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                />
+              </div>
+            </div>
+            <Select
+              isMulti
+              options={role.map((r) => ({
+                value: r.id,
+                label: r.name,
+              }))}
+              value={role
+                .filter((r) => selectedRoles.includes(r.id))
+                .map((r) => ({ value: r.id, label: r.name }))}
+              onChange={(selectedOptions) =>
+                setSelectedRoles(selectedOptions.map((option) => option.value))
+              }
+            />
+
+
+            <div className="mb-4">
+              <label className="mb-3 block text-black dark:text-white">
+                Ảnh đại diện
+              </label>
+              <input
+                type="file"
+                onChange={(e) => {
+                  if (e.target.files && e.target.files.length > 0) {
+                    setFile(e.target.files[0]);
+                  }
+                }}
+                className="w-full cursor-pointer rounded-lg border-[1.5px] border-stroke bg-transparent outline-none transition file:mr-5 file:border-collapse file:cursor-pointer file:border-0 file:border-r file:border-solid file:border-stroke file:bg-whiter file:py-3 file:px-5 file:hover:bg-primary file:hover:bg-opacity-10 focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:file:border-form-strokedark dark:file:bg-white/30 dark:file:text-white dark:focus:border-primary"
+              />
+            </div>
+
+            <div className="flex gap-4">
+              <button onClick={() => handleSaveData(Number(data?.id))} className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">
+                Lưu
               </button>
               <button
-                className="flex items-center gap-2 bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600"
-                onClick={handleCloseModal}
+                className="w-full bg-gray-500 text-white py-2 rounded hover:bg-gray-600"
+                onClick={() => {
+                  setOpenModal(false);
+                }}
               >
-                <X size={20} /> Hủy
+                Hủy
               </button>
             </div>
-          </motion.div>
+          </div>
         </div>
       )}
     </>

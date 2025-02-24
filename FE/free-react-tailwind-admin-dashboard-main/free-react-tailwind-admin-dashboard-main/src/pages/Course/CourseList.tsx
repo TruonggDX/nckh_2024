@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { Course } from '../../types/Course.ts';
 import { useNavigate } from 'react-router-dom';
 import { confirmDelete } from '../../utils/swalUtils';
+import { formatCurrency } from '../../utils/Utils.ts';
 const CourseList = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
@@ -93,7 +94,7 @@ const CourseList = () => {
                     />
                   </td>
                   <td className="py-4 px-6">{course.name}</td>
-                  <td className="py-4 px-6">{course.price} VNĐ</td>
+                  <td className="py-4 px-6">{formatCurrency(course.price)} </td>
                   <td className="py-4 px-6">{course.status}</td>
                   <td className="py-4 px-6 flex gap-4" style={{marginTop:'15%'}}>
                     <button className="text-blue-600 hover:text-blue-800 transition">

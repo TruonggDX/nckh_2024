@@ -9,13 +9,9 @@ axiosInstance.interceptors.request.use(
   (config) => {
     const accessToken = localStorage.getItem("jwtToken");
 
-    if (config.url !== '/auth/login') {
         if (accessToken) {
             config.headers['Authorization'] = `Bearer ${accessToken}`;
-        }else {
-            window.location.href = "/login";
         }
-    }
 
     return config;
   },
@@ -25,15 +21,15 @@ axiosInstance.interceptors.request.use(
 );
 
 axiosInstance.interceptors.response.use(
-  (response) => {
-    return response;
-  },
-  (error) => {
-    if (error.response && error.response.status === 401) {
-      console.log('Unauthorized, please login again.');
+    (response) => response,
+    (error) => {
+        if (error.response?.status === 401) {
+            alert("Vui lòng đăng nhập!")
+            return new Promise(() => {});
+        }
+        return Promise.reject(error);
     }
-    return Promise.reject(error);
-  }
 );
+
 
 export default axiosInstance;

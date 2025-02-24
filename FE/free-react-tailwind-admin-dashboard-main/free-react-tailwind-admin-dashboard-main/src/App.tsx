@@ -3,7 +3,6 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 
 import Loader from './common/Loader';
 import PageTitle from './components/PageTitle';
-// import Calendar from './pages/Calendar';
 import Chart from './pages/Chart';
 import ECommerce from './pages/Dashboard/ECommerce';
 import FormElements from './pages/Form/FormElements';
@@ -24,6 +23,7 @@ import AddCertificate from './pages/Certificate/AddCertificate.tsx';
 import ShowCourse from './pages/Course/ShowCourse.tsx';
 import GradeList from './pages/Grade/GradeList.tsx';
 import UpdateGrade from './pages/Grade/UpdateGrade.tsx'
+import ExamList from './pages/Exam/ExamList.tsx';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -46,7 +46,7 @@ function App() {
           index
           element={
             <>
-              <PageTitle title="eCommerce Dashboard | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="Dashboard ADMIN" />
               <ECommerce />
             </>
           }
@@ -55,7 +55,7 @@ function App() {
           path="/account"
           element={
             <>
-              <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="ADMIN" />
               <AccountList />
             </>
           }
@@ -64,7 +64,7 @@ function App() {
           path="/category"
           element={
             <>
-              <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="ADMIN" />
               <CategoryList />
             </>
           }
@@ -73,7 +73,7 @@ function App() {
           path="/course"
           element={
             <>
-              <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="ADMIN" />
               <CourseList />
             </>
           }
@@ -82,7 +82,7 @@ function App() {
           path="/addCourse"
           element={
             <>
-              <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="ADMIN" />
               <AddCourse />
             </>
           }
@@ -91,7 +91,7 @@ function App() {
           path="/showDetails/:id"
           element={
             <>
-              <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="ADMIN" />
               <ShowCourse />
             </>
           }
@@ -100,8 +100,8 @@ function App() {
           path="/updateCourse/:id"
           element={
             <>
-              <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <ShowCourse isEditMode />
+              <PageTitle title="ADMIN" />
+              <ShowCourse isEditMode/>
             </>
           }
         />
@@ -109,7 +109,7 @@ function App() {
           path="/bill"
           element={
             <>
-              <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="ADMIN" />
               <BillList />
             </>
           }
@@ -119,7 +119,7 @@ function App() {
           path="/certificate"
           element={
             <>
-              <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="ADMIN" />
               <CertificateList />
             </>
           }
@@ -128,7 +128,7 @@ function App() {
           path="/addCertificate"
           element={
             <>
-              <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="ADMIN" />
               <AddCertificate />
             </>
           }
@@ -137,7 +137,7 @@ function App() {
           path="/grade"
           element={
             <>
-              <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <PageTitle title="ADMIN" />
               <GradeList />
             </>
           }

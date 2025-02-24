@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import ClickOutside from '../ClickOutside';
 import UserOne from '../../images/user/user-01.png';
-import api from '../../route/route.js';
+import { getUser } from '../../route/route.ts';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -11,32 +11,18 @@ const DropdownUser = () => {
     window.location.href = 'http://localhost:3000/login';
   };
 
-  const [account, setAccount] = useState({
-    id: '',
-    code: '',
-    email: '',
-    fullName: '',
-    phone: '',
-    imageUrl: '',
+  const [data, setData] = useState({
+      id: 0,
+      code: '',
+      email: '',
+      fullName: '',
+      phone: '',
+      imageUrl: '',
   });
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await api.getUser();
-        setAccount({
-          id: response.data.id || '',
-          code: response.data.code || '',
-          fullName: response.data.fullName || '',
-          phone: response.data.phone || '',
-          email: response.data.email || '',
-          imageUrl: response.data.imageUrl || '',
-        });
-      } catch (error) {
-        console.error('Failed to fetch user:', error);
-      }
-    };
-
-    fetchUser();
+    getUser().then((response) =>{
+      setData(response.data)
+    })
   }, []);
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
@@ -47,9 +33,9 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            {account.fullName}
+            {data.fullName}
           </span>
-          <span className="block text-xs">{account.code}</span>
+          <span className="block text-xs">{data.code}</span>
         </span>
 
         <span
@@ -62,7 +48,7 @@ const DropdownUser = () => {
           className="h-12 w-12 rounded-full"
         >
           <img
-            src={account.imageUrl || UserOne}
+            src={data.imageUrl || UserOne}
             alt="User"
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
