@@ -8,7 +8,16 @@ public class GradeDto {
     private String name;
     private Long number_student;
     private Long course_id;
+    private String course_name;
     private Set<Long> account_id;
+
+    public String getCourse_name() {
+        return course_name;
+    }
+
+    public void setCourse_name(String course_name) {
+        this.course_name = course_name;
+    }
 
     public Long getCourse_id() {
         return course_id;

@@ -53,7 +53,7 @@ export const updateCategory = async (id:number, category: Category) => {
     throw error;
   }
 }
-export const addCategory =async (category:Category) => {
+export const addCategory = async (category:Category) => {
   const token = getToken();
   try {
     const response = await axios.post(`${apiListCategories}`,category, {

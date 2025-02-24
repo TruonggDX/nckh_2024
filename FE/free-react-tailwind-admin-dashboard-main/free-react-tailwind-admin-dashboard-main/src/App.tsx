@@ -23,6 +23,7 @@ import CertificateList from './pages/Certificate/CertificateList.tsx';
 import AddCertificate from './pages/Certificate/AddCertificate.tsx';
 import ShowCourse from './pages/Course/ShowCourse.tsx';
 import GradeList from './pages/Grade/GradeList.tsx';
+import UpdateGrade from './pages/Grade/UpdateGrade.tsx'
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -100,7 +101,7 @@ function App() {
           element={
             <>
               <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
-              <ShowCourse isEditMode/>
+              <ShowCourse isEditMode />
             </>
           }
         />
@@ -141,7 +142,15 @@ function App() {
             </>
           }
         />
-
+        <Route
+          path="/updateGrade/:id"
+          element={
+            <>
+              <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <UpdateGrade  />
+            </>
+          }
+        />
 
 
 

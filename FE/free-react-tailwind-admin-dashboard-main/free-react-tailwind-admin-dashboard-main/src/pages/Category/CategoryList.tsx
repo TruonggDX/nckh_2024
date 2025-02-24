@@ -172,7 +172,7 @@ const CategoryList = () => {
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 font-medium">Tên danh mục</label>
-              <input type="text" name="name" value={category.name} onChange={(e) => setCategory({ ...category, name: e.target.value })}                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
+              <input type="text" name="name" value={category.name} onChange={(e) => setCategory({ ...category, name: e.target.value })} className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
               {error.name && <div className='invalid-feedback'>{error.name}</div>}
             </div>
             <div className="flex gap-4">
