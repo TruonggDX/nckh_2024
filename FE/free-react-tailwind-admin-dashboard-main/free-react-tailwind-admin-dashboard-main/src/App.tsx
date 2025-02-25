@@ -23,6 +23,7 @@ import AddCertificate from './pages/Certificate/AddCertificate.tsx';
 import ShowCourse from './pages/Course/ShowCourse.tsx';
 import GradeList from './pages/Grade/GradeList.tsx';
 import ExamList from './pages/Exam/ExamList.tsx';
+import ExamComponent from './pages/Exam/ExamComponent.tsx';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -147,6 +148,24 @@ function App() {
             <>
               <PageTitle title="ADMIN" />
               <ExamList />
+            </>
+          }
+        />
+        <Route
+          path="/showDetailExam/:id"
+          element={
+            <>
+              <PageTitle title="ADMIN" />
+              <ExamComponent />
+            </>
+          }
+        />
+        <Route
+          path="/updateExam/:id"
+          element={
+            <>
+              <PageTitle title="ADMIN" />
+              <ExamComponent isEdit/>
             </>
           }
         />

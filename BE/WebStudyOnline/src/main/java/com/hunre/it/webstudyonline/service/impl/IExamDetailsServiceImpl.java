@@ -5,6 +5,7 @@ import com.hunre.it.webstudyonline.entity.ExamEntity;
 import com.hunre.it.webstudyonline.mapper.ExamDetailsMapper;
 import com.hunre.it.webstudyonline.model.dto.ExamDetailsDto;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
+import com.hunre.it.webstudyonline.model.response.ResponsePage;
 import com.hunre.it.webstudyonline.repository.ExamDetailsRepository;
 import com.hunre.it.webstudyonline.repository.ExamRepository;
 import com.hunre.it.webstudyonline.service.IExamDetailsService;
@@ -12,6 +13,8 @@ import com.hunre.it.webstudyonline.utils.Constant;
 import com.hunre.it.webstudyonline.utils.LongUtils;
 import com.hunre.it.webstudyonline.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -28,21 +31,18 @@ public class IExamDetailsServiceImpl implements IExamDetailsService {
     private ExamRepository examRepository;
 
     @Override
-    public BaseResponse<List<ExamDetailsDto>> getAllExamDetails(String id) {
-        BaseResponse<List<ExamDetailsDto>> response = new BaseResponse<>();
+    public ResponsePage<List<ExamDetailsDto>> getAllExamDetails(String id, Pageable pageable) {
+        ResponsePage<List<ExamDetailsDto>> responsePage = new ResponsePage<>();
         Utils<Long> utils = LongUtils.strToLong(id);
-        if (utils.getT()== null){
-            response.setCode(utils.getCode());
-            response.setMessage(utils.getMsg());
-            return response;
-        }
         Long examId = utils.getT();
-        List<ExamDetailsEntity> entities = examDetailsRepository.findAllExamDetailsByExamId(examId);
-        List<ExamDetailsDto> examDetailsDtos = entities.stream().map(examDetailsMapper::toDto).toList();
-        response.setData(examDetailsDtos);
-        response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
-        response.setCode(HttpStatus.OK.value());
-        return response;
+        Page<ExamDetailsEntity> page = examDetailsRepository.findAllExamDetailsByExamId(examId,pageable);
+        List<ExamDetailsDto> examDetailsDtos = page.stream().map(examDetailsMapper::toDto).toList();
+        responsePage.setPageNumber(pageable.getPageNumber());
+        responsePage.setPageSize(pageable.getPageSize());
+        responsePage.setTotalElements(page.getTotalElements());
+        responsePage.setTotalPages(page.getTotalPages());
+        responsePage.setContent(examDetailsDtos);
+        return responsePage;
     }
 
     @Override
