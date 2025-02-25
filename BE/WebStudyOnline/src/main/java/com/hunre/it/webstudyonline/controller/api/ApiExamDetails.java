@@ -2,8 +2,10 @@ package com.hunre.it.webstudyonline.controller.api;
 
 import com.hunre.it.webstudyonline.model.dto.ExamDetailsDto;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
+import com.hunre.it.webstudyonline.model.response.ResponsePage;
 import com.hunre.it.webstudyonline.service.IExamDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,8 +18,8 @@ public class ApiExamDetails {
     @Autowired
     private IExamDetailsService iExamDetailsService;
     @GetMapping("/list/{id}")
-    public ResponseEntity<BaseResponse<List<ExamDetailsDto>>> getAllExamDetails(@PathVariable String id) {
-        BaseResponse<List<ExamDetailsDto>> response = iExamDetailsService.getAllExamDetails(id);
+    public ResponseEntity<ResponsePage<List<ExamDetailsDto>>> getAllExamDetails(@PathVariable String id, Pageable pageable) {
+        ResponsePage<List<ExamDetailsDto>> response = iExamDetailsService.getAllExamDetails(id,pageable );
         return ResponseEntity.ok(response);
     }
 

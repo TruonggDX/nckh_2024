@@ -184,7 +184,7 @@ public class ICourseServiceImpl implements ICourseService {
         CourseEntity course = courseEntity.get();
         course.setDeleted(true);
         course = courseRepository.save(course);
-        List<CourseDetailsEntity> courseDetailsEntities = courseDetailsRepository.findByCourseId(course.getId()).stream().map(courseDetailsEntity -> {
+        List<CourseDetailsEntity> courseDetailsEntities = courseDetailsRepository.findBycourseEntityId(course.getId()).stream().map(courseDetailsEntity -> {
             courseDetailsEntity.setDeleted(true);
             return courseDetailsEntity;
         }).toList();

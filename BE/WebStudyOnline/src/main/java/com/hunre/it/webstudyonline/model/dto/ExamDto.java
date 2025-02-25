@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 
 public class ExamDto {
     private Long id;
-    @NotBlank(message = "Code cannot be empty")
     private String code;
     @NotBlank(message = "Name cannot be empty")
     private String name;

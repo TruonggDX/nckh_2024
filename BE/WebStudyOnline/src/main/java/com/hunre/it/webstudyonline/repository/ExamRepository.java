@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ExamRepository extends JpaRepository<ExamEntity,Long> {
-    @Query(value = "SELECT e FROM ExamEntity e WHERE e.deleted=false ")
+    @Query(value = "SELECT e FROM ExamEntity e WHERE e.deleted=false ORDER BY e.id DESC ")
     Page<ExamEntity> getExams(Pageable pageable);
     @Query(value = "SELECT e FROM ExamEntity e WHERE e.deleted=false " +
             "AND (:name IS NULL OR e.name LIKE %:name%)" +
