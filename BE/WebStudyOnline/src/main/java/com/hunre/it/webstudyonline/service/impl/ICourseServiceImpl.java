@@ -28,9 +28,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -227,4 +227,35 @@ public class ICourseServiceImpl implements ICourseService {
         return response;
     }
 
+    @Override
+    public ResponsePage<List<CourseDto>> getCourseByCondition(Map<String, String> params, Pageable pageable) {
+        ResponsePage<List<CourseDto>> responsePage = new ResponsePage<>();
+        String code = params.get("code");
+        String name = params.get("name");
+        String aim = params.get("aim");
+        String category = params.get("category");
+        String status = params.get("status");
+
+        Page<CourseEntity> page = courseRepository.getCourseByCondition(pageable, code, name, aim,category,status);
+        List<CourseDto> courseDtos = page.getContent().stream().map(courseMapper::toDto).toList();
+        responsePage.setPageNumber(pageable.getPageNumber());
+        responsePage.setPageSize(pageable.getPageSize());
+        responsePage.setTotalElements(page.getTotalElements());
+        responsePage.setTotalPages(page.getTotalPages());
+        responsePage.setContent(courseDtos);
+        return responsePage;
+    }
+    @Override
+    public ResponsePage<List<CourseDto>> getCourseBestSeller(Pageable pageable) {
+        ResponsePage<List<CourseDto>> responsePage = new ResponsePage<>();
+
+        Page<CourseEntity> page = courseRepository.getCourseBestSeller(pageable);
+        List<CourseDto> courseDtos = page.getContent().stream().map(courseMapper::toDto).toList();
+        responsePage.setPageNumber(pageable.getPageNumber());
+        responsePage.setPageSize(pageable.getPageSize());
+        responsePage.setTotalElements(page.getTotalElements());
+        responsePage.setTotalPages(page.getTotalPages());
+        responsePage.setContent(courseDtos);
+        return responsePage;
+    }
 }

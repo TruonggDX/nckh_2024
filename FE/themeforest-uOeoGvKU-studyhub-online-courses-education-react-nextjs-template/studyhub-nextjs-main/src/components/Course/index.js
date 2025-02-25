@@ -7,7 +7,7 @@ export default function SingleCourse( props ) {
 	return (
 		<div className={ courseClass || 'rts-single-course'}>
 			<Link href={`/course/${Slug || 'details'}`} className="thumbnail">
-				<Image src={Img || '/images/course/01.jpg'} width={imgWidth || 290} height={imgHeight || 210}alt="course" />
+				<img src={Img } width={imgWidth || 290} height={imgHeight || 210}alt="course" />
 			</Link>
 			<div className="save-icon" data-bs-toggle="modal" data-bs-target="#exampleModal-login">
 				<i className="fa-sharp fa-light fa-bookmark"></i>
@@ -40,7 +40,7 @@ export default function SingleCourse( props ) {
 							<li><i className="fa-sharp fa-solid fa-star"></i></li>
 							<li><i className="fa-sharp fa-solid fa-star"></i></li>
 							<li><i className="fa-sharp fa-solid fa-star"></i></li>
-							<li><i className="fa-sharp fa-regular fa-star"></i></li>
+							<li><i className="fa-sharp fa-solid fa-star"></i></li>
 						</ul>
 					</div>
 				</div>

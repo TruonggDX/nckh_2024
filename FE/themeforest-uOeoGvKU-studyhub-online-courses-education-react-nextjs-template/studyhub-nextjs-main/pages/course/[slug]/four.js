@@ -4,7 +4,7 @@ import Preloader from '@/components/Preloader';
 import Courses from "@/data/courses";
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
- 
+import  api from "/src/route/route"
 const CourseDetailsModulesFour = dynamic(() => import('@/modules/CourseDetails/Four'), {
   loading: () => <Preloader />,
 });
@@ -12,13 +12,15 @@ const CourseDetailsModulesFour = dynamic(() => import('@/modules/CourseDetails/F
 export default function CourseDetails() {
 	const router = useRouter();
 	const { asPath } = router;
-	const courseSlug = asPath.split('/')[2];
+	const courseSlug = "cloud-computing-masterclass";
+	const code = asPath.split('?')[1];
+	api.getCourse("")
 
 	const singleCourse = Courses.find((course) => {
         return course?.slug === courseSlug;
     });
 
-	console.log('singleCourse chk: ', singleCourse, courseSlug );
+	console.log('singleCourse chk: ',singleCourse, courseSlug );
 
 	return (
 		<main>

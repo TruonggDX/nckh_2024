@@ -17,7 +17,16 @@ public class CourseDto {
     private String createdBy;
     private LocalDateTime createdDate;
     private String aim;
+    private Integer periods;
     private String categoryName;
+
+    public Integer getPeriods() {
+        return periods;
+    }
+
+    public void setPeriods(Integer periods) {
+        this.periods = periods;
+    }
 
     public String getCategoryName() {
         return categoryName;
