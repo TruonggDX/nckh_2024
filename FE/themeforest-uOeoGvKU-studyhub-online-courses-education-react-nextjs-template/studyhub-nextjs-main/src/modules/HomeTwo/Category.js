@@ -10,7 +10,7 @@ export default function Category() {
 		getAllCourse();
 	},[])
 	async function getAllCourse() {
-		await api.getCourse().then(res => {
+		await api.getCourse({page: 0}).then(res => {
 			setCourses(res.content)
 		});
 	}

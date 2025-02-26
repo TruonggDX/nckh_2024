@@ -26,6 +26,7 @@ public class CourseMapper {
         courseDto.setCreatedBy(courseEntity.getCreatedBy());
         courseDto.setCreatedDate(courseEntity.getCreatedDate());
         courseDto.setAim(courseEntity.getAim());
+        courseDto.setCreatedDate(courseEntity.getModifiedDate());
         return courseDto;
     }
     public CourseEntity toEntity(CourseDto courseDto){

@@ -236,8 +236,23 @@ public class ICourseServiceImpl implements ICourseService {
         String category = params.get("category");
         String status = params.get("status");
 
+        if (code == null){
+            code = "";
+        }
+        if (name == null){
+            name = "";
+        }
+
         Page<CourseEntity> page = courseRepository.getCourseByCondition(pageable, code, name, aim,category,status);
-        List<CourseDto> courseDtos = page.getContent().stream().map(courseMapper::toDto).toList();
+        List<CourseDto> courseDtos = page.getContent().stream().map(courseEntity -> {
+            CourseDto courseDto = courseMapper.toDto(courseEntity);
+            List<ImagesEntity> images = imageRepository.findByCourseId(courseEntity.getId());
+            if (!images.isEmpty()) {
+                ImagesEntity image = images.get(0);
+                courseDto.setImageUrl(image.getUrl());
+            }
+            return courseDto;
+        }).toList();
         responsePage.setPageNumber(pageable.getPageNumber());
         responsePage.setPageSize(pageable.getPageSize());
         responsePage.setTotalElements(page.getTotalElements());
@@ -250,8 +265,15 @@ public class ICourseServiceImpl implements ICourseService {
         ResponsePage<List<CourseDto>> responsePage = new ResponsePage<>();
 
         Page<CourseEntity> page = courseRepository.getCourseBestSeller(pageable);
-        List<CourseDto> courseDtos = page.getContent().stream().map(courseMapper::toDto).toList();
-        responsePage.setPageNumber(pageable.getPageNumber());
+        List<CourseDto> courseDtos = page.getContent().stream().map(courseEntity -> {
+            CourseDto courseDto = courseMapper.toDto(courseEntity);
+            List<ImagesEntity> images = imageRepository.findByCourseId(courseEntity.getId());
+            if (!images.isEmpty()) {
+                ImagesEntity image = images.get(0);
+                courseDto.setImageUrl(image.getUrl());
+            }
+            return courseDto;
+        }).toList();        responsePage.setPageNumber(pageable.getPageNumber());
         responsePage.setPageSize(pageable.getPageSize());
         responsePage.setTotalElements(page.getTotalElements());
         responsePage.setTotalPages(page.getTotalPages());

@@ -19,7 +19,7 @@ export default function Course() {
 	const [itemsPerPage, setItemsPerPage] = useState(8);
 	const [courses, setCourses] = useState([]);
 	useEffect(() => {
-		api.getCourse({page: currentPage, size: itemsPerPage}).then((res) => {
+		api.getCourseBestSeller({page: currentPage, size: itemsPerPage}).then((res) => {
 			setCourses(res.content);
 		})
 	}, []);

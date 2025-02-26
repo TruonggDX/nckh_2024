@@ -15,7 +15,6 @@ public interface CourseRepository extends JpaRepository<CourseEntity,Long> {
 
     @Query(value = "SELECT c FROM CourseEntity c " +
             "WHERE c.deleted = false " +
-            "AND (:status IS NULL or c.status = null) " +
             "AND (:aim IS NULL OR c.aim = :aim) " +
             "AND c.code LIKE %:code% " +
             "AND c.name LIKE %:name% " +
