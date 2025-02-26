@@ -22,6 +22,7 @@ import CertificateList from './pages/Certificate/CertificateList.tsx';
 import AddCertificate from './pages/Certificate/AddCertificate.tsx';
 import ShowCourse from './pages/Course/ShowCourse.tsx';
 import GradeList from './pages/Grade/GradeList.tsx';
+import UpdateGrade from './pages/Grade/UpdateGrade.tsx'
 import ExamList from './pages/Exam/ExamList.tsx';
 import ExamComponent from './pages/Exam/ExamComponent.tsx';
 
@@ -143,11 +144,11 @@ function App() {
           }
         />
         <Route
-          path="/exam"
+          path="/updateGrade/:id"
           element={
             <>
-              <PageTitle title="ADMIN" />
-              <ExamList />
+              <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
+              <UpdateGrade  />
             </>
           }
         />
@@ -169,8 +170,6 @@ function App() {
             </>
           }
         />
-
-
 
 
 
