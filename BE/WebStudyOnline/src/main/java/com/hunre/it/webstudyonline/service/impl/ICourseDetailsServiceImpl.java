@@ -6,6 +6,7 @@ import com.hunre.it.webstudyonline.mapper.CourseDetailsMapper;
 import com.hunre.it.webstudyonline.model.dto.CourseDetailsDto;
 import com.hunre.it.webstudyonline.model.dto.ImageDto;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
+import com.hunre.it.webstudyonline.model.response.ResponsePage;
 import com.hunre.it.webstudyonline.repository.CourseDetailsRepository;
 import com.hunre.it.webstudyonline.repository.CourseRepository;
 import com.hunre.it.webstudyonline.repository.ImageRepository;
@@ -15,6 +16,8 @@ import com.hunre.it.webstudyonline.utils.Constant;
 import com.hunre.it.webstudyonline.utils.LongUtils;
 import com.hunre.it.webstudyonline.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,25 +38,22 @@ public class ICourseDetailsServiceImpl implements ICourseDetailsService {
     @Autowired
     private ImageRepository imageRepository;
     @Override
-    public BaseResponse<List<CourseDetailsDto>> getAll(String courseIds) {
-        BaseResponse<List<CourseDetailsDto>> response = new BaseResponse<>();
+    public ResponsePage<List<CourseDetailsDto>> getAll(String courseIds, Pageable pageable) {
+        ResponsePage<List<CourseDetailsDto>> responsePage = new ResponsePage<>();
         Utils<Long> utils = LongUtils.strToLong(courseIds);
-        if (utils.getT()== null){
-            response.setCode(utils.getCode());
-            response.setMessage(utils.getMsg());
-            return response;
-        }
         Long courseId = utils.getT();
-        List<CourseDetailsEntity> list = courseDetailsRepository.findByCourseId(courseId);
-        List<CourseDetailsDto> dtos = list.stream().map(courseDetailsEntity -> {
+        Page<CourseDetailsEntity> page = courseDetailsRepository.findByCourseId(courseId,pageable);
+        List<CourseDetailsDto> dtos = page.stream().map(courseDetailsEntity -> {
             CourseDetailsDto dto = courseDetailsMapper.toDto(courseDetailsEntity);
             dto.setCourseId(courseId);
             return dto;
         }).toList();
-        response.setData(dtos);
-        response.setCode(HttpStatus.OK.value());
-        response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
-        return response;
+        responsePage.setPageNumber(pageable.getPageNumber());
+        responsePage.setPageSize(pageable.getPageSize());
+        responsePage.setTotalElements(page.getTotalElements());
+        responsePage.setTotalPages(page.getTotalPages());
+        responsePage.setContent(dtos);
+        return responsePage;
     }
     @Override
     public BaseResponse<CourseDetailsDto> addCourseDetails(CourseDetailsDto courseDetailsDto, MultipartFile file) {

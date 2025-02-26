@@ -24,6 +24,7 @@ import ShowCourse from './pages/Course/ShowCourse.tsx';
 import GradeList from './pages/Grade/GradeList.tsx';
 import UpdateGrade from './pages/Grade/UpdateGrade.tsx'
 import ExamList from './pages/Exam/ExamList.tsx';
+import ExamComponent from './pages/Exam/ExamComponent.tsx';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -148,6 +149,24 @@ function App() {
             <>
               <PageTitle title="Calendar | TailAdmin - Tailwind CSS Admin Dashboard Template" />
               <UpdateGrade  />
+            </>
+          }
+        />
+        <Route
+          path="/showDetailExam/:id"
+          element={
+            <>
+              <PageTitle title="ADMIN" />
+              <ExamComponent />
+            </>
+          }
+        />
+        <Route
+          path="/updateExam/:id"
+          element={
+            <>
+              <PageTitle title="ADMIN" />
+              <ExamComponent isEdit/>
             </>
           }
         />

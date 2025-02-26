@@ -2,9 +2,11 @@ package com.hunre.it.webstudyonline.controller.api;
 
 import com.hunre.it.webstudyonline.model.dto.CourseDetailsDto;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
+import com.hunre.it.webstudyonline.model.response.ResponsePage;
 import com.hunre.it.webstudyonline.service.ICourseDetailsService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,8 +21,8 @@ public class ApiCourseDetails {
     private ICourseDetailsService courseDetailsService;
 
     @GetMapping("/list/{id}")
-    public ResponseEntity<BaseResponse<List<CourseDetailsDto>>> getCourseDetails(@PathVariable String id) {
-        BaseResponse<List<CourseDetailsDto>> response = courseDetailsService.getAll(id);
+    public ResponseEntity<ResponsePage<List<CourseDetailsDto>>> getCourseDetails(@PathVariable String id, Pageable pageable) {
+        ResponsePage<List<CourseDetailsDto>> response = courseDetailsService.getAll(id, pageable);
         return ResponseEntity.ok(response);
     }
     @PostMapping

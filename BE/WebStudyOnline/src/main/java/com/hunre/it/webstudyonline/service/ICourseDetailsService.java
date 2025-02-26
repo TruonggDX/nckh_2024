@@ -2,12 +2,14 @@ package com.hunre.it.webstudyonline.service;
 
 import com.hunre.it.webstudyonline.model.dto.CourseDetailsDto;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
+import com.hunre.it.webstudyonline.model.response.ResponsePage;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface ICourseDetailsService {
-    BaseResponse<List<CourseDetailsDto>> getAll(String courseId);
+    ResponsePage<List<CourseDetailsDto>> getAll(String courseId, Pageable pageable);
     BaseResponse<CourseDetailsDto> addCourseDetails(CourseDetailsDto courseDetailsDto, MultipartFile file);
     BaseResponse<CourseDetailsDto> updateCourseDetails(String id,CourseDetailsDto courseDetailsDto);
     BaseResponse<CourseDetailsDto> deleteCourseDetails(String id);
