@@ -15,8 +15,8 @@ public class CourseMapper {
         courseDto.setDescription(courseEntity.getDescription());
         courseDto.setStatus(courseEntity.getStatus());
         courseDto.setDiscount(courseEntity.getDiscount());
-        courseDto.setCategoryId(courseEntity.getCategoryEntity().getId());
-        courseDto.setCategoryName(courseEntity.getCategoryEntity().getName());
+//        courseDto.setCategoryId(courseEntity.getCategoryEntity().getId());
+//        courseDto.setCategoryName(courseEntity.getCategoryEntity().getName());
         courseDto.setCreatedBy(courseEntity.getCreatedBy());
         courseDto.setCreatedDate(courseEntity.getCreatedDate());
         courseDto.setAim(courseEntity.getAim());
