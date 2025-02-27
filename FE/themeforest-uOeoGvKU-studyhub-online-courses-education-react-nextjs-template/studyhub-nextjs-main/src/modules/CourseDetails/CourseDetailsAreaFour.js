@@ -34,7 +34,7 @@ export default function CourseDetailsAreaFour(props) {
 								</div>
 								<div className="single-course-top">
 									<span>Get Started</span>
-									<Link href="/pages/login" className="rts-btn btn-primary">Login to Enroll</Link>
+									<Link href="/login" className="rts-btn btn-primary">Login to Enroll</Link>
 								</div>
 							</div>
 
@@ -47,7 +47,7 @@ export default function CourseDetailsAreaFour(props) {
 											onClick={() => handleTab('course')}
 										>
 											<i className="far fa-calendar"></i>
-											Course
+											Mô tả
 										</button>
 									</li>
 									<li className="nav-item" role="presentation">
@@ -57,7 +57,7 @@ export default function CourseDetailsAreaFour(props) {
 											onClick={() => handleTab('materials')}
 										>
 											<i className="fa-solid fa-calendar-week"></i>
-											Materials
+											Chi tiết
 										</button>
 									</li>
 								</ul>
@@ -67,7 +67,7 @@ export default function CourseDetailsAreaFour(props) {
 								{
 									activeTab === "course" ?
 										<>
-											<CourseInfo />
+											<CourseInfo item={item} />
 										</> :
 												<CourseContent />
 								}

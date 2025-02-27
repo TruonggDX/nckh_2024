@@ -9,6 +9,8 @@ import { Course } from '../../types/Course.ts';
 import { getCourses } from '../../service/CourseService.ts';
 
 
+
+
 const GradeList = () =>{
   const [grades, setGrades] = useState<Grade[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
