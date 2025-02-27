@@ -13,7 +13,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/course")
@@ -53,14 +52,5 @@ public class ApiCourse {
         BaseResponse<CourseDto> response = courseService.getCourseById(id);
         return ResponseEntity.ok(response);
     }
-    @GetMapping("/findByCondition")
-    public ResponseEntity<ResponsePage<List<CourseDto>>> findById(@RequestParam Map<String,String> params, Pageable pageable) {
-        ResponsePage<List<CourseDto>> response = courseService.getCourseByCondition(params,pageable);
-        return ResponseEntity.ok(response);
-    }
-    @GetMapping("/getBestseller")
-    public ResponseEntity<ResponsePage<List<CourseDto>>> getBestseller(Pageable pageable) {
-        ResponsePage<List<CourseDto>> response = courseService.getCourseBestSeller(pageable);
-        return ResponseEntity.ok(response);
-    }
+
 }

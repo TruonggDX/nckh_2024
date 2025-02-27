@@ -29,14 +29,9 @@ async function getCategory () {
     const response = await axiosInstance.get(`/api/category/list`);
     return response.data;
 }
-async function getCourse (req) {
-    const params = new URLSearchParams(req)
-    const response = await axiosInstance.get(`/api/course/findByCondition`, {params});
-    return response.data;
-}
-async function getCourseBestSeller () {
-    const response = await axiosInstance.get(`/api/course/getBestseller`);
+async function getCourse () {
+    const response = await axiosInstance.get(`/api/course/list`);
     return response.data;
 }
 
-export default {login, getUser,signUp, verifyOtp,resendCode, getCategory, getCourse,getCourseBestSeller};
+export default {login, getUser,signUp, verifyOtp,resendCode, getCategory, getCourse};

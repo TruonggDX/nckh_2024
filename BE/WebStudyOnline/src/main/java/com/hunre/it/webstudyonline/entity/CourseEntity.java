@@ -17,17 +17,6 @@ public class CourseEntity extends AbstractEntity {
     private String description;
     private Integer discount;
     private String status;
-    public String aim;
-    @OneToMany(mappedBy = "courseEntity")
-    private Set<BillDetailsEntity>billDetailsEntities = new HashSet<>();
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    @EqualsAndHashCode.Exclude
-    private CategoryEntity categoryEntity;
-    @OneToMany(mappedBy = "courseEntity")
-    private Set<CourseDetailsEntity>  courseDetailsEntities = new HashSet<>();
-    @OneToMany(mappedBy = "course")
-    private Set<CartEntity> cart = new HashSet<>();
 
     public String getAim() {
         return aim;
@@ -37,27 +26,20 @@ public class CourseEntity extends AbstractEntity {
         this.aim = aim;
     }
 
-    public Set<BillDetailsEntity> getBillDetailsEntities() {
-        return billDetailsEntities;
-    }
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    @EqualsAndHashCode.Exclude
+    private CategoryEntity categoryEntity;
 
-    public void setBillDetailsEntities(Set<BillDetailsEntity> billDetailsEntities) {
-        this.billDetailsEntities = billDetailsEntities;
-    }
+    @OneToMany(mappedBy = "course")
+    private Set<CartEntity> cart = new HashSet<>();
 
     public Set<CartEntity> getCart() {
         return cart;
     }
+    public String aim;
     public void setCart(Set<CartEntity> cart) {
         this.cart = cart;
-    }
-
-    public Set<CourseDetailsEntity> getCourseDetailsEntities() {
-        return courseDetailsEntities;
-    }
-
-    public void setCourseDetailsEntities(Set<CourseDetailsEntity> courseDetailsEntities) {
-        this.courseDetailsEntities = courseDetailsEntities;
     }
 
     public String getStatus() {

@@ -4,27 +4,18 @@ import Link from "next/link";
 import SwiperCore from 'swiper';
 import { Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import {useEffect, useRef, useState} from 'react';
 
 
 import SingleCourse from "@/components/Course";
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import api from "/src/route/route"
 SwiperCore.use([Navigation, Pagination]);
 
 export default function Course() {
-	const [currentPage, setCurrentPage] = useState(0);
-	const [itemsPerPage, setItemsPerPage] = useState(8);
-	const [courses, setCourses] = useState([]);
-	useEffect(() => {
-		api.getCourseBestSeller({page: currentPage, size: itemsPerPage}).then((res) => {
-			setCourses(res.content);
-		})
-	}, []);
+
 	const sliderOptions = {
-		slidesPerView: 4,
+		slidesPerView: 6,
 		spaceBetween: 30,
 		centeredSlides: false,
 		loop: true,
@@ -75,24 +66,26 @@ export default function Course() {
 				<div className="row g-5 mt--20">
 					<Swiper {...sliderOptions} className="mySwiper-category-1 swiper-float-right-course">
 						{
-							courses.map((course, index) => {
+							Courses.map((course, index) => {
 								return (
 									<SwiperSlide key={index}>
 										<SingleCourse
-											Slug={course.aim}
-											Img={course.imageUrl}
-											Category={course.categoryName}
-											lessonCount={course.periods}
-											studentCount="20"
-											Title={course.name}
-											Author={"Mục tiêu: "+course.aim}
-											ratingCount={"5"}
-											prevPrice={course.price}
-											Price={course.price - course.price*course.discount/100}
+											Slug={course.slug}
+											Img={course.img}
+											Category={course.category}
+											lessonCount={course.lessonCount}
+											studentCount={course.studentCount}
+											Title={course.title}
+											Author={course.authorName}
+											ratingCount={course.ratingCount}
+											prevPrice={course.prevPrice}
+											Price={course.price}
+											imgWidth={course.imgWidth}
+											imgHeight={course.imgHeight}
 										/>
 									</SwiperSlide>
 								)
-							}).slice(0, courses.length)
+							}).slice(0, 5)
 						}
 						<div className="swiper-button-next"><i className="fa-solid fa-chevron-right"></i></div>
 						<div className="swiper-button-prev"><i className="fa-solid fa-chevron-left"></i></div>

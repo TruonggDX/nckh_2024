@@ -10,7 +10,7 @@ export default function Category() {
 		getAllCourse();
 	},[])
 	async function getAllCourse() {
-		await api.getCourse({page: 0}).then(res => {
+		await api.getCourse().then(res => {
 			setCourses(res.content)
 		});
 	}
@@ -35,7 +35,7 @@ export default function Category() {
 							return (
 								<div key={index} className="col-lg-3 col-md-4 col-sm-6 col-12">
 									<SingleCategoryTwo
-										Slug={course.code}
+										Slug={course.id}
 										Img={"/images/category/0"+ (index+1) +'.svg'}
 										Title={course.name}
 										categoryCount={course.aim}
