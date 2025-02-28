@@ -14,4 +14,5 @@ public interface ICertificateService {
     BaseResponse<CertificateDto> deleteCertificate(String id);
     BaseResponse<CertificateDto> getCertificateById(String id);
     ResponsePage<List<CertificateDto>> findByCertificateAttribute(String certificateName,String issuingOrganization,String certificateType,String certificateNumber,Pageable pageable);
+    ResponsePage<List<CertificateDto>> findCertificateByEmail(Pageable pageable);
 }

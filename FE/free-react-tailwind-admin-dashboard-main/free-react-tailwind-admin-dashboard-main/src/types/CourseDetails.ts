@@ -4,4 +4,5 @@ export interface CourseDetails {
   description: string;
   period:string;
   url: string;
+  courseId: number;
 }

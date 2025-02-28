@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb.tsx';
-import { Grade } from '../../types/Grade.ts';
+import { Grade } from '../../types/Grade.ts'
 import { useNavigate } from 'react-router-dom';
-import { addGrade, deleteGrade, findGradeById, getGrades, updateGrade } from '../../service/GradeService.ts';
+import { addGrade, deleteGrade,getGrades, updateGrade } from '../../service/GradeService.ts';
 import { confirmDelete, showAlert } from '../../utils/swalUtils.ts';
-import { Eye, Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Trash2 } from 'lucide-react';
 import { Course } from '../../types/Course.ts';
 import { getCourses } from '../../service/CourseService.ts';
 
@@ -23,7 +23,7 @@ const GradeList = () =>{
   const [disabled, setDisabled] = useState(true);
   const [course, setCourse] = useState<Course[]>([]);
   const navigate = useNavigate();
-  
+
   useEffect(() => {
     void setItemsPerPage;
     getAllCourse()
@@ -91,19 +91,19 @@ const GradeList = () =>{
             console.log("data",response.data);
             setModalOpen(false);
             getAllGrades();
-            showAlert('Thêm thành công!', 'Thêm danh mục thành công.', 'success');
+            showAlert('Thêm thành công!', 'Thêm lớp học thành công.', 'success');
             resetGrade();
-            
+
           })
           .catch((error: any) => console.error("Lỗi thêm mới:", error));
       }
 
   };
-  
+
   const resetGrade = () => {
     setGrade({ id: 0, code: '', name: '', number_student: 0, course_id: 0, course_name: '', account_id: [] });
   };
-  
+
 
   const handleRemove = (id: number) => {
     console.log('id remove',id)
@@ -115,14 +115,14 @@ const GradeList = () =>{
   }
 
   const handleAdd = () => {
-    setIsEditing(false); 
-    setModalOpen(true);  
+    setIsEditing(false);
+    setModalOpen(true);
   };
 
   return (
     <>
       <Breadcrumb pageName="Danh sách lớp"/>
-      <button className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700" style={{ width: 150, marginBottom: 10 }} onClick={() => handleAdd()}>Thêm danh mục</button>
+      <button className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700" style={{ width: 150, marginBottom: 10 }} onClick={() => handleAdd()}>Thêm lớp học</button>
 
       <div className="flex flex-col gap-10">
         <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
@@ -213,19 +213,19 @@ const GradeList = () =>{
             <div className="mb-4">
               <label className="block text-gray-700 font-medium">Tên lớp</label>
               <input type="text" name="name" value={grade.name} onChange={(e) => setGrade({ ...grade, name: e.target.value })} className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
-              {error.name && <div className='invalid-feedback'>{error.name}</div>}            
+              {error.name && <div className='invalid-feedback'>{error.name}</div>}
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 font-medium">Số lượng học sinh</label>
               <input type="text" name="name" value={grade.number_student} onChange={(e) => setGrade({ ...grade, number_student: Number(e.target.value) })} className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary" />
-              {error.name && <div className='invalid-feedback'>{error.number_student}</div>}            
+              {error.name && <div className='invalid-feedback'>{error.number_student}</div>}
             </div>
 
             <div className="mb-4.5">
               <label className="mb-2.5 block text-black dark:text-white">
                Khóa học
               </label>
-              <select 
+              <select
                 value={grade.course_id}
                 onChange={(e) => setGrade({ ...grade, course_id: Number(e.target.value) })}
                 className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"

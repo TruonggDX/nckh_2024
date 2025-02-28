@@ -4,10 +4,12 @@ import com.hunre.it.webstudyonline.entity.CertificateEntity;
 import com.hunre.it.webstudyonline.entity.InforTeacherEntity;
 import com.hunre.it.webstudyonline.mapper.CertificateMapper;
 import com.hunre.it.webstudyonline.model.dto.CertificateDto;
+import com.hunre.it.webstudyonline.model.dto.auth.AuthDto;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
 import com.hunre.it.webstudyonline.model.response.ResponsePage;
 import com.hunre.it.webstudyonline.repository.CertificateRepository;
 import com.hunre.it.webstudyonline.repository.InforTeacherRepository;
+import com.hunre.it.webstudyonline.security.service.JwtService;
 import com.hunre.it.webstudyonline.service.ICertificateService;
 import com.hunre.it.webstudyonline.utils.Constant;
 import com.hunre.it.webstudyonline.utils.LongUtils;
@@ -31,6 +33,8 @@ public class ICertificateServiceImpl implements ICertificateService {
     private CertificateMapper certificateMapper;
     @Autowired
     private InforTeacherRepository teacherRepository;
+    @Autowired
+    private JwtService jwtService;
 
     @Override
     public ResponsePage<List<CertificateDto>> getAllCertificates(Pageable pageable) {
@@ -111,6 +115,21 @@ public class ICertificateServiceImpl implements ICertificateService {
     public ResponsePage<List<CertificateDto>> findByCertificateAttribute(String certificateName, String issuingOrganization, String certificateType, String certificateNumber, Pageable pageable) {
         ResponsePage<List<CertificateDto>> responsePage = new ResponsePage<>();
         Page<CertificateEntity> page = certificateRepository.findCertificateByAttribute(certificateName,issuingOrganization,certificateType,certificateNumber,pageable);
+        List<CertificateDto> certificateDtos = page.getContent().stream().map(certificateMapper::toDto).toList();
+        responsePage.setPageNumber(pageable.getPageNumber());
+        responsePage.setPageSize(pageable.getPageSize());
+        responsePage.setTotalElements(page.getTotalElements());
+        responsePage.setTotalPages(page.getTotalPages());
+        responsePage.setContent(certificateDtos);
+        return responsePage;
+    }
+
+    @Override
+    public ResponsePage<List<CertificateDto>> findCertificateByEmail(Pageable pageable) {
+        ResponsePage<List<CertificateDto>> responsePage = new ResponsePage<>();
+        AuthDto authDto = jwtService.decodeToken();
+        String email = authDto.getEmail();
+        Page<CertificateEntity> page = certificateRepository.findAllByEmail(pageable,email);
         List<CertificateDto> certificateDtos = page.getContent().stream().map(certificateMapper::toDto).toList();
         responsePage.setPageNumber(pageable.getPageNumber());
         responsePage.setPageSize(pageable.getPageSize());

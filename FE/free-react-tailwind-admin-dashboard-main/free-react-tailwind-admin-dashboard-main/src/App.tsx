@@ -25,6 +25,7 @@ import GradeList from './pages/Grade/GradeList.tsx';
 import ExamList from './pages/Exam/ExamList.tsx';
 import ExamComponent from './pages/Exam/ExamComponent.tsx';
 import UpdateGrade from './pages/Grade/UpdateGrade.tsx';
+import CertificateTeacher from './pages/CertificateTeacher.tsx';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -131,6 +132,15 @@ function App() {
             <>
               <PageTitle title="ADMIN" />
               <AddCertificate />
+            </>
+          }
+        />
+        <Route
+          path="/certificateTc"
+          element={
+            <>
+              <PageTitle title="ADMIN" />
+              <CertificateTeacher />
             </>
           }
         />

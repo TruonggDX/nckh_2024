@@ -12,6 +12,9 @@ public interface CertificateRepository extends JpaRepository<CertificateEntity,L
     @Query(value = "SELECT c FROM CertificateEntity c WHERE c.deleted=false ")
     Page<CertificateEntity> findAllByDeletedFalse(Pageable pageable);
 
+    @Query(value = "SELECT c FROM CertificateEntity c WHERE c.deleted=false AND c.inforTeacherEntity.account.email=:email")
+    Page<CertificateEntity> findAllByEmail(Pageable pageable, String email);
+
     @Query(value = "SELECT c FROM CertificateEntity c WHERE c.deleted=false " +
             "AND (:certificateName IS NULL OR c.certificateName LIKE %:certificateName%)" +
             "AND (:issuingOrganization IS NULL OR c.issuingOrganization LIKE %:issuingOrganization%)" +
