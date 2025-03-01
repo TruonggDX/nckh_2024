@@ -38,5 +38,8 @@ async function getCourseBestSeller () {
     const response = await axiosInstance.get(`/api/course/getBestseller`);
     return response.data;
 }
-
-export default {login, getUser,signUp, verifyOtp,resendCode, getCategory, getCourse,getCourseBestSeller};
+async function getCourseDetails (req) {
+    const response = await axiosInstance.get(`/api/coursedetails/list/`+req);
+    return response.data;
+}
+export default {login, getUser,signUp, verifyOtp,resendCode, getCategory, getCourse,getCourseBestSeller,getCourseDetails};

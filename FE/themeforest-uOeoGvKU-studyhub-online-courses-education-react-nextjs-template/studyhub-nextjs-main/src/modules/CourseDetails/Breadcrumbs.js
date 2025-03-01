@@ -9,7 +9,7 @@ export default function CourseDetailsBreadcrumbs(props) {
 		item = Courses[0]
 	}
 
-	const { title, authorName, category, studentCount, ratingCount, updateDate } = item;
+	const { title, authorName, category, studentCount, ratingCount, updateDate, img } = item;
 
 	return (
 		<div className="course-details-breadcrumb-1 bg_image rts-section-gap">
@@ -36,19 +36,19 @@ export default function CourseDetailsBreadcrumbs(props) {
 								</div>
 								<div className="students">
 									<i className="far fa-users"></i>
-									<span>{studentCount || "3054"} Students</span>
+									<span>{studentCount || "3054"} Học viên</span>
 								</div>
 								<div className="calender-area-stars">
 									<i className="far fa-calendar-alt"></i>
-									<span>Last updated {updateDate || "12/2024"}</span>
+									<span>Ngày cập nhật: {new Date(updateDate).toLocaleDateString("hi-IN") || "12/2024"}</span>
 								</div>
 							</div>
 							<div className="author-area">
 								<div className="author">
-									<Image src="/images/breadcrumb/01.png" width="40" height="40" alt="breadcrumb" />
-									<h6 className="name"><span>By</span> {authorName || "William U."}</h6>
+									<Image src={img } width="40" height="40" alt="breadcrumb" />
+									<h6 className="name"> {authorName || "William U."}</h6>
 								</div>
-								<p> <span>Categories: </span> {category || "Web Developments"}</p>
+								<p> <span>Danh mục: </span> {category || "Web Developments"}</p>
 							</div>
 						</div>
 					</div>

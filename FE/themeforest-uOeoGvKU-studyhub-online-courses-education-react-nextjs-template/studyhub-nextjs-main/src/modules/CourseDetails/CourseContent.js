@@ -1,246 +1,47 @@
 import { Accordion, AccordionItem } from '@szhsin/react-accordion';
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ModalVideo from 'react-modal-video';
+import api from "/src/route/route";
 
-export default function CourseContent({}) {
-    const [isOpen, setIsOpen] = useState(false);
-    const openModal = () => setIsOpen(!isOpen);
+export default function CourseContent({ item }) {
+	const [isOpen, setIsOpen] = useState(false);
+	const [url, setUrl] = useState("0");
+	const [detailCourses, setDetailCourses] = useState([]);
 
-	const items = [
-		{
-		  header: 
-		  	<>
-				<span>Introduction</span>
-				<span>3 Lectures . 9 min</span>
-			</>,
-		  content: 
-		  	<>
-				{/* play single area start */}
-				<a href="#" className="play-vedio-wrapper" onClick={() => { openModal(); }}>
-					<div className="left">
-						<i className="fa-light fa-circle-play"></i>
-						<span>Introduction to the course</span>
-					</div>
-					<div className="right">
-						<span className="play">Preview</span>
-						<span>9 min</span>
-					</div>
-				</a>
-				{/* play single area end */}
-				{/* play single area start */}
-				<a href="#" className="play-vedio-wrapper" onClick={() => { openModal(); }}>
-					<div className="left">
-						<i className="fa-light fa-circle-play"></i>
-						<span>Basic Structure</span>
-					</div>
-					<div className="right">
-						<span className="play">Preview</span>
-						<span>9 min</span>
-					</div>
-				</a>
-				{/* play single area end */}
-				{/* play single area start */}
-				<a href="#" className="play-vedio-wrapper" onClick={() => { openModal(); }}>
-					<div className="left">
-						<i className="fa-light fa-circle-play"></i>
-						<span>Get Started</span>
-					</div>
-					<div className="right">
-						<i className="fa-regular fa-lock"></i>
-					</div>
-				</a>
-				{/* play single area end */}
-		  	</>
-		},
-		{
-			header: 
-				<>
-				  <span>Learn to Storyboard</span>
-				  <span>7 Lectures . 120 min</span>
-			  </>,
-			content: 
-				<>
-				  {/* play single area start */}
-				  <a href="#" className="play-vedio-wrapper" onClick={() => { openModal(); }}>
-					  <div className="left">
-						  <i className="fa-light fa-circle-play"></i>
-						  <span>Become a storyboard artist</span>
-					  </div>
-					  <div className="right">
-						  <span className="play">Preview</span>
-						  <span>9 min</span>
-					  </div>
-				  </a>
-				  {/* play single area end */}
-				  {/* play single area start */}
-				  <a href="#" className="play-vedio-wrapper" onClick={() => { openModal(); }}>
-					  <div className="left">
-						  <i className="fa-light fa-circle-play"></i>
-						  <span>Storyboard Artist</span>
-					  </div>
-					  <div className="right">
-						  <span className="play">Preview</span>
-						  <span>9 min</span>
-					  </div>
-				  </a>
-				  {/* play single area end */}
-				  {/* play single area start */}
-				  <a href="#" className="play-vedio-wrapper" onClick={() => { openModal(); }}>
-					  <div className="left">
-						  <i className="fa-light fa-circle-play"></i>
-						  <span>Introduction PHP</span>
-					  </div>
-					  <div className="right">
-						  <i className="fa-regular fa-lock"></i>
-					  </div>
-				  </a>
-				  {/* play single area end */}
-				</>
-		},
-		{
-			header: 
-				<>
-				  <span>How to draw characters, layouts, and scenes</span>
-				  <span>7 Lectures . 83 min</span>
-			  </>,
-			content: 
-				<>
-				  {/* play single area start */}
-				  <a href="#" className="play-vedio-wrapper" onClick={() => { openModal(); }}>
-					  <div className="left">
-						  <i className="fa-light fa-circle-play"></i>
-						  <span>Learning Fundamentsl Elementor</span>
-					  </div>
-					  <div className="right">
-						  <span className="play">Preview</span>
-						  <span>9 min</span>
-					  </div>
-				  </a>
-				  {/* play single area end */}
-				  {/* play single area start */}
-				  <a href="#" className="play-vedio-wrapper" onClick={() => { openModal(); }}>
-					  <div className="left">
-						  <i className="fa-light fa-circle-play"></i>
-						  <span>Enter to the course</span>
-					  </div>
-					  <div className="right">
-						  <span className="play">Preview</span>
-						  <span>9 min</span>
-					  </div>
-				  </a>
-				  {/* play single area end */}
-				  {/* play single area start */}
-				  <a href="#" className="play-vedio-wrapper" onClick={() => { openModal(); }}>
-					  <div className="left">
-						  <i className="fa-light fa-circle-play"></i>
-						  <span>Main Part of the course</span>
-					  </div>
-					  <div className="right">
-						  <i className="fa-regular fa-lock"></i>
-					  </div>
-				  </a>
-				  {/* play single area end */}
-				</>
-		},
-		{
-			header: 
-				<>
-				  <span>1-point and 2-point perspective</span>
-				  <span>7 Lectures . 72 min</span>
-			  </>,
-			content: 
-				<>
-				  {/* play single area start */}
-				  <a href="#" className="play-vedio-wrapper" onClick={() => { openModal(); }}>
-					  <div className="left">
-						  <i className="fa-light fa-circle-play"></i>
-						  <span>Function About PHP</span>
-					  </div>
-					  <div className="right">
-						  <span className="play">Preview</span>
-						  <span>9 min</span>
-					  </div>
-				  </a>
-				  {/* play single area end */}
-				  {/* play single area start */}
-				  <a href="#" className="play-vedio-wrapper" onClick={() => { openModal(); }}>
-					  <div className="left">
-						  <i className="fa-light fa-circle-play"></i>
-						  <span>Main Part of the course</span>
-					  </div>
-					  <div className="right">
-						  <span className="play">Preview</span>
-						  <span>9 min</span>
-					  </div>
-				  </a>
-				  {/* play single area end */}
-				  {/* play single area start */}
-				  <a href="#" className="play-vedio-wrapper" onClick={() => { openModal(); }}>
-					  <div className="left">
-						  <i className="fa-light fa-circle-play"></i>
-						  <span>Learning Fundamentsl Elementor</span>
-					  </div>
-					  <div className="right">
-						  <i className="fa-regular fa-lock"></i>
-					  </div>
-				  </a>
-				  {/* play single area end */}
-				</>
-		},
-		{
-			header: 
-				<>
-				  <span>Digital drawing application</span>
-				  <span>7 Lectures . 90 min</span>
-			  </>,
-			content: 
-				<>
-				  {/* play single area start */}
-				  <a href="#" className="play-vedio-wrapper" onClick={() => { openModal(); }}>
-					  <div className="left">
-						  <i className="fa-light fa-circle-play"></i>
-						  <span>Become a storyboard artist</span>
-					  </div>
-					  <div className="right">
-						  <span className="play">Preview</span>
-						  <span>9 min</span>
-					  </div>
-				  </a>
-				  {/* play single area end */}
-				  {/* play single area start */}
-				  <a href="#" className="play-vedio-wrapper" onClick={() => { openModal(); }}>
-					  <div className="left">
-						  <i className="fa-light fa-circle-play"></i>
-						  <span>Function About PHP</span>
-					  </div>
-					  <div className="right">
-						  <span className="play">Preview</span>
-						  <span>9 min</span>
-					  </div>
-				  </a>
-				  {/* play single area end */}
-				  {/* play single area start */}
-				  <a href="#" className="play-vedio-wrapper" onClick={() => { openModal(); }}>
-					  <div className="left">
-						  <i className="fa-light fa-circle-play"></i>
-						  <span>Storyboard Artist</span>
-					  </div>
-					  <div className="right">
-						  <i className="fa-regular fa-lock"></i>
-					  </div>
-				  </a>
-				  {/* play single area end */}
-				</>
-		}
-	];
-	
+	const openModal = (videoUrl = "0") => {
+		setIsOpen(prev => !prev);
+		setUrl(videoUrl);
+	};
+
+	useEffect(() => {
+		api.getCourseDetails(item.id)
+			.then(res => {
+				setDetailCourses(res.content);
+			});
+	}, [item.id]);
+
+	const items = detailCourses.map((detailCourse, index) => ({
+		header: (
+			<span>Buổi {detailCourse.period}: {detailCourse.name}</span>
+		),
+		content: (
+			<a href="#" className="play-vedio-wrapper" onClick={() => {openModal(detailCourse.url);}}>
+				<div className="left">
+					<i className="fa-light fa-circle-play"></i>
+					<span>Video học thử</span>
+				</div>
+				<div className="right">
+					<span className="play">Xem</span>
+					<span>1h30p</span>
+				</div>
+			</a>
+		)
+	}));
 
 	return (
 		<div className="course-content-wrapper-main mt--40">
-			<ModalVideo channel='youtube' isOpen={isOpen} videoId='FdrNFEbcsRs' onClose={() => { openModal(); }} />	
+			<ModalVideo channel='youtube' isOpen={isOpen} videoId={url} onClose={() => openModal()} />
 			<h5 className="title">Course Content</h5>
-
-			{/* course content accordion area */}
 
 			<Accordion className="accordion">
 				{items.map(({ header, content }, i) => (
@@ -254,8 +55,6 @@ export default function CourseContent({}) {
 					</AccordionItem>
 				)).slice(1, 5)}
 			</Accordion>
-			{/* course content accordion area end */}
 		</div>
-							
-	)
+	);
 }
