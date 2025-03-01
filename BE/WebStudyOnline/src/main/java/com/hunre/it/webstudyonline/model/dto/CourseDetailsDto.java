@@ -14,6 +14,7 @@ public class CourseDetailsDto {
     @NotBlank(message = "Period must not be blank.")
     private String period;
 
+    @NotBlank(message = "Url must not be blank.")
     private String url;
 
     @NotNull(message = "Course ID must not be null.")

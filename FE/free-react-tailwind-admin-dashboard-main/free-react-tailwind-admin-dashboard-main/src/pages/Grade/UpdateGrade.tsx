@@ -17,6 +17,7 @@ const GradeForm = () => {
   const {id} = useParams();
   const navigate = useNavigate();
   useEffect(() => {
+    void isEditing;
     findGradeById(Number(id)).then((reponse:any) =>{
       console.log('reponse',reponse.data);
       setData(reponse.data);

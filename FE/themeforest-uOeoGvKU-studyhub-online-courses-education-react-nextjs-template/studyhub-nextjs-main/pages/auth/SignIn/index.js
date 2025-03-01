@@ -23,7 +23,7 @@ export default function SignInModule() {
       const tokens = localStorage.getItem('jwtToken')
       for (const rolesKey of roles) {
         console.log(rolesKey)
-          if (rolesKey.code === "ADMIN"){
+          if (rolesKey.code === "ADMIN" || rolesKey.code ==="TEACHER"){
             window.location.href = `http://localhost:3001/?token=${tokens}`;
             return;
           }

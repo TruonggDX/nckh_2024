@@ -136,7 +136,7 @@ function App() {
           }
         />
         <Route
-          path="/certificateTc"
+          path="/certificateTeacher"
           element={
             <>
               <PageTitle title="ADMIN" />

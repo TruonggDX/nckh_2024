@@ -8,4 +8,5 @@ export interface Account {
   phone: string;
   roles: Role[];
   imageUrl: string;
+  teacherId: number;
 }
