@@ -6,23 +6,28 @@ import { getUser } from '../../route/route.ts';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [hiden,setHiden] = useState(false);
   const handleLogout = () => {
     localStorage.removeItem('jwtToken');
     window.location.href = 'http://localhost:3000/login';
   };
 
   const [data, setData] = useState({
-      id: 0,
-      code: '',
-      email: '',
-      fullName: '',
-      phone: '',
-      imageUrl: '',
+    id: 0,
+    code: '',
+    email: '',
+    fullName: '',
+    phone: '',
+    imageUrl: '',
   });
   useEffect(() => {
-    getUser().then((response) =>{
-      setData(response.data)
-    })
+    getUser().then((response) => {
+      setData(response.data);
+      const arrRole:string[] = response.data.roles.map((role:{name:string}) => role.name);
+      if (arrRole.includes("ADMIN")) {
+        setHiden(true);
+      }
+    });
   }, []);
   return (
     <ClickOutside onClick={() => setDropdownOpen(false)} className="relative">
@@ -102,6 +107,52 @@ const DropdownUser = () => {
                 Thông tin cá nhân
               </Link>
             </li>
+            {!hiden && (
+              <li>
+                <Link
+                  to="/certificateTeacher"
+                  className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+                >
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M6 3H18C19.1 3 20 3.9 20 5V15C20 16.1 19.1 17 18 17H6C4.9 17 4 16.1 4 15V5C4 3.9 4.9 3 6 3Z"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M12 7V13"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M9 10H15"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M8 21L12 18L16 21V17H8V21Z"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                  Chứng chỉ
+                </Link>
+              </li>
+            )}
           </ul>
           <button
             onClick={handleLogout}

@@ -56,18 +56,15 @@ public class ICourseDetailsServiceImpl implements ICourseDetailsService {
         return responsePage;
     }
     @Override
-    public BaseResponse<CourseDetailsDto> addCourseDetails(CourseDetailsDto courseDetailsDto, MultipartFile file) {
+    public BaseResponse<CourseDetailsDto> addCourseDetails(CourseDetailsDto courseDetailsDto) {
         BaseResponse<CourseDetailsDto> response = new BaseResponse<>();
-        CourseDetailsEntity courseDetailsEntity = courseDetailsMapper.toEntity(courseDetailsDto);
         Optional<CourseEntity> courseEntity = courseRepository.findById(courseDetailsDto.getCourseId());
         if (courseEntity.isEmpty()){
             response.setCode(HttpStatus.BAD_REQUEST.value());
             response.setMessage(Constant.HTTP_MESSAGE.NOTFOUND);
             return response;
         }
-        ImageDto imageDto = addVideo(file);
-        courseDetailsEntity.setUrl(imageDto.getUrl());
-        courseDetailsEntity.setPublicId(imageDto.getPublicId());
+        CourseDetailsEntity courseDetailsEntity = courseDetailsMapper.toEntity(courseDetailsDto);
         courseDetailsEntity.setCourseEntity(courseEntity.get());
         courseDetailsEntity.setDeleted(false);
         courseDetailsEntity = courseDetailsRepository.save(courseDetailsEntity);
@@ -168,40 +165,40 @@ public class ICourseDetailsServiceImpl implements ICourseDetailsService {
         response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
         return response;
     }
-    @Override
-    public BaseResponse<CourseDetailsDto> updateRecord(String id,MultipartFile file) {
-        BaseResponse<CourseDetailsDto> response = new BaseResponse<>();
-        Utils<Long> utils = LongUtils.strToLong(id);
-        if (utils.getT() == null){
-            response.setCode(utils.getCode());
-            response.setMessage(utils.getMsg());
-            return response;
-        }
-        Long courseDetailsId = utils.getT();
-        Optional<CourseDetailsEntity> check = courseDetailsRepository.findById(courseDetailsId);
-        if (check.isEmpty()){
-            response.setCode(HttpStatus.BAD_REQUEST.value());
-            response.setMessage(Constant.HTTP_MESSAGE.NOTFOUND);
-            return response;
-        }
-        CourseDetailsEntity courseDetailsEntity = check.get();
-        String url =  null;
-        uploadImageFile.deleteVideo(courseDetailsEntity.getPublicId());
-        if (file.getOriginalFilename() != null){
-            url = uploadImageFile.uploadvideo(file).getUrl();
-        }
-        courseDetailsEntity.setUrl(url);
-        courseDetailsEntity = courseDetailsRepository.save(courseDetailsEntity);
-
-        CourseDetailsDto dto = courseDetailsMapper.toDto(courseDetailsEntity);
-        response.setData(dto);
-        response.setCode(HttpStatus.OK.value());
-        response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
-        return response;
-    }
-
-    private ImageDto addVideo( MultipartFile file) {
-        ImageDto imageDTO = uploadImageFile.uploadvideo(file);
-        return  imageDTO;
-    }
+//    @Override
+//    public BaseResponse<CourseDetailsDto> updateRecord(String id,MultipartFile file) {
+//        BaseResponse<CourseDetailsDto> response = new BaseResponse<>();
+//        Utils<Long> utils = LongUtils.strToLong(id);
+//        if (utils.getT() == null){
+//            response.setCode(utils.getCode());
+//            response.setMessage(utils.getMsg());
+//            return response;
+//        }
+//        Long courseDetailsId = utils.getT();
+//        Optional<CourseDetailsEntity> check = courseDetailsRepository.findById(courseDetailsId);
+//        if (check.isEmpty()){
+//            response.setCode(HttpStatus.BAD_REQUEST.value());
+//            response.setMessage(Constant.HTTP_MESSAGE.NOTFOUND);
+//            return response;
+//        }
+//        CourseDetailsEntity courseDetailsEntity = check.get();
+//        String url =  null;
+//        uploadImageFile.deleteVideo(courseDetailsEntity.getPublicId());
+//        if (file.getOriginalFilename() != null){
+//            url = uploadImageFile.uploadvideo(file).getUrl();
+//        }
+//        courseDetailsEntity.setUrl(url);
+//        courseDetailsEntity = courseDetailsRepository.save(courseDetailsEntity);
+//
+//        CourseDetailsDto dto = courseDetailsMapper.toDto(courseDetailsEntity);
+//        response.setData(dto);
+//        response.setCode(HttpStatus.OK.value());
+//        response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
+//        return response;
+//    }
+//
+//    private ImageDto addVideo( MultipartFile file) {
+//        ImageDto imageDTO = uploadImageFile.uploadvideo(file);
+//        return  imageDTO;
+//    }
 }

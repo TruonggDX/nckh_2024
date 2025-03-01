@@ -24,6 +24,8 @@ import ShowCourse from './pages/Course/ShowCourse.tsx';
 import GradeList from './pages/Grade/GradeList.tsx';
 import ExamList from './pages/Exam/ExamList.tsx';
 import ExamComponent from './pages/Exam/ExamComponent.tsx';
+import UpdateGrade from './pages/Grade/UpdateGrade.tsx';
+import CertificateTeacher from './pages/CertificateTeacher.tsx';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -101,7 +103,7 @@ function App() {
           element={
             <>
               <PageTitle title="ADMIN" />
-              <ShowCourse isEditMode/>
+              <ShowCourse isEditMode />
             </>
           }
         />
@@ -134,11 +136,30 @@ function App() {
           }
         />
         <Route
+          path="/certificateTeacher"
+          element={
+            <>
+              <PageTitle title="ADMIN" />
+              <CertificateTeacher />
+            </>
+          }
+        />
+        <Route
           path="/grade"
           element={
             <>
               <PageTitle title="ADMIN" />
               <GradeList />
+            </>
+          }
+        />
+
+        <Route
+          path="/updateGrade/:id"
+          element={
+            <>
+              <PageTitle title="ADMIN" />
+              <UpdateGrade />
             </>
           }
         />
@@ -165,7 +186,7 @@ function App() {
           element={
             <>
               <PageTitle title="ADMIN" />
-              <ExamComponent isEdit/>
+              <ExamComponent isEdit />
             </>
           }
         />

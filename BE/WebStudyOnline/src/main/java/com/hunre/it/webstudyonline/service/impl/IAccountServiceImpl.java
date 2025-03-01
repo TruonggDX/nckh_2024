@@ -128,10 +128,7 @@ public class IAccountServiceImpl implements IAccountService {
             }
             AccountEntity accountEntity = check.get();
             accountEntity.setFullname(updateAccountForm.getFullName());
-//            Set<RoleEntity> RoleEntities = roleServiceImpl.findByRoleCode(updateAccountForm.getRoleCode());
-//            for (RoleEntity roleEntity : RoleEntities) {
-//                accountEntity.setRoles(RoleEntities);
-//            }
+
             Set<RoleEntity> roleEntities = new HashSet<>();
             for (Long roleId : updateAccountForm.getRoleId()) {
                 RoleEntity roleEntity = roleRepository.findById(roleId).orElseThrow();
@@ -216,6 +213,7 @@ public class IAccountServiceImpl implements IAccountService {
         AccountDto accountDto = accountMapper.toDto(account);
         Set<RoleDto> roleDtos = account.getRoles().stream().map(roleMapper::toDto).collect(Collectors.toSet());
         Set<Long> roleId = account.getRoles().stream().map(RoleEntity::getId).collect(Collectors.toSet());
+        accountDto.setTeacherId(account.getTeacher().getId());
         accountDto.setRoleIds(roleId);
         accountDto.setRoles(roleDtos);
         response.setData(accountDto);

@@ -226,7 +226,7 @@ const BillList = () => {
       </div>
       {openModal && (
         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-          <div className="bg-white p-6 rounded-xl shadow-xl w-[1200px] max-h-[80vh] overflow-y-auto relative">
+          <div style={{marginLeft:220}} className="bg-white p-6 rounded-xl shadow-xl w-[1000px] max-h-[80vh] overflow-y-auto relative">
             <h3 className="text-xl font-semibold mb-4">Chi tiết đơn hàng </h3>
 
             <table className="w-full table-auto text-left">

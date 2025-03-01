@@ -86,3 +86,17 @@ export const getCertificatesByAtribute = async (filters: any, page: number, size
     throw error;
   }
 };
+export const getCertificateByEmail = async (page:number,size:number) =>{
+  const token = getToken();
+  try {
+    const response = await axios.get(`${api}/findCertificateByEmail`,{
+      params: { page, size },
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return response.data;
+  }catch(err) {
+    console.error(err);
+    throw err;
+  }
+
+}

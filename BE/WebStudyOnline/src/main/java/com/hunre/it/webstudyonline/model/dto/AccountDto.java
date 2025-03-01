@@ -12,6 +12,15 @@ public class AccountDto {
     private boolean enabled;
     private Set<Long> roleIds;
     private String imageUrl;
+    private Long teacherId;
+
+    public Long getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(Long teacherId) {
+        this.teacherId = teacherId;
+    }
 
     public String getImageUrl() {
         return imageUrl;

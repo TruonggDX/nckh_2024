@@ -1,14 +1,26 @@
 import Breadcrumb from '../components/Breadcrumbs/Breadcrumb';
-import { FaUser, FaPhone, FaEnvelope, FaIdCard } from 'react-icons/fa';
+import {
+  FaUser,
+  FaPhone,
+  FaEnvelope,
+  FaIdCard,
+  FaMapMarkerAlt,
+  FaBirthdayCake,
+  FaBriefcase,
+} from 'react-icons/fa';
 import userThree from '../images/user/user-03.png';
 import React, { useEffect, useState } from 'react';
 import { getUser } from '../route/route';
 import { changePassword, updateAccount } from '../service/AccountService.ts';
 import { showAlert, showLoadingThenExecute } from '../utils/swalUtils';
 import { Account } from '../types/Account.ts';
-import Select from 'react-select';
 import { Role } from '../types/Role.ts';
 import { getAllRole } from '../service/RoleService.ts';
+import {
+  getInforTeacherById,
+  updateTeacher,
+} from '../service/TeacherService.ts';
+import { Teacher } from '../types/Teacher.ts';
 
 const Profile = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -20,6 +32,7 @@ const Profile = () => {
     phone: '',
     roles: [],
     imageUrl: '',
+    teacherId: 0,
   });
   const [password, setPassword] = useState('');
   const [passwordNew, setPasswordNew] = useState('');
@@ -32,8 +45,26 @@ const Profile = () => {
   const [role, setRole] = useState<Role[]>([]);
   const [openModal, setOpenModal] = useState(false);
   const [selectedRoles, setSelectedRoles] = useState<number[]>([]);
+  const [hident, setHident] = useState(false);
+  const [teacher, setTeacher] = useState<Teacher>({
+    id: 0,
+    address: '',
+    experience: 0,
+    birthday: '',
+    accountDto: {
+      id: 0,
+      code: '',
+      email: '',
+      fullName: '',
+      phone: '',
+      roles: [],
+      imageUrl: '',
+      teacherId: 0,
+    },
+  });
 
   useEffect(() => {
+    void role;
     getAllRole(0, 0).then((reponse: any) => {
       setRole(reponse.content);
     });
@@ -41,12 +72,30 @@ const Profile = () => {
       setSelectedRoles(data.roles.map((role) => role.id));
     }
   }, [data]);
+
   useEffect(() => {
     getUser().then((response) => {
-      console.log(response.data);
       setData(response.data);
+      const arrRole: string[] = response.data.roles.map(
+        (role: { name: string }) => role.name,
+      );
+      if (arrRole.includes('ADMIN')) {
+        setHident(true);
+      }
     });
   }, []);
+
+  useEffect(() => {
+    if (data.teacherId && data.teacherId !== 0) {
+      getInforTeacherById(data.teacherId)
+        .then((response: any) => {
+          setTeacher(response.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [data.teacherId]);
 
   function isValid() {
     let valid = true;
@@ -129,6 +178,34 @@ const Profile = () => {
       console.error(error);
     }
   };
+  const handleUpdateTeacher = (id: number) => {
+    console.log('id teacher', id);
+    if (!teacher || !data || !teacher.accountDto || !teacher.accountDto.id) {
+      console.error('Thiếu thông tin tài khoản giáo viên.');
+      return;
+    }
+    try {
+      const formData = new FormData();
+      formData.append('accountDto.fullName', data.fullName);
+      formData.append('address', teacher.address);
+      formData.append('experience', `${teacher.experience}`);
+      formData.append('birthday', teacher.birthday);
+      formData.append('accountDto.id', `${data.id}`);
+      if (file) {
+        formData.append('file', file);
+      }
+      showLoadingThenExecute(
+        async () => {
+          await updateTeacher(id, formData);
+        },
+        'Cập nhật thành công!',
+        'Có lỗi xảy ra !',
+        '/profile',
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -138,106 +215,9 @@ const Profile = () => {
         <div className="rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark">
           <div className="p-7">
             <form action="#">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-5.5">
-                <input value={data.id} hidden />
-                <input value={data.roles.join(',')} hidden />
-                <div className="col-span-1">
-                  <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="code"
-                    >
-                      <FaIdCard className="inline-block mr-2" /> Mã tài khoản
-                    </label>
-                    <div className="relative">
-                      <input
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name="code"
-                        id="code"
-                        value={data.code}
-                        disabled
-                      />
-                    </div>
-                  </div>
-                  <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="fullName"
-                    >
-                      <FaUser className="inline-block mr-2" /> Họ và tên
-                    </label>
-                    <div className="relative">
-                      <input
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name="fullName"
-                        id="fullName"
-                        value={data.fullName}
-                        onChange={(e) =>
-                          setData((prev) =>
-                            prev ? { ...prev, fullName: e.target.value } : prev,
-                          )
-                        }
-                      />
-                    </div>
-                  </div>
-                  <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="phone"
-                    >
-                      <FaPhone className="inline-block mr-2" /> Số điện thoại
-                    </label>
-                    <div className="relative">
-                      <input
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                        type="text"
-                        name="phone"
-                        id="phone"
-                        value={data.phone}
-                        disabled
-                      />
-                    </div>
-                  </div>
-                  <div hidden>
-                    <Select
-                      isMulti
-                      options={role.map((r) => ({
-                        value: r.id,
-                        label: r.name,
-                      }))}
-                      value={role
-                        .filter((r) => selectedRoles.includes(r.id))
-                        .map((r) => ({ value: r.id, label: r.name }))}
-                      onChange={(selectedOptions) =>
-                        setSelectedRoles(
-                          selectedOptions.map((option) => option.value),
-                        )
-                      }
-                    />
-                  </div>
-                  <div className="mb-5.5">
-                    <label
-                      className="mb-3 block text-sm font-medium text-black dark:text-white"
-                      htmlFor="email"
-                    >
-                      <FaEnvelope className="inline-block mr-2" /> Email
-                    </label>
-                    <div className="relative">
-                      <input
-                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                        type="email"
-                        name="email"
-                        id="email"
-                        value={data.email}
-                        disabled
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex flex-col items-center">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-5.5 items-start">
+                {/* Cột ảnh */}
+                <div className="flex flex-col items-center w-full md:w-auto">
                   <div className="h-32 w-32 rounded-full overflow-hidden mb-4">
                     <img
                       src={
@@ -249,11 +229,6 @@ const Profile = () => {
                       className="object-cover h-full w-full"
                     />
                   </div>
-
-                  <span className="mb-1.5 text-black dark:text-white">
-                    Chỉnh sửa ảnh
-                  </span>
-
                   <div
                     id="FileUpload"
                     className="relative mb-5.5 block w-full cursor-pointer appearance-none rounded border border-dashed border-primary bg-gray py-4 px-4 dark:bg-meta-4"
@@ -271,20 +246,154 @@ const Profile = () => {
                     />
                     <div className="flex flex-col items-center justify-center space-y-3">
                       <span className="text-primary">Nhấp để tải ảnh lên</span>
-                      <p className="mt-1.5">SVG, PNG, JPG hoặc GIF</p>
                     </div>
                   </div>
+                </div>
+
+                <div className="col-span-2 w-full">
+                  <div className="grid grid-cols-2 gap-4 mb-5.5">
+                    <div>
+                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                        <FaIdCard className="inline-block mr-2" /> Mã tài khoản
+                      </label>
+                      <input
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none dark:border-form-strokedark dark:bg-form-input dark:text-white disabled:text-gray-500"
+                        type="text"
+                        value={data.code}
+                        disabled
+                      />
+                    </div>
+                    <div>
+                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                        <FaUser className="inline-block mr-2" /> Họ và tên
+                      </label>
+                      <input
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none dark:border-form-strokedark dark:bg-form-input dark:text-white"
+                        type="text"
+                        value={data.fullName || ''}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setData((prev) =>
+                            prev ? { ...prev, fullName: value } : prev,
+                          );
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                        <FaPhone className="inline-block mr-2" /> Số điện thoại
+                      </label>
+                      <input
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none dark:border-form-strokedark dark:bg-form-input dark:text-white disabled:text-gray-500"
+                        type="text"
+                        value={data.phone}
+                        disabled
+                      />
+                    </div>
+                    <div>
+                      <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                        <FaEnvelope className="inline-block mr-2" /> Email
+                      </label>
+                      <input
+                        className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none dark:border-form-strokedark dark:bg-form-input dark:text-white disabled:text-gray-500"
+                        type="email"
+                        value={data.email}
+                        disabled
+                      />
+                    </div>
+                  </div>
+                  {!hident && (
+                    <div>
+                      <div className="grid grid-cols-2 gap-4 mt-4">
+                        <div>
+                          <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                            <FaBirthdayCake className="inline-block mr-2" />{' '}
+                            Ngày sinh
+                          </label>
+                          <input
+                            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none dark:border-form-strokedark dark:bg-form-input dark:text-white"
+                            type="date"
+                            value={teacher.birthday}
+                            onChange={(e) =>
+                              setTeacher((prev) =>
+                                prev
+                                  ? { ...prev, birthday: e.target.value }
+                                  : prev,
+                              )
+                            }
+                          />
+                        </div>
+                        <div>
+                          <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                            <FaBriefcase className="inline-block mr-2" /> Kinh
+                            nghiệm
+                          </label>
+                          <input
+                            className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none dark:border-form-strokedark dark:bg-form-input dark:text-white"
+                            type="text"
+                            value={teacher.experience}
+                            onChange={(e) =>
+                              setTeacher((prev) =>
+                                prev
+                                  ? {
+                                      ...prev,
+                                      experience: Number(e.target.value),
+                                    }
+                                  : prev,
+                              )
+                            }
+                          />
+                        </div>
+                      </div>
+                      <div className="mt-4">
+                        <label className="mb-3 block text-sm font-medium text-black dark:text-white">
+                          <FaMapMarkerAlt className="inline-block mr-2" /> Địa
+                          chỉ
+                        </label>
+                        <input
+                          className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none dark:border-form-strokedark dark:bg-form-input dark:text-white"
+                          type="text"
+                          value={teacher.address}
+                          onChange={(e) =>
+                            setTeacher((prev) =>
+                              prev
+                                ? { ...prev, address: e.target.value }
+                                : prev,
+                            )
+                          }
+                        />
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
               <div className="flex justify-end gap-4.5">
-                <button
-                  onClick={() => handleUpdate(Number(data.id))}
-                  className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
-                  type="button"
-                >
-                  Lưu thông tin
-                </button>
+                {hident && (
+                  <div>
+                    <button
+                      onClick={() => handleUpdate(Number(data.id))}
+                      className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                      type="button"
+                    >
+                      Lưu thông tin
+                    </button>
+                  </div>
+                )}
+                {!hident && (
+                  <div>
+                    <button
+                      onClick={() => handleUpdateTeacher(Number(teacher.id))}
+                      className="flex justify-center rounded bg-primary py-2 px-6 font-medium text-gray hover:bg-opacity-90"
+                      type="button"
+                    >
+                      Cập nhật thông tin
+                    </button>
+                  </div>
+                )}
                 <button
                   onClick={handleShowModal}
                   className="flex justify-center rounded bg-danger py-2 px-6 font-medium text-gray hover:bg-opacity-90"

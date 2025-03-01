@@ -40,15 +40,17 @@ const ExamComponent = ({ isEdit = false }: { isEdit?: boolean }) => {
   const navigate = useNavigate();
   useEffect(() => {
     void setItemsPerPage;
-    getExamDetailsById(Number(id),currentPage,itemsPerPage).then((response: any) => {
-      setData(response.content);
-      setTotalExamDetails(response.totalElements)
-    });
+    getDetails()
     findExamById(Number(id)).then((response: any) => {
       setExam(response.data);
     });
   }, [currentPage,itemsPerPage]);
-  
+  function getDetails(){
+    getExamDetailsById(Number(id),currentPage,itemsPerPage).then((response: any) => {
+      setData(response.content);
+      setTotalExamDetails(response.totalElements)
+    });
+  }
   const totalPages = Math.ceil(totalExamDetails / itemsPerPage);
 
   const handleNextPage = () => {
@@ -105,6 +107,14 @@ const ExamComponent = ({ isEdit = false }: { isEdit?: boolean }) => {
       updateExamDetails(examDetails.id, examDetails)
         .then(() => {
           showAlert('Thành công', 'Cập nhật nội dung thành công !', 'success');
+          setExamDetails({
+            id: 0,
+            name: '',
+            answer: '',
+            description: '',
+            url: '',
+            examId: 0,
+          });
           setOpenModal(false);
           setData((prev) =>
             prev.map((item) =>
@@ -118,8 +128,18 @@ const ExamComponent = ({ isEdit = false }: { isEdit?: boolean }) => {
     } else {
       const examDetailDto = { ...examDetails, examId: exam.id };
       addExamDetails(examDetailDto)
-        .then((response: any) => {
-          console.log('add data', response.data);
+        .then(() => {
+          showAlert('Thành công','Thêm câu hỏi thành công!','success');
+          setOpenModal(false);
+          setExamDetails({
+            id: 0,
+            name: '',
+            answer: '',
+            description: '',
+            url: '',
+            examId: 0,
+          });
+          getDetails()
         })
         .catch((error: any) => {
           console.error(error);
@@ -248,12 +268,14 @@ const ExamComponent = ({ isEdit = false }: { isEdit?: boolean }) => {
 
                     <div className="flex gap-4">
                       <button
+                        hidden={!isEdit}
                         onClick={() => handleEdit(data.id)}
                         className="text-yellow-600 hover:text-yellow-800 transition"
                       >
                         <Pencil size={20} />
                       </button>
                       <button
+                        hidden={!isEdit}
                         onClick={() => handleRemove(data.id)}
                         className="text-red-600 hover:text-red-800 transition"
                       >

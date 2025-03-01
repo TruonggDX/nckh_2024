@@ -20,6 +20,8 @@ public class GradeMapper {
     private AccountRepository accountRepository;
     @Autowired
     private CourseRepository courseRepository;
+    @Autowired
+    private AccountMapper accountMapper;
     public GradeDto toDto(GradeEntity gradeEntity){
         GradeDto dto = new GradeDto();
         dto.setId(gradeEntity.getId());
@@ -27,7 +29,14 @@ public class GradeMapper {
         dto.setName(gradeEntity.getName());
         dto.setNumber_student(gradeEntity.getNumber_student());
         dto.setCourse_id(gradeEntity.getCourseEntity().getId());
+        dto.setCourse_name(gradeEntity.getCourseEntity().getName());
         Set<Long> accountEntities = gradeEntity.getAccounts().stream().map(AccountEntity::getId).collect(Collectors.toSet());
+        dto.setAccountDto(
+                gradeEntity.getAccounts()
+                        .stream()
+                        .map(accountMapper::toDto)
+                        .collect(Collectors.toSet()) 
+        );
         dto.setAccount_id(accountEntities);
         return dto;
     }

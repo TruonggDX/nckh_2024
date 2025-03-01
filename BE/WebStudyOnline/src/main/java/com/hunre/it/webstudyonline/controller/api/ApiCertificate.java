@@ -55,4 +55,9 @@ public class ApiCertificate {
                 certificateName, issuingOrganization, certificateType, certificateNumber, pageable);
         return ResponseEntity.ok(response);
     }
+    @GetMapping("/findCertificateByEmail")
+    public ResponseEntity<ResponsePage<List<CertificateDto>>> findCertificatesByEmail(Pageable pageable) {
+        ResponsePage<List<CertificateDto>> responsePage = iCertificateService.findCertificateByEmail(pageable);
+        return ResponseEntity.ok(responsePage);
+    }
 }

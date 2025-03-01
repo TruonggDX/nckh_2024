@@ -2,10 +2,11 @@ import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb.tsx';
 import { useNavigate, useParams } from 'react-router-dom';
 import {findCouseById, updateCourseById } from '../../service/CourseService.ts';
 import {
+  addCourseDetails,
   deleteCourseDetail,
   findById,
   getCourseDetails,
-  updateCourseDetails,
+  updateCourseDetails
 } from '../../service/CourseDetailService.ts';
 import { useEffect, useState } from 'react';
 import { Course } from '../../types/Course.ts';
@@ -39,8 +40,27 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const [courseDetails, setCourseDetails] = useState<CourseDetails[]>([]);
   const [isEditing, setIsEditing] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(5);
+  const [totalCourseDetails, setTotalExamDetails] = useState(0);
 
+  const totalPages = Math.ceil(totalCourseDetails / itemsPerPage);
 
+  const handleNextPage = () => {
+    if (currentPage < totalPages - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const handlePageChange = (pageNumber:number) => {
+    setCurrentPage(pageNumber);
+  };
   useEffect(() => {
     findCouseById(Number(id))
       .then((response: any) => {
@@ -50,21 +70,25 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
       .catch((error: any) => {
         console.error(error);
       });
+  }, [id]);
 
-    getCourseDetails(Number(id))
+  useEffect(() => {
+    void setItemsPerPage;
+    listCategories(0, 0).then((response: any) => {
+      setCategories(response.content);
+    });
+    getDetails()
+  }, [currentPage,itemsPerPage]);
+  function getDetails(){
+    getCourseDetails(Number(id),currentPage,itemsPerPage)
       .then((reponse: any) => {
-        setCourseDetails(reponse.data);
+        setCourseDetails(reponse.content);
+        setTotalExamDetails(reponse.totalElements)
       })
       .catch((error: any) => {
         console.log(error);
       });
-  }, [id]);
-
-  useEffect(() => {
-    listCategories(0, 0).then((response: any) => {
-      setCategories(response.content);
-    });
-  }, []);
+  }
 
   const handleComback = () => {
     navigate('/course');
@@ -114,19 +138,36 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
     if (!lesson) {
       return;
     }
-    updateCourseDetails(Number(lesson?.id), lesson)
-      .then(() => {
+    if (isEditing) {
+      updateCourseDetails(Number(lesson?.id), lesson)
+        .then(() => {
+          setOpenModal(false);
+          showAlert(
+            'Cập nhật thành công!',
+            'Nội dung đã được cập nhật.',
+            'success',
+          );
+          setCourseDetails((prev) =>
+            prev.map((item) => (item.id === lesson.id ? { ...lesson } : item)),
+          );
+        })
+        .catch((error) => console.log(error));
+    }else {
+      const obj = { ...lesson, courseId:Number(data.id)};
+      addCourseDetails(obj).then(() => {
+        showAlert('Thành công','Thêm nội dung khóa học thành công!','success');
         setOpenModal(false);
-        showAlert(
-          'Cập nhật thành công!',
-          'Nội dung đã được cập nhật.',
-          'success',
-        );
-        setCourseDetails((prev) =>
-          prev.map((item) => (item.id === lesson.id ? { ...lesson } : item)),
-        );
+        setLesson({
+          id: 0,
+          description: '',
+          name: '',
+          period: '',
+          url: '',
+          courseId: 0,
+        });
+        getDetails()
       })
-      .catch((error) => console.log(error));
+    }
   };
 
   const handleAdd = () => {
@@ -327,7 +368,13 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
                   className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 ></textarea>
               </div>
-              <button hidden={!isEditMode} onClick={() => handleUpdateCourse(data.id)} className="w-40 h-12 bg-primary text-white py-2 rounded hover:bg-blue-700 mb-4 float-right">Cập nhật</button>
+              <button
+                hidden={!isEditMode}
+                onClick={() => handleUpdateCourse(data.id)}
+                className="w-40 h-12 bg-primary text-white py-2 rounded hover:bg-blue-700 mb-4 float-right"
+              >
+                Cập nhật
+              </button>
             </div>
           </div>
 
@@ -396,6 +443,49 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
               Quay lại
             </button>
           </div>
+          <nav aria-label="Page navigation example">
+            <ul className="pagination justify-content-end">
+              <li
+                className={`page-item ${currentPage === 0 ? 'disabled' : ''}`}
+              >
+                <button
+                  className="page-link"
+                  onClick={handlePrevPage}
+                  disabled={currentPage === 0}
+                >
+                  Previous
+                </button>
+              </li>
+              {Array.from({ length: totalPages }, (_, index) => (
+                <li
+                  className={`page-item ${
+                    currentPage === index ? 'active' : ''
+                  }`}
+                  key={index}
+                >
+                  <button
+                    className="page-link"
+                    onClick={() => handlePageChange(index)}
+                  >
+                    {index + 1}
+                  </button>
+                </li>
+              ))}
+              <li
+                className={`page-item ${
+                  currentPage === totalPages - 1 ? 'disabled' : ''
+                }`}
+              >
+                <button
+                  className="page-link"
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages - 1}
+                >
+                  Next
+                </button>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
 
@@ -405,6 +495,7 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
             <h3 className="text-xl font-semibold mb-4">
               {isEditing ? 'Chỉnh sửa bài học' : 'Thêm bài học'}
             </h3>
+            <input value={data.id} hidden/>
             <div className="mb-4">
               <label className="block text-gray-700 font-medium">Tiêu đề</label>
               <input
@@ -474,7 +565,7 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
                 }}
                 className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
               >
-                Cập nhật
+                {isEditing ? 'Cập nhật' : 'Thêm mới'}
               </button>
               <button
                 className="w-full bg-gray-500 text-white py-2 rounded hover:bg-gray-600"
@@ -485,6 +576,7 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
                     name: '',
                     period: '',
                     url: '',
+                    courseId: 0,
                   });
                   setOpenModal(false);
                 }}

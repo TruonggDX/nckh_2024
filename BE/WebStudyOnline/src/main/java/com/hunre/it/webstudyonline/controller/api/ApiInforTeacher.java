@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -32,8 +33,8 @@ public class ApiInforTeacher {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<BaseResponse<InforTeacherDto>> updateInforTeacher(@RequestBody InforTeacherDto inforTeacherDto,@PathVariable String id){
-        BaseResponse<InforTeacherDto> response = inforTeacherService.updateInforTeacher(inforTeacherDto, id);
+    public ResponseEntity<BaseResponse<InforTeacherDto>> updateInforTeacher(@ModelAttribute InforTeacherDto inforTeacherDto,@PathVariable String id,@RequestParam(value = "file", required = false) MultipartFile file){
+        BaseResponse<InforTeacherDto> response = inforTeacherService.updateInforTeacher(inforTeacherDto, id, file);
         return ResponseEntity.ok(response);
     }
 
@@ -43,7 +44,7 @@ public class ApiInforTeacher {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("findById/{id}")
     public ResponseEntity<BaseResponse<InforTeacherDto>>  getInforTeacher(@PathVariable String id){
         BaseResponse<InforTeacherDto> response = inforTeacherService.getInforTeacherById( id);
         return ResponseEntity.ok(response);
