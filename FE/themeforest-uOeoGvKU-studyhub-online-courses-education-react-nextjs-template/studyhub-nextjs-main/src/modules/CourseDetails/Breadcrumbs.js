@@ -23,7 +23,7 @@ export default function CourseDetailsBreadcrumbs(props) {
 								<a className="active" href="#">Course Details</a>
 							</div>
 							<h1 className="title">
-								{title || <>The Complete Web Developer in <br /> 2024: Zero to Mastery</>}
+								{title }
 							</h1>
 							<div className="rating-area">
 								<div className="stars-area">
