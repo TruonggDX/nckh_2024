@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ICourseService {
     ResponsePage<List<CourseDto>> getCourses(Pageable pageable);
@@ -14,4 +15,7 @@ public interface ICourseService {
     BaseResponse<CourseDto> updateCourse(String id,CourseDto courseDto,MultipartFile file);
     BaseResponse<CourseDto> deleteCourse(Long id);
     BaseResponse<CourseDto> getCourseById(Long id);
+    ResponsePage<List<CourseDto>> getCourseByCondition(Map<String, String> params, Pageable pageable);
+
+    ResponsePage<List<CourseDto>> getCourseBestSeller(Pageable pageable);
 }

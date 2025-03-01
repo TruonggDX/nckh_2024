@@ -17,9 +17,11 @@ public class CourseMapper {
         courseDto.setDiscount(courseEntity.getDiscount());
         courseDto.setCategoryId(courseEntity.getCategoryEntity().getId());
         courseDto.setCategoryName(courseEntity.getCategoryEntity().getName());
+        courseDto.setPeriods(courseEntity.getCourseDetailsEntities().size());
         courseDto.setCreatedBy(courseEntity.getCreatedBy());
         courseDto.setCreatedDate(courseEntity.getCreatedDate());
         courseDto.setAim(courseEntity.getAim());
+        courseDto.setCreatedDate(courseEntity.getModifiedDate());
         return courseDto;
     }
     public CourseEntity toEntity(CourseDto courseDto){
