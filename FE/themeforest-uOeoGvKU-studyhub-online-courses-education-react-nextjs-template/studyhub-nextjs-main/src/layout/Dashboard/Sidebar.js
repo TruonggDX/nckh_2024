@@ -10,23 +10,19 @@ export default function DashboardSidebar() {
 	const dashboardItemSlug = asPath.split('/')[2];
 
 	const dispatch = useDispatch();
-	
-	function handleLogout() {
-		console.log('Logout Successfully ! ');
-		dispatch(clearUserData());
-	}
+
 
 	return (
 		<div className="left-sindebar-dashboard theiaStickySidebar">
 			<div className="dashboard-left-single-wrapper">
 				{/* single item */}
-				<Link
-					href="/dashboard" 
-					className={`single-item ${dashboardSlug === "dashboard" && dashboardItemSlug === undefined ? "active" : ""}`}
-				>
-					<i className="fa-light fa-house"></i>
-					<p>Dashboard</p>
-				</Link>
+				{/*<Link*/}
+				{/*	href="/dashboard" */}
+				{/*	className={`single-item ${dashboardSlug === "dashboard" && dashboardItemSlug === undefined ? "active" : ""}`}*/}
+				{/*>*/}
+				{/*	<i className="fa-light fa-house"></i>*/}
+				{/*	<p>Dashboard</p>*/}
+				{/*</Link>*/}
 				{/* single item end */}
 				{/* single item */}
 				<Link
@@ -34,7 +30,7 @@ export default function DashboardSidebar() {
 					className={`single-item ${dashboardItemSlug === "profile" ? "active" : ""}`}
 				>
 					<i className="fa-regular fa-user"></i>
-					<p>My Profile</p>
+					<p>Thông tin cá nhân</p>
 				</Link>
 				{/* single item end */}
 				{/* single item */}
@@ -170,13 +166,13 @@ export default function DashboardSidebar() {
 				</Link>
 				{/* single item end */}
 				{/* single item */}
-				<button
-					className="single-item"
-					onClick={()=>{handleLogout()}}
-				>
-					<i className="fa-light fa-right-from-bracket"></i>
-					<p>Logout</p>
-				</button>
+				{/*<button*/}
+				{/*	className="single-item"*/}
+				{/*	onClick={()=>{handleLogout()}}*/}
+				{/*>*/}
+				{/*	<i className="fa-light fa-right-from-bracket"></i>*/}
+				{/*	<p>Logout</p>*/}
+				{/*</button>*/}
 				{/* single item end */}
 			</div>
 		</div>

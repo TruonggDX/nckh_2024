@@ -1,52 +1,56 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useSelector } from 'react-redux';
+import {useEffect, useState} from "react";
+import api from "@/route/route";
 
 export default function DashboardBreadCrumbs() {
-	const admin = useSelector((state) => state.user.admin);
-	
+	const [user, setUser] = useState(null);
+	useEffect(() => {
+		api.getUser()
+			.then((response) => {
+				setUser(response.data);
+			})
+	}, []);
 	return (
 		<div className="dashboard-banner-area-wrapper">
 			<div className="container">
 				<div className="row">
 					<div className="col-lg-12">
-						<div className="dashboard-banner-area-start bg_image">
-							<div className="rating-area-banner-dashboard">
-								<div className="stars">
-									<span>4.5</span>
-									<i className="fa-solid fa-star"></i>
-									<i className="fa-solid fa-star"></i>
-									<i className="fa-solid fa-star"></i>
-									<i className="fa-solid fa-star"></i>
-									<i className="fa-regular fa-star"></i>
-								</div>
-								<p>{admin?.designation || "Full Stack Developer"}</p>
-								<Link href="/course/create" className="create-btn">
-									<i className="fa-regular fa-circle-plus"></i> Create a New Course
-								</Link>
-							</div>
-							<div className="author-profile-image-and-name">
-								<div className="profile-pic">
-									<Image src="/images/dashboard/01.png" width={200} height={200} alt="dashboard" />
-								</div>
-								<div className="name-desig">
-									<h1 className="title">{admin?.firstName || "David"} {' '} {admin?.lastName || "Bekham"}</h1>
-									<div className="course-vedio">
-										<div className="single">
-											<i className="fa-light fa-users"></i>
-											<span>1350 Students</span>
-										</div>
-										<div className="single">
-											<i className="fa-regular fa-video"></i>
-											<span>26 Course</span>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	)
+                        <div className="dashboard-banner-area-start bg_image">
+                            <div className="author-profile-image-and-name">
+                                <div
+                                    className="profile-pic"
+                                    style={{
+                                        width: "200px",
+                                        height: "200px",
+                                        borderRadius: "50%",
+                                        overflow: "hidden",
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center"
+                                    }}
+                                >
+                                    <Image
+                                        src={user?.imageUrl || "/images/dashboard/01.png"}
+                                        width={200}
+                                        height={200}
+                                        alt="dashboard"
+                                        style={{
+                                            width: "100%",
+                                            height: "100%",
+                                            objectFit: "cover"
+                                        }}
+                                    />
+                                </div>
+                                <div className="name-desig">
+                                    <h1 className="title">{user?.fullName || "David"}</h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
 }
