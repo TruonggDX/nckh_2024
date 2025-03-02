@@ -16,6 +16,6 @@ public interface ICourseService {
     BaseResponse<CourseDto> deleteCourse(Long id);
     BaseResponse<CourseDto> getCourseById(Long id);
     ResponsePage<List<CourseDto>> getCourseByCondition(Map<String, String> params, Pageable pageable);
-
+    ResponsePage<List<CourseDto>> getCourseByCreatedBy(Pageable pageable);
     ResponsePage<List<CourseDto>> getCourseBestSeller(Pageable pageable);
 }

@@ -54,13 +54,18 @@ public class ApiCourse {
         return ResponseEntity.ok(response);
     }
     @GetMapping("/findByCondition")
-    public ResponseEntity<ResponsePage<List<CourseDto>>> findById(@RequestParam Map<String,String> params, Pageable pageable) {
+    public ResponseEntity<ResponsePage<List<CourseDto>>> findByCondition(@RequestParam Map<String,String> params, Pageable pageable) {
         ResponsePage<List<CourseDto>> response = courseService.getCourseByCondition(params,pageable);
         return ResponseEntity.ok(response);
     }
     @GetMapping("/getBestseller")
     public ResponseEntity<ResponsePage<List<CourseDto>>> getBestseller(Pageable pageable) {
         ResponsePage<List<CourseDto>> response = courseService.getCourseBestSeller(pageable);
+        return ResponseEntity.ok(response);
+    }
+    @GetMapping("/findByCreateBy")
+    public ResponseEntity<ResponsePage<List<CourseDto>>> findByCreateBy(Pageable pageable) {
+        ResponsePage<List<CourseDto>> response = courseService.getCourseByCreatedBy(pageable);
         return ResponseEntity.ok(response);
     }
 }

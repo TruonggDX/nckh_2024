@@ -25,4 +25,6 @@ public interface CourseRepository extends JpaRepository<CourseEntity,Long> {
     @Query(value = "SELECT c FROM CourseEntity c left join BillDetailsEntity b on c.id = b.courseEntity.id " +
             "group by c.id order by sum(b.quantity) desc")
     Page<CourseEntity> getCourseBestSeller(Pageable pageable);
+    @Query(value = "SELECT c FROM CourseEntity c WHERE c.deleted=false AND c.createdBy=:createdByEmail")
+    Page<CourseEntity> getCourseByCreatedByEmail(Pageable pageable, String createdByEmail);
 }

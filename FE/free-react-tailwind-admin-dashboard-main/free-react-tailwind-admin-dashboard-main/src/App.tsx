@@ -26,6 +26,7 @@ import ExamList from './pages/Exam/ExamList.tsx';
 import ExamComponent from './pages/Exam/ExamComponent.tsx';
 import UpdateGrade from './pages/Grade/UpdateGrade.tsx';
 import CertificateTeacher from './pages/CertificateTeacher.tsx';
+import ListCourseTeacher from './pages/Course/ListCourseTeacher.tsx';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -86,6 +87,15 @@ function App() {
             <>
               <PageTitle title="ADMIN" />
               <AddCourse />
+            </>
+          }
+        />
+        <Route
+          path="/courseTeacher"
+          element={
+            <>
+              <PageTitle title="ADMIN" />
+              <ListCourseTeacher />
             </>
           }
         />

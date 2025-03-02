@@ -77,31 +77,40 @@ export const updateCourseById = async (id: number, formData: FormData) => {
     throw error;
   }
 };
-export const getCourseByCondition = async (page: number, size: number, filter: any) => {
+export const getCourseByCondition = async (page: number, size: number, filter: Record<string, string>) => {
   const token = getToken();
-  if (!token) {
-    throw new Error("Unauthorized: No token found");
-  }
-
   try {
-    const params: any = {
+    const params = {
       page,
       size,
-      ...(filter.category && { category: filter.category }),
-      ...(filter.status && { status: filter.status }),
-      ...(filter.code && { code: filter.code }),
-      ...(filter.name && { name: encodeURIComponent(filter.name) }),
-      ...(filter.aim && { aim: filter.aim }),
+      ...Object.fromEntries(
+        Object.entries(filter)
+          .filter(([_, value]) => value)
+          .map(([key, value]) => [key, value])
+      ),
     };
 
     const response = await axios.get(`${api}/findByCondition`, {
       headers: { Authorization: `Bearer ${token}` },
-      params:params,
+      params,
     });
 
     return response.data;
   } catch (error) {
-    console.error("Error fetching courses:", error);
+    console.error(error);
     throw error;
   }
 };
+export const findByCreateBy = async (page:number, size:number) => {
+  const token = getToken();
+  try {
+    const response = await axios.get(`${api}/findByCreateBy`,{
+      params:{page,size},
+      headers:{Authorization:`Bearer ${token}`}
+    })
+    return response.data;
+  }catch (e) {
+    console.error(e);
+    throw e;
+  }
+}

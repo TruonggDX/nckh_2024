@@ -213,7 +213,11 @@ public class IAccountServiceImpl implements IAccountService {
         AccountDto accountDto = accountMapper.toDto(account);
         Set<RoleDto> roleDtos = account.getRoles().stream().map(roleMapper::toDto).collect(Collectors.toSet());
         Set<Long> roleId = account.getRoles().stream().map(RoleEntity::getId).collect(Collectors.toSet());
-        accountDto.setTeacherId(account.getTeacher().getId());
+        if (account.getTeacher() != null) {
+            accountDto.setTeacherId(account.getTeacher().getId());
+        } else {
+            accountDto.setTeacherId(null);
+        }
         accountDto.setRoleIds(roleId);
         accountDto.setRoles(roleDtos);
         response.setData(accountDto);

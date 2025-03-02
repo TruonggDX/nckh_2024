@@ -43,8 +43,16 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [totalCourseDetails, setTotalExamDetails] = useState(0);
-
   const totalPages = Math.ceil(totalCourseDetails / itemsPerPage);
+  const [hidden,setHidden] = useState(false)
+  useEffect(() => {
+    const storedRoles = localStorage.getItem('role');
+    const roles: string[] = storedRoles ? JSON.parse(storedRoles) : [];
+    if (roles.includes("ADMIN")) {
+      setHidden(true)
+    }
+  }, []);
+
 
   const handleNextPage = () => {
     if (currentPage < totalPages - 1) {
@@ -90,9 +98,6 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
       });
   }
 
-  const handleComback = () => {
-    navigate('/course');
-  };
   const handleEdit = (id: number) => {
     findById(id).then((response: any) => {
       setLesson(response.data);
@@ -435,14 +440,27 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
               ))}
             </div>
           </div>
-          <div className="flex justify-end mt-6">
-            <button
-              className="bg-primary w-40 h-12 text-white py-2 px-6 rounded"
-              onClick={handleComback}
-            >
-              Quay lại
-            </button>
-          </div>
+          {hidden && (
+            <div className="flex justify-end mt-6">
+              <button
+                className="bg-primary w-40 h-12 text-white py-2 px-6 rounded"
+                onClick={() => navigate('/course')}
+              >
+                Quay lại
+              </button>
+            </div>
+          )}
+
+          {!hidden && (
+            <div className="flex justify-end mt-6">
+              <button
+                className="bg-primary w-40 h-12 text-white py-2 px-6 rounded"
+                onClick={() => navigate('/courseTeacher')}
+              >
+                Quay lại teacher
+              </button>
+            </div>
+          )}
           <nav aria-label="Page navigation example">
             <ul className="pagination justify-content-end">
               <li
@@ -495,7 +513,7 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
             <h3 className="text-xl font-semibold mb-4">
               {isEditing ? 'Chỉnh sửa bài học' : 'Thêm bài học'}
             </h3>
-            <input value={data.id} hidden/>
+            <input value={data.id} hidden />
             <div className="mb-4">
               <label className="block text-gray-700 font-medium">Tiêu đề</label>
               <input

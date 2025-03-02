@@ -24,6 +24,7 @@ const DropdownUser = () => {
     getUser().then((response) => {
       setData(response.data);
       const arrRole:string[] = response.data.roles.map((role:{name:string}) => role.name);
+      localStorage.setItem('role',JSON.stringify(arrRole));
       if (arrRole.includes("ADMIN")) {
         setHiden(true);
       }

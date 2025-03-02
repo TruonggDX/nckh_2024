@@ -20,16 +20,21 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     phone: '',
     imageUrl: '',
   });
+  const [show,setShow] = useState(false)
+
   useEffect(() => {
+    void data;
     getUser().then((response) => {
       setData(response.data);
       const arrRole:string[] = response.data.roles.map((role:{name:string}) => role.name);
       if (arrRole.includes("TEACHER")) {
         setHidden(true);
       }
+      if (arrRole.includes("ADMIN")){
+            setShow(true)
+          }
     });
   }, []);
-
   const location = useLocation();
   const { pathname } = location;
 
@@ -344,20 +349,36 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             </NavLink>
                           </li>
                         </ul>
-
-                        <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
-                          <li>
-                            <NavLink
-                              to="/course"
-                              className={({ isActive }) =>
-                                'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
-                                (isActive && '!text-white')
-                              }
-                            >
-                              Danh sách khóa học
-                            </NavLink>
-                          </li>
-                        </ul>
+                        {show && (
+                          <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+                            <li>
+                              <NavLink
+                                to="/course"
+                                className={({ isActive }) =>
+                                  'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                  (isActive && '!text-white')
+                                }
+                              >
+                                Danh sách khóa học
+                              </NavLink>
+                            </li>
+                          </ul>
+                        )}
+                        {!show && (
+                          <ul className="mt-4 mb-5.5 flex flex-col gap-2.5 pl-6">
+                            <li>
+                              <NavLink
+                                to="/courseTeacher"
+                                className={({ isActive }) =>
+                                  'group relative flex items-center gap-2.5 rounded-md px-4 font-medium text-bodydark2 duration-300 ease-in-out hover:text-white ' +
+                                  (isActive && '!text-white')
+                                }
+                              >
+                                Khóa học của tôi
+                              </NavLink>
+                            </li>
+                          </ul>
+                        )}
                       </div>
                       {/* <!-- Dropdown Menu End --> */}
                     </React.Fragment>

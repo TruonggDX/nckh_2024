@@ -8,12 +8,14 @@ import com.hunre.it.webstudyonline.mapper.CourseMapper;
 import com.hunre.it.webstudyonline.mapper.ImageMapper;
 import com.hunre.it.webstudyonline.model.dto.CourseDto;
 import com.hunre.it.webstudyonline.model.dto.ImageDto;
+import com.hunre.it.webstudyonline.model.dto.auth.AuthDto;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
 import com.hunre.it.webstudyonline.model.response.ResponsePage;
 import com.hunre.it.webstudyonline.repository.CategoryRepository;
 import com.hunre.it.webstudyonline.repository.CourseDetailsRepository;
 import com.hunre.it.webstudyonline.repository.CourseRepository;
 import com.hunre.it.webstudyonline.repository.ImageRepository;
+import com.hunre.it.webstudyonline.security.service.JwtService;
 import com.hunre.it.webstudyonline.service.ICourseService;
 import com.hunre.it.webstudyonline.service.UploadImageFile;
 import com.hunre.it.webstudyonline.utils.Constant;
@@ -51,6 +53,8 @@ public class ICourseServiceImpl implements ICourseService {
     private ImageRepository imageRepository;
     @Autowired
     private CourseDetailsRepository courseDetailsRepository;
+    @Autowired
+    private JwtService jwtService;
 
     @Override
     public ResponsePage<List<CourseDto>> getCourses(Pageable pageable) {
@@ -261,6 +265,29 @@ public class ICourseServiceImpl implements ICourseService {
         responsePage.setContent(courseDtos);
         return responsePage;
     }
+
+    @Override
+    public ResponsePage<List<CourseDto>> getCourseByCreatedBy(Pageable pageable) {
+        ResponsePage<List<CourseDto>> responsePage = new ResponsePage<>();
+        AuthDto authDto = jwtService.decodeToken();
+        String email = authDto.getEmail();
+        Page<CourseEntity> page = courseRepository.getCourseByCreatedByEmail(pageable,email);
+        List<CourseDto> courseDtos = page.getContent().stream().map(courseEntity -> {
+            CourseDto courseDto = courseMapper.toDto(courseEntity);
+            List<ImagesEntity> images = imageRepository.findByCourseId(courseEntity.getId());
+            if (!images.isEmpty()) {
+                ImagesEntity image = images.get(0);
+                courseDto.setImageUrl(image.getUrl());
+            }
+            return courseDto;
+        }).toList();        responsePage.setPageNumber(pageable.getPageNumber());
+        responsePage.setPageSize(pageable.getPageSize());
+        responsePage.setTotalElements(page.getTotalElements());
+        responsePage.setTotalPages(page.getTotalPages());
+        responsePage.setContent(courseDtos);
+        return responsePage;
+    }
+
     @Override
     public ResponsePage<List<CourseDto>> getCourseBestSeller(Pageable pageable) {
         ResponsePage<List<CourseDto>> responsePage = new ResponsePage<>();
