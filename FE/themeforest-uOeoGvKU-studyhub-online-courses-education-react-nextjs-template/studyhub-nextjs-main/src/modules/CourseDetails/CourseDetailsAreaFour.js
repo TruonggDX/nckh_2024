@@ -25,16 +25,16 @@ export default function CourseDetailsAreaFour(props) {
 						<div className="col-lg-8 order-cl-1 order-lg-1 order-md-2 order-sm-2 order-2">
 							<div className="course-top-enroll-area">
 								<div className="single-course-top">
-									<span>Current Status</span>
-									<a href="#" className="rts-btn btn-primary">Not Enrolled</a>
+									<span>Trạng thái</span>
+									<a href="#" className="rts-btn btn-primary">Chưa đăng kí</a>
 								</div>
 								<div className="single-course-top">
-									<span>Price</span>
+									<span>Giá</span>
 									<h2 className="title">${item.price}</h2>
 								</div>
 								<div className="single-course-top">
-									<span>Get Started</span>
-									<Link href="/login" className="rts-btn btn-primary">Login to Enroll</Link>
+									<span>Tham gia</span>
+									<Link href="/login" className="rts-btn btn-primary">Đăng nhập</Link>
 								</div>
 							</div>
 
@@ -69,7 +69,7 @@ export default function CourseDetailsAreaFour(props) {
 										<>
 											<CourseInfo item={item} />
 										</> :
-												<CourseContent />
+												<CourseContent item={item}/>
 								}
 							</div>
 						</div>

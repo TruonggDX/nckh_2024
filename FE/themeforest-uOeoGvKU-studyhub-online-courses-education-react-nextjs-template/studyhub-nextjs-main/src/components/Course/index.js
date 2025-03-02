@@ -6,7 +6,7 @@ export default function SingleCourse( props ) {
 
 	return (
 		<div className={ courseClass || 'rts-single-course'}>
-			<Link href={`/course/detail/four?code=${Slug || 'details'}`} className="thumbnail">
+			<Link href={`/course/detail/four?${Slug || 'details'}`} className="thumbnail">
 				<img src={Img } width={imgWidth || 290} height={imgHeight || 210}alt="course" />
 			</Link>
 			<div className="save-icon" data-bs-toggle="modal" data-bs-target="#exampleModal-login">
@@ -27,7 +27,7 @@ export default function SingleCourse( props ) {
 					<span>{studentCount || '54'} Students</span>
 				</div>
 			</div>
-			<Link href={`/course/detail/four?code=${Slug || 'details'}`}>
+			<Link href={`/course/detail/four?${Slug || 'details'}`}>
 				<h5 className="title">{Title || 'The Complete Web Developer in 2023: Zero to Mastery'}</h5>
 			</Link>
 			<p className="teacher">{Author || 'Dr. Angela Yu'}</p>

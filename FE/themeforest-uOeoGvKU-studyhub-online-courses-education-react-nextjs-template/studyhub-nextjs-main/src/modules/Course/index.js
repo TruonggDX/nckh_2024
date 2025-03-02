@@ -1,16 +1,27 @@
-import BreadCrumbs from "@/components/BreadCrumbs"
-import ScrollTop from "@/components/ScrollTop"
-import CourseArea from "./CourseArea"
+import Footer from '@/layout/Footer';
+import Header from '@/layout/Header';
+import Preloader from '@/components/Preloader';
+import dynamic from 'next/dynamic';
 
-export default function CourseModule() {
+const CourseFourModule = dynamic(() => import('@/modules/Course/Four'), {
+	loading: () => <Preloader />,
+});
+
+export default function Course() {
 	return (
 		<main>
-			<BreadCrumbs
-				Title="Our Course"
-				subTitle="All Course"
+			<Header
+				headerClass= "header-one v-2 header--sticky"
+				topbarEnable= {true}
+				menuItemsLeft = {true}
 			/>
-			<CourseArea />
-			<ScrollTop />
+
+			<CourseFourModule />
+
+			<Footer
+				footerClass="footer-callto-action-area bg-light-1"
+				footerLogo="/images/logo/logo-1.svg"
+			/>
 		</main>
 	)
 }

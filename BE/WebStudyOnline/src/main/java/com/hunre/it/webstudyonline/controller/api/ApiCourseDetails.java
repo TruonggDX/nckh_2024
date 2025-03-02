@@ -35,11 +35,7 @@ public class ApiCourseDetails {
         BaseResponse<CourseDetailsDto> response = courseDetailsService.updateCourseDetails(id, dto);
         return ResponseEntity.ok(response);
     }
-//    @PutMapping("/updateRecord/{id}")
-//    public ResponseEntity<BaseResponse<CourseDetailsDto>> updateRecord(@PathVariable String id,@RequestParam MultipartFile file) {
-//        BaseResponse<CourseDetailsDto> response = courseDetailsService.updateRecord(id,file);
-//        return ResponseEntity.ok(response);
-//    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<BaseResponse<CourseDetailsDto>> deleteCourseDetails(@PathVariable String id) {
         BaseResponse<CourseDetailsDto> response = courseDetailsService.deleteCourseDetails(id);
