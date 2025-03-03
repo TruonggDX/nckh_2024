@@ -1,37 +1,31 @@
-import {productRemoveData, updateProductQuantity} from '@/redux/product/actionCreator';
 import Image from 'next/image';
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import api from '../../route/cart'
 import {formatCurrency} from "@/utils/utils";
-
-const ProductRow = ({id, slug, title, price, img, updateSubtotal}) => {
-    const [quantity, setQuantity] = useState(1);
-
+import useCartData from "@/hooks/useCartData";
+const ProductRow = ({id, slug, title, price, img, updateSubtotal,discount,courseId,quantity: initNumber,removeData,updateData  }) => {
+    const [quantity, setQuantity] = useState(initNumber);
     useEffect(() => {
         if (typeof updateSubtotal === "function") {
-            const numericPrice = parseFloat(price.toString().replace(/[^\d.-]/g, "")); // Loại bỏ ký tự không phải số
-            const subtotal = quantity * numericPrice;
-            updateSubtotal(id, subtotal);
-            dispatch(updateProductQuantity(id, quantity));
+            const numericPrice = parseFloat(price.toString().replace(/[^\d.-]/g, ""));
+            const subtotal = quantity * numericPrice * (1 - discount / 100);
+            updateSubtotal(courseId, subtotal);
+            updateData(courseId, { quantity });
         }
     }, [quantity]);
-
-
-    const dispatch = useDispatch();
-
     const handleRemoveProduct = () => {
-        dispatch(productRemoveData(id));
+        removeData(id);
     };
-
     const handleIncrement = () => {
-        setQuantity((prevQuantity) => prevQuantity + 1);
+        const newQuantity = quantity + 1;
+        setQuantity(newQuantity);
+        updateData(courseId, { quantity: newQuantity });
     };
-
     const handleDecrement = () => {
         if (quantity > 1) {
-            setQuantity((prevQuantity) => prevQuantity - 1);
+            const newQuantity = quantity - 1;
+            setQuantity(newQuantity);
+            updateData(courseId, { quantity: newQuantity });
         }
     };
 
@@ -39,21 +33,43 @@ const ProductRow = ({id, slug, title, price, img, updateSubtotal}) => {
         const newQuantity = parseInt(event.target.value);
         if (!isNaN(newQuantity) && newQuantity >= 1) {
             setQuantity(newQuantity);
+            updateData(courseId, { quantity: newQuantity });
         }
     };
-    const subtotal = quantity * price;
-
+    const discounts = 1 -discount / 100
+    const subtotal = quantity * price * (discounts);
     return (
         <tr key={id} className="woocommerce-cart-form__cart-item cart_item">
-            <td style={{width:'250px'}} className="product-thumbnail" data-title="Ảnh sản phẩm">
-                <Link href={`/course/detail/four?/${slug}`} passHref>
+            <td style={{width: "250px", position: "relative"}} className="product-thumbnail" data-title="Ảnh sản phẩm">
+                <Link href={`/course/detail/four?${slug}`}>
                     <Image style={{width: 500}} src={img} alt="" width={400} height={400}/>
                 </Link>
+
+                {discount > 0 && (
+                    <div
+                        style={{
+                            position: "absolute",
+                            top: "10px",
+                            right: "10px",
+                            backgroundColor: "red",
+                            color: "white",
+                            fontSize: "14px",
+                            fontWeight: "bold",
+                            padding: "5px 10px",
+                            borderRadius: "5px",
+                            zIndex: 10,
+                            boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.2)",
+                        }}
+                    >
+                        {discount}% OFF
+                    </div>
+                )}
             </td>
-            <td style={{width:'450px'}} className="product-name" data-title="Product">
-                <Link href={`/course/${slug}`}>{title}</Link>
+
+            <td style={{width: '450px'}} className="product-name" data-title="Product">
+                <Link href={`/course/detail/four?${slug}`}>{title}</Link>
             </td>
-            <td style={{width:200}}>
+            <td style={{width: 200}}>
                 <div className="cart-edit">
                     <div className="quantity-edit">
                         <button className="button" onClick={handleDecrement}>
@@ -72,17 +88,17 @@ const ProductRow = ({id, slug, title, price, img, updateSubtotal}) => {
                     </div>
                 </div>
             </td>
-            <td style={{width:'200px'}} className="product-price" data-title="Price">
+            <td style={{width: '200px'}} className="product-price" data-title="Price">
 				<span className="woocommerce-Price-amount amount">
 					<bdi><span className="woocommerce-Price-currencySymbol"></span>{formatCurrency((price))}</bdi>
 				</span>
             </td>
-            <td style={{width:'200px'}} className="product-subtotal" data-title="Subtotal">
+            <td style={{width: '200px'}} className="product-subtotal" data-title="Subtotal">
 				<span className="woocommerce-Price-amount amount">
 					<bdi><span className="woocommerce-Price-currencySymbol"></span>{formatCurrency(subtotal.toFixed(2))}</bdi>
 				</span>
             </td>
-            <td className="product-remove" style={{textAlign:'center',width:'100px'}}>
+            <td className="product-remove" style={{textAlign: 'center', width: '100px'}}>
                 <button className="remove" aria-label="Remove this item" onClick={() => handleRemoveProduct(id)}>
                     <svg viewBox="0 0 200 200" width="18" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -103,19 +119,14 @@ const CartArea = () => {
             [productId]: subtotal,
         }));
     };
+
     const getTotalPrice = () => {
         return Object.values(productSubtotals)
             .map((subtotal) => parseFloat(subtotal))
             .reduce((total, subtotal) => total + subtotal, 0);
     };
-    const [data,setData] = useState([]);
-    useEffect(() => {
-        api.getAllCart().then((response) => {
-            setData(response.data)
-            console.log('cart', response.data);
-        })
-    }, [])
 
+    const { data, getData, removeData, updateData } = useCartData();
     return (
         <section className="cart-area pt-120 pb-120">
             <div className="ms-main">
@@ -136,14 +147,18 @@ const CartArea = () => {
                             {data.length > 0 ? (
                                 data.map((course) => (
                                     <ProductRow
-                                        key={course.id}
+                                        key={`${course.id}-${course.quantity}`}
                                         id={course.id}
                                         slug={course.item.code}
+                                        courseId={course.item.id}
+                                        discount={course.item.discount}
                                         img={course.item.imageUrl}
                                         title={course.item.name}
                                         quantity={course.quantity}
                                         price={course.item.price}
                                         updateSubtotal={updateSubtotal}
+                                        removeData={removeData}
+                                        updateData={updateData}
                                     />
                                 ))
                             ) : (
@@ -159,17 +174,11 @@ const CartArea = () => {
                             <div className="col-md-5 offset-md-7">
                                 <div className="ms-cart-collaterals cart-collaterals">
                                     <div className="ms-cart-totals cart_totals ">
-                                        <h3 className="animated fadeIn">Cart totals</h3>
+                                        <h3 className="animated fadeIn">Tổng tiền giỏ hàng</h3>
                                         <table className="shop_table shop_table_responsive">
                                             <tbody>
-                                            <tr className="cart-subtotal">
-                                                <th>Subtotal</th>
-                                                <td data-title="Subtotal">
-                                                    {formatCurrency(getTotalPrice().toFixed(2))}
-                                                </td>
-                                            </tr>
                                             <tr className="order-total">
-                                                <th>Total</th>
+                                                <th>Tổng tiền</th>
                                                 <td data-title="Total">
                                                     <strong>
                                                         {formatCurrency(getTotalPrice().toFixed(2))}

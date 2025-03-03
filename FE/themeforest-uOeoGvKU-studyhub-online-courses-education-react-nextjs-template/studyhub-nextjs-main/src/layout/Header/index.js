@@ -1,5 +1,3 @@
-import Courses from '@/data/courses.json';
-import {productRemoveData} from '@/redux/product/actionCreator';
 import {clearUserData, setUserData} from '@/redux/user/actionCreator';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -10,6 +8,8 @@ import MenuItems from './MenuItems';
 import MobileMenuItems from './MobileMenuItems';
 import api from "/src/route/route"
 import {useRouter} from "next/router";
+import useCartData from "@/hooks/useCartData";
+import {formatCurrency} from "@/utils/utils";
 
 export default function Header(props) {
     const {headerClass, headerLogo, topbarEnable, categoryEnable, menuItemsLeft, authenticationHeader} = props;
@@ -23,14 +23,13 @@ export default function Header(props) {
     const [totalPrice, setTotalPrice] = useState(0);
     const [check, setCheck] = useState(0);
     const router = useRouter();
-
-    const addedToCart = useSelector((state) => state.product);
-    const selectedCourses = Courses.filter(course => addedToCart.addedProducts.some(product => product.id === course.id));
-
     const dispatch = useDispatch();
 
+    const {data,removeData} = useCartData();
+
+
     const handleRemoveProduct = (id) => {
-        dispatch(productRemoveData(id));
+        removeData(id)
     };
     const handleLogout = () => {
         dispatch(clearUserData());
@@ -44,22 +43,6 @@ export default function Header(props) {
         }
     }, [])
 
-
-    // Calculate total price
-    const calculateTotalPrice = () => {
-        let total = 0;
-        selectedCourses.forEach((course) => {
-            const quantity = addedToCart.addedProducts.find(product => product.id === course.id).quantity;
-            total += course.price * quantity;
-        });
-        return total; // Add shipping cost to total
-    };
-
-    // Set total price when the component mounts or whenever selectedCourses, addedToCart, or shippingCost changes
-    useEffect(() => {
-        const total = calculateTotalPrice();
-        setTotalPrice(total);
-    }, [selectedCourses, addedToCart]);
 
     function handleCartToggle() {
         setCartModalOpen(!cartModalOpen);
@@ -85,7 +68,6 @@ export default function Header(props) {
 
     useEffect(() => {
         setAuthorDropdown(false);
-        // Sticky is displayed after scrolling for 100 pixels
         const toggleVisibility = () => {
             if (window.scrollY > 100) {
                 setIsVisible(true);
@@ -99,12 +81,17 @@ export default function Header(props) {
         return () => window.removeEventListener("scroll", toggleVisibility);
     }, []);
 
-    const [data, setData] = useState(null);
+    const [account, setAccount] = useState(null);
     useEffect(() => {
         api.getUser().then((response) => {
-            setData(response.data)
-        })
+            setAccount(response.data)
+        }).catch((e) => console.error(e))
     }, []);
+
+    useEffect(() => {
+        const total = data.reduce((sum,course) => sum + course.item.price * course.quantity * (1-course.item.discount/100),0);
+        setTotalPrice(total)
+    }, [data]);
     return (
         <>
             <header className={`${headerClass || "header-one header--sticky"} ${isVisible ? 'sticky' : ''}`}>
@@ -147,8 +134,8 @@ export default function Header(props) {
                                             <div className="cart cart-icon" onClick={handleCartToggle}>
                                                 <i className="fa-regular fa-cart-shopping"></i>
                                                 {
-                                                    selectedCourses.length > 0 &&
-                                                    <span className="quantity">{selectedCourses.length}</span>
+                                                    data.length > 0 &&
+                                                    <span className="quantity">{data.length}</span>
                                                 }
                                             </div>
                                         </div>
@@ -164,18 +151,18 @@ export default function Header(props) {
                                                         onClick={() => setAuthorDropdown(!authorDropdown)}
                                                     >
                                                         <div
-                                                             style={{
-                                                                 width: "55px",
-                                                                 height: "55px",
-                                                                 borderRadius: "10px",
-                                                                 overflow: "hidden",
-                                                                 display: "flex",
-                                                                 justifyContent: "center",
-                                                                 alignItems: "center"
-                                                             }}
+                                                            style={{
+                                                                width: "55px",
+                                                                height: "55px",
+                                                                borderRadius: "10px",
+                                                                overflow: "hidden",
+                                                                display: "flex",
+                                                                justifyContent: "center",
+                                                                alignItems: "center"
+                                                            }}
                                                         >
                                                             <Image
-                                                                src={data?.imageUrl || "/images/avatar/user.svg"}
+                                                                src={account?.imageUrl || "/images/avatar/user.svg"}
                                                                 width={55}
                                                                 height={55}
                                                                 alt="user"
@@ -205,7 +192,7 @@ export default function Header(props) {
                                                                      }}
                                                                 >
                                                                     <Image
-                                                                        src={data?.imageUrl || "/images/avatar/user.svg"}
+                                                                        src={account?.imageUrl || "/images/avatar/user.svg"}
                                                                         width={55}
                                                                         height={55}
                                                                         alt="user"
@@ -219,9 +206,9 @@ export default function Header(props) {
                                                                 </div>
                                                                 <div
                                                                     className="studyhub__header__popup__header__content">
-                                                                    <h3 className="studyhub__header__popup__header__title">{data.fullName}</h3>
+                                                                    <h3 className="studyhub__header__popup__header__title">{account?.fullName}</h3>
                                                                     <span
-                                                                        className="studyhub__header__popup__header__subtitle">{data.email}</span>
+                                                                        className="studyhub__header__popup__header__subtitle">{account?.email}</span>
                                                                 </div>
                                                             </div>
                                                             <div className="studyhub__header__popup__content">
@@ -303,34 +290,46 @@ export default function Header(props) {
             {/* cart area start */}
             <div className={`cart-bar ${cartModalOpen ? 'show' : ''}`}>
                 <div className="cart-header">
-                    <h3 className="cart-heading">MY CART ({selectedCourses.length} ITEMS)</h3>
+                    <h3 className="cart-heading">Giỏ hàng ({data.length} khóa học)</h3>
                     <div className="close-cart" onClick={closeModal}>
                         <i className="fal fa-times"></i>
                     </div>
                 </div>
                 <div className="product-area">
-                    {selectedCourses.map((course) => {
-                        const quantity = addedToCart.addedProducts.find(product => product.id === course.id).quantity;
-
+                    {data.map((course) => {
                         return (
                             <div key={course.id} className="product-item">
                                 <div className="product-detail">
-                                    <div className="product-thumb">
-                                        <Image src={course.img} alt="product-thumb" width="90" height="90"/>
+                                    <div className="product-thumb" style={{maxWidth: '90px', position: 'relative'}}>
+                                        <Image src={course.item.imageUrl} alt="product-thumb" width="90" height="90"/>
+                                        {course.item.discount > 0 && (
+                                            <span style={{
+                                                position: 'absolute',
+                                                top: '0',
+                                                right: '0',
+                                                backgroundColor: 'red',
+                                                color: 'white',
+                                                padding: '1px',
+                                                borderRadius: '3px',
+                                                display: 'inline-block'
+                                            }}>
+                                                {course.item.discount}%
+                                            </span>
+                                        )}
                                     </div>
                                     <div className="item-wrapper">
-                                        <Link className="product-name"
-                                              href={`/course/${course.slug}`}>{course.title}</Link>
+                                        <Link className="product-name" href={`/course/detail/four?${course.item.code}`}>
+                                            {course.item.name}
+                                        </Link>
                                         <div className="item-wrapper">
-                                            <span className="product-qnty">{quantity} ×</span>
-                                            <span className="product-price">${course.price}</span>
+                                            <span className="product-qnty">Sl : {course.quantity} ×</span>
+                                            <span className="product-price">{formatCurrency(course.item.price)}</span>
                                         </div>
                                     </div>
                                 </div>
+
                                 <div className="cart-edit">
                                     <div className="item-wrapper d-flex mr--5 align-items-center">
-                                        <Link href="/cart" className="product-edit"><i
-                                            className="fal fa-edit"></i></Link>
                                         <button
                                             className="delete-cart"
                                             onClick={() => handleRemoveProduct(course.id)}
@@ -344,12 +343,10 @@ export default function Header(props) {
                     })}
                 </div>
                 <div className="cart-bottom-area">
-					<span className="spend-shipping"><i className="fal fa-truck"></i> SPENT <span
-                        className="amount">$199.00</span> MORE
-					FOR FREE SHIPPING</span>
-                    <span className="total-price">TOTAL: <span className="price">${totalPrice.toFixed(2)}</span></span>
-                    <Link href="/checkout" className="checkout-btn cart-btn">PROCEED TO CHECKOUT</Link>
-                    <Link href="/cart" className="view-btn cart-btn">VIEW CART</Link>
+                    <span className="total-price">Tổng tiền: <span
+                        className="price">{formatCurrency(totalPrice.toFixed(2))}</span></span>
+                    <Link href="/checkout" className="checkout-btn cart-btn">Thanh toán</Link>
+                    <Link href="/cart" className="view-btn cart-btn">Giỏ hàng</Link>
                 </div>
             </div>
             {/* cart area end */}
