@@ -55,7 +55,7 @@ export default function CourseFourArea() {
 							{
 								Courses.map((course, index) => {
 									return (
-										<div key={index} className="col-lg-6 col-sm-12 col-12">
+										<div key={index} className="col-lg-4 col-sm-12 col-12">
 											<SingleCourseThree
 												Slug={course.slug}
 												Img={course.img}

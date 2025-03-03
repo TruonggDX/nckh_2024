@@ -35,7 +35,7 @@ export default function Category() {
 							return (
 								<div key={index} className="col-lg-3 col-md-4 col-sm-6 col-12">
 									<SingleCategoryTwo
-										Slug={course.id}
+										Slug={course.code}
 										Img={"/images/category/0"+ (index+1) +'.svg'}
 										Title={course.name}
 										categoryCount={course.aim}

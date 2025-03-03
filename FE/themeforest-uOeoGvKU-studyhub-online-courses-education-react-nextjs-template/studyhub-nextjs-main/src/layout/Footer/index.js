@@ -115,6 +115,13 @@ export default function Footer(props) {
 					</div>
 				</div>
 			</div>
+			<script
+				src="https://app.preny.ai/embed-global.js"
+				data-button-style="width:200px;height:200px"
+				async
+				defer
+				data-preny-bot-id="67c5788065f9623d9a475e5d"
+			/>
 		</footer>
 	)
 }

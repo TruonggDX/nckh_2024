@@ -26,7 +26,7 @@ export default function CourseDetailsAreaFour(props) {
 							<div className="course-top-enroll-area">
 								<div className="single-course-top">
 									<span>Trạng thái</span>
-									<a href="#" className="rts-btn btn-primary">Chưa đăng kí</a>
+									<p  className="">Chưa đăng kí</p>
 								</div>
 								<div className="single-course-top">
 									<span>Giá</span>
@@ -82,7 +82,7 @@ export default function CourseDetailsAreaFour(props) {
 					</div>
 				</div>
 			</div>
-			<FeatureCourse />
+			{/*<FeatureCourse />*/}
 		</>
 	)
 }
