@@ -205,7 +205,7 @@ export default function Header(props) {
                                                                      }}
                                                                 >
                                                                     <Image
-                                                                        src={data.imageUrl || "/images/avatar/user.svg"}
+                                                                        src={data?.imageUrl || "/images/avatar/user.svg"}
                                                                         width={55}
                                                                         height={55}
                                                                         alt="user"
@@ -236,28 +236,10 @@ export default function Header(props) {
                                                                     <li className="studyhub__header__popup__item">
                                                                         <Link className="studyhub__header__popup__link"
                                                                               href="/dashboard/order">
-                                                                            <i className="uil uil-users-alt"></i>
+                                                                            <i className="uil uil-receipt"></i>
                                                                             Khóa học đã mua
                                                                         </Link>
                                                                     </li>
-                                                                    {/*<li className="studyhub__header__popup__item">*/}
-                                                                    {/*	<Link className="studyhub__header__popup__link" href="/dashboard/announcements">*/}
-                                                                    {/*		<i className="uil uil-cog"></i>*/}
-                                                                    {/*		Announcements*/}
-                                                                    {/*	</Link>*/}
-                                                                    {/*</li>*/}
-                                                                    {/*<li className="studyhub__header__popup__item">*/}
-                                                                    {/*	<Link className="studyhub__header__popup__link" href="/dashboard/certificate">*/}
-                                                                    {/*		<i className="uil uil-bell"></i>*/}
-                                                                    {/*		Certificate*/}
-                                                                    {/*	</Link>*/}
-                                                                    {/*</li>*/}
-                                                                    {/*<li className="studyhub__header__popup__item">*/}
-                                                                    {/*	<Link className="studyhub__header__popup__link" href="/dashboard/withdrawals">*/}
-                                                                    {/*		<i className="uil uil-dollar-alt"></i>*/}
-                                                                    {/*		Withdrawals*/}
-                                                                    {/*	</Link>*/}
-                                                                    {/*</li>*/}
                                                                 </ul>
                                                             </div>
                                                             <div className="studyhub__header__popup__footer">

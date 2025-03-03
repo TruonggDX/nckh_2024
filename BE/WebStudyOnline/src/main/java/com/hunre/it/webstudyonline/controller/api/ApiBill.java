@@ -34,9 +34,9 @@ public class ApiBill {
         return ResponseEntity.ok(responsePage);
     }
 
-    @GetMapping("/list/{accountId}")
-    public ResponseEntity<BaseResponse<List<BillDto>>> getBillByAccountId(@PathVariable String accountId) {
-        BaseResponse<List<BillDto>> responsePage = iBillService.getBillByAccountId(accountId);
+    @GetMapping("/getBillByEmail")
+    public ResponseEntity<ResponsePage<List<BillDto>>> getBillByEmail(Pageable pageable) {
+        ResponsePage<List<BillDto>> responsePage = iBillService.getBillByEmail(pageable);
         return ResponseEntity.ok(responsePage);
     }
 

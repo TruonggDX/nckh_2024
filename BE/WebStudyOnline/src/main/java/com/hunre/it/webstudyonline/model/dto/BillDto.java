@@ -1,11 +1,22 @@
 package com.hunre.it.webstudyonline.model.dto;
 
 
+import java.time.LocalDateTime;
+
 public class BillDto {
     private Long id;
     private String code;
     private Long accountId;
     private String accountName;
+    private LocalDateTime createdDate;
+
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(LocalDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
 
     public String getAccountName() {
         return accountName;

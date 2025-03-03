@@ -11,8 +11,8 @@ import java.util.List;
 public interface BillRepository extends JpaRepository<BillEntity,Long> {
     @Query(value = "SELECT b FROM BillEntity b WHERE b.deleted=false ")
     Page<BillEntity> findAllByDeletedFalse(Pageable pageable);
-    @Query(value = "SELECT b FROM BillEntity b WHERE b.deleted=false AND b.accountEntity.id=:accountId")
-    List<BillEntity> findAllByAccountId(Long accountId);
+    @Query(value = "SELECT b FROM BillEntity b WHERE b.deleted=false AND b.accountEntity.email=:email")
+    Page<BillEntity> findAllByEmail(String email,Pageable pageable);
     @Query(value = "SELECT b FROM BillEntity b WHERE b.deleted=false " +
             "AND (:code IS NULL OR b.code LIKE %:code%)" +
             "AND (:accountName IS NULL OR b.accountEntity.fullname LIKE %:accountName%)")

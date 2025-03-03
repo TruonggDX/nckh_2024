@@ -4,5 +4,13 @@ async function changePassword(id, req) {
     const response = await axiosInstance.put(`/api/account/updatePassWord/${id}`, req);
     return response.data;
 }
+async function updateAccount(id, formData) {
+    const response = await axiosInstance.put(`/api/account/update/${id}`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    });
+    return response.data;
+}
 
-export default { changePassword };
+export default { changePassword,updateAccount };

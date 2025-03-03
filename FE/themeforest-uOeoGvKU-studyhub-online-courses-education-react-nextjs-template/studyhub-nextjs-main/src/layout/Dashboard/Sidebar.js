@@ -32,6 +32,13 @@ export default function DashboardSidebar() {
 					<i className="fa-regular fa-user"></i>
 					<p>Thông tin cá nhân</p>
 				</Link>
+				<Link
+					href="/dashboard/order"
+					className={`single-item ${dashboardItemSlug === "order" ? "active" : ""}`}
+				>
+					<i className="fa-sharp fa-light fa-bag-shopping"></i>
+					<p>Khóa học đã mua </p>
+				</Link>
 				{/* single item end */}
 				{/* single item */}
 				<Link
@@ -70,13 +77,6 @@ export default function DashboardSidebar() {
 				</Link>
 				{/* single item end */}
 				{/* single item */}
-				<Link
-					href="/dashboard/order" 
-					className={`single-item ${dashboardItemSlug === "order" ? "active" : ""}`}
-				>
-					<i className="fa-sharp fa-light fa-bag-shopping"></i>
-					<p>Order History</p>
-				</Link>
 				{/* single item end */}
 				{/* single item */}
 				<Link

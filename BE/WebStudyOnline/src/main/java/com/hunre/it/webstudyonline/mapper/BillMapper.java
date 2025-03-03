@@ -18,6 +18,7 @@ public class BillMapper {
         billDto.setCode(billEntity.getCode());
         billDto.setAccountId(billEntity.getAccountEntity().getId());
         billDto.setAccountName(billEntity.getAccountEntity().getFullname());
+        billDto.setCreatedDate(billEntity.getCreatedDate());
         return billDto;
     }
 
