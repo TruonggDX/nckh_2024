@@ -13,17 +13,12 @@ export default function CourseDetailsSidebar(props) {
 		<>
 			{/* right- sticky bar area */}
 			<div className={`right-course-details ${type==='two' || type==='four' && "mt--0"}`}>
-				<ModalVideo channel='youtube' isOpen={isOpen} videoId='FdrNFEbcsRs' onClose={() => { openModal(); }} />	
-				{/* single course-sidebar */}
 				<div className="course-side-bar">
 					{
 						type !== 'two' &&
 						<div className="thumbnail">
-							<Image src="/images/course/20.jpg" width="400" height="280" alt="" />
+							<Image src={item.img} width="400" height="280" alt="" />
 							<div className="vedio-icone">
-								<a className="video-play-button play-video popup-video" href="#" onClick={() => { openModal(); }}>
-									<span></span>
-								</a>
 							</div>
 						</div>
 					}
@@ -34,7 +29,7 @@ export default function CourseDetailsSidebar(props) {
 							<>
 								<h3 className="title">${item.price || "$39.99"}</h3>
 								<h4 className="none">${item.prevPrice || "$79.99"}</h4>
-								<span className="discount">-50%</span>
+								<span className="discount">-{item.discount}%</span>
 							</> :
 							<>
                                 <h3 className="title animated fadeIn">Free</h3>
@@ -43,68 +38,49 @@ export default function CourseDetailsSidebar(props) {
 						}
 						
 					</div>
-					<div className="clock-area icon-gap">
-						<i className="fa-light fa-clock"></i>
-						<span>2 Day left at this price!</span>
-					</div>
+					{/*<div className="clock-area icon-gap">*/}
+					{/*	<i className="fa-light fa-clock"></i>*/}
+					{/*	<span>2 Day left at this price!</span>*/}
+					{/*</div>*/}
 					{
 						item.price > 0 ?
 						<>
-							<Link href="/cart" className="rts-btn btn-primary">Add To Cart</Link>
-							<Link href="#" className="rts-btn btn-border">Buy Now</Link>
+							<Link href="/cart" className="rts-btn btn-primary">Thêm vào giỏ hàng</Link>
 						</> :
 						<Link href="#" className="rts-btn btn-primary">Enroll Now</Link>
 					}
 
 					<div className="what-includes">
-						{
-							item.price > 0 &&
-							<span className="m">30-Day Money-Back Guarantee</span>
-						}
-						<h5 className="title">This course includes: </h5>
+						{/*{*/}
+						{/*	item.price > 0 &&*/}
+						{/*	<span className="m">30-Day Money-Back Guarantee</span>*/}
+						{/*}*/}
+						<h5 className="title">Khóa học bao gồm: </h5>
 						<div className="single-include">
 							<div className="left icon-gap">
 								<i className="fa-light fa-chart-bar"></i>
-								<span>Levels</span>
+								<span>Mục tiêu</span>
 							</div>
 							<div className="right">
-								<span>Beginner</span>
+								<span>{item.level}</span>
 							</div>
 						</div>
 						<div className="single-include">
 							<div className="left icon-gap">
 								<i className="far fa-clock"></i>
-								<span>Duration</span>
+								<span>Thời lượng</span>
 							</div>
 							<div className="right">
-								<span>6 hours 56 minutes</span>
+								<span>{item.lessonCount} buổi</span>
 							</div>
 						</div>
 						<div className="single-include">
 							<div className="left icon-gap">
 								<i className="fa-regular fa-floppy-disk"></i>
-								<span>Subject</span>
+								<span>Loại</span>
 							</div>
 							<div className="right">
-								<span>Web Development</span>
-							</div>
-						</div>
-						<div className="single-include">
-							<div className="left icon-gap">
-								<i className="fa-regular fa-pen-to-square"></i>
-								<span>Update</span>
-							</div>
-							<div className="right">
-								<span>29 October, 2023 Last Update</span>
-							</div>
-						</div>
-						<div className="single-include">
-							<div className="left icon-gap">
-								<i className="fa-sharp fa-light fa-file-certificate"></i>
-								<span>Certificate</span>
-							</div>
-							<div className="right">
-								<span>Certificate of completion </span>
+								<span>{item.category}</span>
 							</div>
 						</div>
 					</div>

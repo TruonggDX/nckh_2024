@@ -41,7 +41,7 @@ export default function CourseContent({ item }) {
 	return (
 		<div className="course-content-wrapper-main mt--40">
 			<ModalVideo channel='youtube' isOpen={isOpen} videoId={url} onClose={() => openModal()} />
-			<h5 className="title">Course Content</h5>
+			<h5 className="title">Nội dung khóa học</h5>
 
 			<Accordion className="accordion">
 				{items.map(({ header, content }, i) => (
