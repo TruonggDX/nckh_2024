@@ -3,6 +3,7 @@ package com.hunre.it.webstudyonline.mapper;
 import com.hunre.it.webstudyonline.entity.BillDetailsEntity;
 import com.hunre.it.webstudyonline.entity.CourseEntity;
 import com.hunre.it.webstudyonline.model.dto.BillDetailsDto;
+import com.hunre.it.webstudyonline.model.dto.CourseDto;
 import com.hunre.it.webstudyonline.model.dto.ItemDto;
 import com.hunre.it.webstudyonline.repository.BillRepository;
 import com.hunre.it.webstudyonline.repository.CourseRepository;
@@ -18,7 +19,8 @@ public class BillDetailsMapper {
 
     @Autowired
     private BillRepository billRepository;
-
+    @Autowired
+    private CourseMapper courseMapper;
     public BillDetailsDto toDto(BillDetailsEntity entity) {
         BillDetailsDto dto = new BillDetailsDto();
         dto.setId(entity.getId());
@@ -26,12 +28,17 @@ public class BillDetailsMapper {
         dto.setBillId(entity.getBillEntity() != null ? entity.getBillEntity().getId() : null);
 
         ItemDto itemDto = null;
+        CourseEntity course = entity.getCourseEntity() != null ? entity.getCourseEntity() : null;
+        CourseDto courseDto = courseMapper.toDto(course);
+
         itemDto = new ItemDto(
                 entity.getCourseEntity().getId(),
                 entity.getCourseEntity().getName(),
                 entity.getCourseEntity().getDescription(),
                 entity.getCourseEntity().getPrice(),
-                entity.getCourseEntity().getDiscount()
+                entity.getCourseEntity().getDiscount(),
+                courseDto.getImageUrl(),
+                entity.getCourseEntity().getCode()
                 );
         dto.setPrice(entity.getPrice());
         dto.setItem(itemDto);

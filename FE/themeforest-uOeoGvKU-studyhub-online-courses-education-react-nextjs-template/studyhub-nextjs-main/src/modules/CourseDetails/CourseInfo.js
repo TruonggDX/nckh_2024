@@ -6,7 +6,7 @@ export default function CourseInfo(props) {
 		<div className="course-content-wrapper">
 			<h5 className="title">Về khóa học</h5>
 			<p className="disc">
-				{item.description}
+				{item?.description}
 			</p>
 		</div>
 

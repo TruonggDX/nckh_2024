@@ -12,13 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/cart")
+@RequestMapping("/api/cart")
 @CrossOrigin(origins = {"http://localhost:3000", "http://localhost:3001"})
 public class ApiCart {
     @Autowired
     private ICartServiceImpl cartService;
 
-    @GetMapping("")
+    @GetMapping("/list")
     public ResponseEntity<BaseResponse<List<CartDto>>> getCart() {
         BaseResponse<List<CartDto>> response = cartService.getAllCart();
         return ResponseEntity.ok(response);

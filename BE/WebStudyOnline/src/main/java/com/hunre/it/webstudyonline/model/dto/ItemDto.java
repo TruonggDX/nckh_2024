@@ -8,13 +8,25 @@ public class ItemDto {
     private String description;
     private BigDecimal price;
     private Integer discount;
+    private String imageUrl;
+    private String code;
 
-    public ItemDto(Long id, String name, String description, BigDecimal price, Integer discount) {
+    public ItemDto(Long id, String name, String description, BigDecimal price, Integer discount, String imageUrl,String code) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.discount = discount;
+        this.imageUrl = imageUrl;
+        this.code = code;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public Long getId() {
@@ -54,5 +66,13 @@ public class ItemDto {
 
     public void setDiscount(Integer discount) {
         this.discount = discount;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }
