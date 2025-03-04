@@ -19,7 +19,6 @@ export default function Header(props) {
     const [searchModal, setSearchModal] = useState(false);
     const [cartModalOpen, setCartModalOpen] = useState(false);
     const [authorDropdown, setAuthorDropdown] = useState(false);
-
     const [totalPrice, setTotalPrice] = useState(0);
     const [check, setCheck] = useState(0);
     const router = useRouter();
@@ -282,9 +281,7 @@ export default function Header(props) {
                     </div>
                 </div>
 
-                {/* mobile menu area start */}
                 <MobileMenuItems/>
-                {/* mobile menu area end */}
             </div>
 
             {/* cart area start */}
@@ -296,6 +293,7 @@ export default function Header(props) {
                     </div>
                 </div>
                 <div className="product-area">
+
                     {data.map((course) => {
                         return (
                             <div key={course.id} className="product-item">

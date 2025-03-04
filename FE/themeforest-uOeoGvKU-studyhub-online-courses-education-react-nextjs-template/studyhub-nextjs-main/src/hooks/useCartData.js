@@ -10,7 +10,6 @@ const useCartData = () => {
 
     function getData() {
         api.getAllCart().then((response) => {
-            console.log(response.data);
             setData(response.data);
         });
     }
@@ -34,9 +33,15 @@ const useCartData = () => {
                 console.error(error);
             });
     }
+    function addCart(itemId,req){
+        api.addCart([{itemId,...req}]).then(() => {
+            getData()
+        }).catch((error) => {
+            console.error(error);
+        })
+    }
 
-
-    return {data, setData, getData, removeData, updateData};
+    return {data, setData, getData, removeData, updateData,addCart};
 };
 
 export default useCartData;
