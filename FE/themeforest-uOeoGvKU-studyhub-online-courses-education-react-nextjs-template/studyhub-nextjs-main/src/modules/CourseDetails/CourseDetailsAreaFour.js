@@ -5,6 +5,7 @@ import CourseContent from "./CourseContent";
 import CourseInfo from "./CourseInfo";
 import FeatureCourse from "./FeatureCourse";
 import CourseDetailsSidebar from "./Sidebar";
+import {formatCurrency} from "@/utils/utils";
 
 export default function CourseDetailsAreaFour(props) {
 	let {type, item} = props;
@@ -30,7 +31,7 @@ export default function CourseDetailsAreaFour(props) {
 								</div>
 								<div className="single-course-top">
 									<span>Giá</span>
-									<h2 className="title">${item.price}</h2>
+									<h2 className="title">{formatCurrency(item.price)}</h2>
 								</div>
 								<div className="single-course-top">
 									<span>Tham gia</span>
