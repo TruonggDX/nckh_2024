@@ -5,7 +5,7 @@ export default function SingleCourseThree( props ) {
 	const { courseClass, Slug, Img, Title, Description, Category, ratingCount, lessonCount, studentCount, Author, bestSeller, Level, prevPrice, Price, imgWidth, imgHeight  } = props;
 
 	return (
-		<div className={ courseClass || 'single-course-style-three'}>
+		<div className={ courseClass || 'single-course-style-three'} >
 			<Link href={`/course/${Slug || 'details'}`} className="thumbnail">
 				<Image src={Img || '/images/course/01.jpg'} width={imgWidth || 290} height={imgHeight || 210}alt="course" />
 				<div className="tag-thumb">
@@ -17,7 +17,7 @@ export default function SingleCourseThree( props ) {
 					{
 						bestSeller && <div className="tags">Best Seller</div>
 					}
-					<div className="price">${Price || '49.50'}</div>
+					<div className="price">${Price || '49.50'}  <span className={"text-decoration-line-through text-secondary"}>{prevPrice}</span></div>
 				</div>
 				<Link href={`/course/${Slug || 'details'}`}>
 					<h5 className="title">{Title || 'The Complete Web Developer in 2023: Zero to Mastery'}</h5>
@@ -30,17 +30,17 @@ export default function SingleCourseThree( props ) {
 						<li><i className="fa-sharp fa-solid fa-star"></i></li>
 						<li><i className="fa-sharp fa-solid fa-star"></i></li>
 						<li><i className="fa-sharp fa-solid fa-star"></i></li>
-						<li><i className="fa-sharp fa-regular fa-star"></i></li>
+						<li><i className="fa-sharp fa-solid fa-star"></i></li>
 					</ul>
 				</div>
 				<div className="leasson-students">
 					<div className="lesson">
 						<i className="far fa-calendar-alt"></i>
-						<span>{lessonCount || '25'} Lessons</span>
+						<span>{lessonCount || '25'} Buổi</span>
 					</div>
 					<div className="students">
 						<i className="fa-light fa-users"></i>
-						<span>{studentCount || '54'} Students</span>
+						<span>{studentCount || '22'} Học viên</span>
 					</div>
 				</div>
 				<div className="course-content-area">

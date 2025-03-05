@@ -60,7 +60,7 @@ export default function Banner() {
 										{/* single tags wrapper */}
 										{categories.map((category) => (
 											<div key={category.id} className="single-tags-banner">
-												<p>{category.name}</p>
+												<a href={"/course/four?category="+category.name}><p>{category.name}</p></a>
 											</div>
 										))}
 										{/* single tags wrapper end */}

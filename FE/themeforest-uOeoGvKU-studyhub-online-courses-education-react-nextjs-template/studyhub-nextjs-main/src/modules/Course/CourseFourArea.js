@@ -1,30 +1,35 @@
-
+import api from "/src/route/route"
 import CourseSidebar from "@/components/Course/CourseSidebar";
 import SingleCourseThree from "@/components/Course/Three";
 import Courses from "@/data/courses.json";
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import ReactPaginate from 'react-paginate';
+import {Swiper, SwiperSlide} from "swiper/react";
+import SingleCourse from "@/components/Course";
 
 export default function CourseFourArea() {
 	const paginatePerPage = 6;
-	
-	const [ totalPaginate, setTotalPaginate ] = useState( Courses.length );
+	const [pageNumber,setPageNumber] = useState(0);
+	const [ totalPaginate, setTotalPaginate ] = useState( 0 );
 	const [ startItemCount, setStartItemCount ] = useState( 0 );
 	const [ endItemCount, setEndItemCount ] = useState( paginatePerPage );
 	const [ paginationKey, setPaginationKey ] = useState(Date.now());
 	const [ forcePage, setForcePage ] = useState( 0 );
-
+	const [Courses, setCourses] = useState([]);
+	const [check,SetCheck] = useState(false);
+	useEffect(() => {
+		api.getCourse({page: pageNumber,size:paginatePerPage}).then((res) => {
+			setCourses(res.content);
+			setTotalPaginate(res.totalElements);
+			SetCheck(false);
+			console.log(res);
+		})
+	}, [check])
 	const handlePageChange = ( event ) => {
 		const selectedPage = event.selected + 1;
-		setStartItemCount( selectedPage * paginatePerPage - paginatePerPage );
-		setEndItemCount( selectedPage * paginatePerPage );
+		setPageNumber( event.selected );
+		SetCheck(true)
 	};
-
-	const handlePaginateReset = () =>{
-		setPaginationKey(Date.now());
-		handlePageChange({ selected: 0 });
-	}
-
 	return (
 		<div className="rts-course-default-area rts-section-gap">
 			<div className="container">
@@ -57,20 +62,17 @@ export default function CourseFourArea() {
 									return (
 										<div key={index} className="col-lg-4 col-sm-12 col-12">
 											<SingleCourseThree
-												Slug={course.slug}
-												Img={course.img}
-												Category={course.category}
-												lessonCount={course.lessonCount}
-												studentCount={course.studentCount}
-												Title={course.title}
-												Author={course.authorName}
-												ratingCount={course.ratingCount}
-												prevPrice={course.prevPrice}
-												Price={course.price}
-												imgWidth={course.imgWidth}
-												imgHeight={course.imgHeight}
-												bestSeller={course.bestSeller}
-												Level={course.level}
+												Level={course.aim}
+												Slug={course.code}
+												Img={course.imageUrl}
+												Category={course.categoryName}
+												lessonCount={course.periods}
+												studentCount="20"
+												Title={course.name}
+												Author={"Mục tiêu: "+course.aim}
+												ratingCount={"5"}
+												prevPrice={course.price}
+												Price={course.price - course.price*course.discount/100}
 											/>
 										</div>
 									);
