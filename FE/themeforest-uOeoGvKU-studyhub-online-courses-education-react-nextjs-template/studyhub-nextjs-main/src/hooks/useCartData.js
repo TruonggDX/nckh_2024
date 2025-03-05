@@ -6,7 +6,7 @@ const useCartData = () => {
 
     useEffect(() => {
         getData();
-    }, []);
+    }, [addCart(),removeData()]);
 
     function getData() {
         api.getAllCart().then((response) => {
