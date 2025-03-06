@@ -1,15 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import {useContext, useState} from "react";
-import useCartData from "@/hooks/useCartData";
 import {toast} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {formatCurrency} from "@/utils/utils";
 import {useRouter} from "next/router";
-
+import {useCart} from "@/hooks/CartContext";
 export default function CourseDetailsSidebar(props) {
     const {type, item} = props;
-    const {addCart, getData} = useCartData();
+    const { addCart } = useCart();
     const [isOpen, setOpen] = useState(false);
     const openModal = () => {
         setOpen(!isOpen);
@@ -18,10 +17,10 @@ export default function CourseDetailsSidebar(props) {
     const handleAddToCart = (itemId, quantity) => {
         const checkToken = localStorage.getItem("jwtToken");
         if (!checkToken) {
-            toast.warning("Bạn cần đăng nhập vào hệ thống")
-            router.push('/login')
+            toast.warning("Bạn cần đăng nhập vào hệ thống");
+            router.push("/login");
         } else {
-            addCart(itemId, {quantity});
+            addCart(itemId, { quantity });
             toast.success("Đã thêm vào giỏ hàng!", {
                 position: "top-right",
                 autoClose: 3000,
@@ -74,10 +73,9 @@ export default function CourseDetailsSidebar(props) {
                     {
                         item.price > 0 ?
                             <>
-                                <button href="#" onClick={() => handleAddToCart(item.id, 1)}
-                                      className="rts-btn btn-primary">
+                                <button onClick={() => handleAddToCart(item.id, 1)} className="rts-btn btn-primary">
                                     Thêm vào giỏ hàng
-                                </button>;
+                                </button>
                             </> :
                             <Link href="#" className="rts-btn btn-primary">Enroll Now</Link>
                     }
