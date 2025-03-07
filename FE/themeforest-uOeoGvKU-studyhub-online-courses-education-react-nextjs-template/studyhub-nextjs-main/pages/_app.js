@@ -2,10 +2,12 @@ import "@/assets/scss/style.scss";
 import { Providers } from "@/redux/providers";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {CartProvider} from "@/hooks/CartContext";
 
 function StudyHubNextJS({ Component, pageProps }) {
     return (
         <Providers>
+            <CartProvider>
             <Component {...pageProps} />
             <ToastContainer
                 position="top-right"
@@ -20,6 +22,7 @@ function StudyHubNextJS({ Component, pageProps }) {
                 theme="colored"
                 closeButton={false}
             />
+            </CartProvider>
         </Providers>
     );
 }

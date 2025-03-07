@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import {useEffect, useState} from 'react';
 import {formatCurrency} from "@/utils/utils";
-import useCartData from "@/hooks/useCartData";
+import {useCart} from "@/hooks/CartContext";
 const ProductRow = ({id, slug, title, price, img, updateSubtotal,discount,courseId,quantity: initNumber,removeData,updateData  }) => {
     const [quantity, setQuantity] = useState(initNumber);
     useEffect(() => {
@@ -125,8 +125,8 @@ const CartArea = () => {
             .map((subtotal) => parseFloat(subtotal))
             .reduce((total, subtotal) => total + subtotal, 0);
     };
-
-    const { data, getData, removeData, updateData } = useCartData();
+    const { cartData, removeData,updateData } = useCart();
+    // const { data, getData, removeData, updateData } = useCartData();
     return (
         <section className="cart-area pt-120 pb-120">
             <div className="ms-main">
@@ -144,8 +144,8 @@ const CartArea = () => {
                             </tr>
                             </thead>
                             <tbody>
-                            {data.length > 0 ? (
-                                data.map((course) => (
+                            {cartData.length > 0 ? (
+                                cartData.map((course) => (
                                     <ProductRow
                                         key={`${course.id}-${course.quantity}`}
                                         id={course.id}

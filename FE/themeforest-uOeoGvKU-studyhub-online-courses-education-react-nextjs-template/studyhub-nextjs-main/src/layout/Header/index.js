@@ -8,8 +8,8 @@ import MenuItems from './MenuItems';
 import MobileMenuItems from './MobileMenuItems';
 import api from "/src/route/route"
 import {useRouter} from "next/router";
-import useCartData from "@/hooks/useCartData";
 import {formatCurrency} from "@/utils/utils";
+import {useCart} from "@/hooks/CartContext";
 
 export default function Header(props) {
     const {headerClass, headerLogo, topbarEnable, categoryEnable, menuItemsLeft, authenticationHeader} = props;
@@ -24,8 +24,7 @@ export default function Header(props) {
     const router = useRouter();
     const dispatch = useDispatch();
 
-    const {data,removeData} = useCartData();
-
+    const { cartData, removeData } = useCart();
 
     const handleRemoveProduct = (id) => {
         removeData(id)
@@ -88,9 +87,9 @@ export default function Header(props) {
     }, []);
 
     useEffect(() => {
-        const total = data.reduce((sum,course) => sum + course.item.price * course.quantity * (1-course.item.discount/100),0);
+        const total = cartData.reduce((sum,course) => sum + course.item.price * course.quantity * (1-course.item.discount/100),0);
         setTotalPrice(total)
-    }, [data]);
+    }, [cartData]);
     return (
         <>
             <header className={`${headerClass || "header-one header--sticky"} ${isVisible ? 'sticky' : ''}`}>
@@ -133,8 +132,8 @@ export default function Header(props) {
                                             <div className="cart cart-icon" onClick={handleCartToggle}>
                                                 <i className="fa-regular fa-cart-shopping"></i>
                                                 {
-                                                    data.length > 0 &&
-                                                    <span className="quantity">{data.length}</span>
+                                                    cartData.length > 0 &&
+                                                    <span className="quantity">{cartData.length}</span>
                                                 }
                                             </div>
                                         </div>
@@ -287,14 +286,14 @@ export default function Header(props) {
             {/* cart area start */}
             <div className={`cart-bar ${cartModalOpen ? 'show' : ''}`}>
                 <div className="cart-header">
-                    <h3 className="cart-heading">Giỏ hàng ({data.length} khóa học)</h3>
+                    <h3 className="cart-heading">Giỏ hàng ({cartData.length} khóa học)</h3>
                     <div className="close-cart" onClick={closeModal}>
                         <i className="fal fa-times"></i>
                     </div>
                 </div>
                 <div className="product-area">
 
-                    {data.map((course) => {
+                    {cartData.map((course) => {
                         return (
                             <div key={course.id} className="product-item">
                                 <div className="product-detail">

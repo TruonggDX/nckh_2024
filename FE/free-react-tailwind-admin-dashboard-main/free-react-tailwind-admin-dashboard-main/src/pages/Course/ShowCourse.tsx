@@ -158,7 +158,10 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
         })
         .catch((error) => console.log(error));
     }else {
-      const obj = { ...lesson, courseId:Number(data.id)};
+      const link = (url:string) => {
+        return url.replace("https://www.youtube.com/watch?v=", "").split("&")[0];
+      };
+      const obj = { ...lesson, url: link(lesson.url), courseId:Number(data.id)};
       addCourseDetails(obj).then(() => {
         showAlert('Thành công','Thêm nội dung khóa học thành công!','success');
         setOpenModal(false);
@@ -403,8 +406,8 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
                 >
                   <div className="flex justify-between items-center">
                     <div>
-                      <h3 className="text-lg font-semibold">{lesson.name}</h3>
-                      <p className="text-sm text-gray-600">
+                      <h3 className="text-lg font-semibold">Tiêu đề: {lesson.name}</h3>
+                      <p className="text-sm text-gray-600">Mô tả:
                         {lesson.description}
                       </p>
                       <span className="text-xs text-gray-500">
