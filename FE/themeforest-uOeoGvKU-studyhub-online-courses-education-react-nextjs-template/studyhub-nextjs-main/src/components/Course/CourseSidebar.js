@@ -1,24 +1,27 @@
 import Courses from "@/data/courses.json";
-import FilterData from "@/data/filters.json";
 import { useEffect, useState } from 'react';
-
+import api from "/src/route/route"
 import { setFilterData } from '@/redux/filter/actionCreator';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 export default function CourseSidebar() {
 	const [filters, setFilters] = useState({
 	  search: '',
-	  type: [],
-	  category: [],
-	  level: [],
-	  author: [],
-	  tags: [],
-	  price: []
+		category: "",
+	  aim: "",
 	});
-
+	const [FilterData,SetFilterData] = useState([{
+		type: "name",
+		placeholder: "Tìm khóa học",
+		title: "Tìm kiếm"
+	}])
 	const [filteredCourses, setFilteredCourses] = useState(Courses);
 	const dispatch = useDispatch();
-  
+	const a = useSelector(state => state.filter);
+
+	useEffect(() => {
+		dispatch(setFilterData(a));
+	}, [filters]);
 	const handleFilterChange = (e, filterType) => {
 	  const { id, checked } = e.target;
 	  setFilters((prevFilters) => ({
@@ -38,80 +41,78 @@ export default function CourseSidebar() {
   
 	const clearFilters = () => {
 	  setFilters({
-		search: '',
-		type: [],
-		category: [],
-		level: [],
-		author: [],
-		tags: [],
-		price: []
+		  search: '',
+		  category: "",
+		  aim: "",
 	  });
 	};
-
-	// Calculate counts for the sidebar filters
-	const calculateCounts = (filterType, filterId) => {
-		switch (filterType) {
-			case 'type':
-				return filteredCourses.filter(course => course.type === filterId).length;
-			case 'category':
-				return filteredCourses.filter(course => course.category.toLowerCase().replace(/\s+/g, "-") === filterId).length;
-			case 'level':
-				if (filterId === 'all') {
-					return filteredCourses.length;
-				}
-				return filteredCourses.filter(course => course.level.toLowerCase() === filterId).length;
-			case 'author':
-				return filteredCourses.filter(course => course.author.toLowerCase() === filterId.toLowerCase()).length;
-			case 'tags':
-				return filteredCourses.filter(course => course.tag.toLowerCase() === filterId.toLowerCase()).length;
-			case 'price':
-				return filterId === 'free'
-					? filteredCourses.filter(course => parseFloat(course.price) === 0).length
-					: filteredCourses.filter(course => parseFloat(course.price) > 0).length;
-			default:
-				return 0;
-		}
-	};
-	
-	// Recalculate filteredCourses based on filters
+	useEffect(() => {
+		api.getCategory().then((res) => {
+			let a=[];
+			for (const category of res.content) {
+				a.push({
+					id: category.id,
+					label: category.name,
+					count: 0,
+				})
+			}
+			SetFilterData(prev => [...prev,{
+				type: "checkbox",
+				title: "Danh mục",
+				items: a
+			},{
+				type: "checkbox",
+				title: "Mục Tiêu",
+				items:[
+					{ id: 1, label: "0-4.5", count: 0 },
+					{ id: 2, label: "4.5+", count: 0 },
+					{ id: 3, label: "5.5+", count: 0 },
+					{ id: 4, label: "7.5+", count: 0 },
+					{ id: 5, label: "0-450", count: 0 },
+					{ id: 6, label: "550+", count: 0 },
+					{ id: 7, label: "750+", count: 0 },
+					{ id: 8, label: "master toeic", count: 0 },
+				]
+			}]);
+		})
+	}, []);
 	useEffect(() => {
 		dispatch(setFilterData(filters));
 	}, [filters]);
-
-	useEffect(() => {
-		let updatedCourses = [...Courses];
-
-		// Apply search filter
-		if (filters.search) {
-			updatedCourses = updatedCourses.filter(course =>
-				course.title.toLowerCase().includes(filters.search.toLowerCase())
-			);
-		}
-
-		// Apply type filter
-		if (filters.type.length) {
-			updatedCourses = updatedCourses.filter(course =>
-				filters.type.includes(course.type)
-			);
-		}
-
-		// Apply category filter
-		if (filters.category.length) {
-			updatedCourses = updatedCourses.filter(course =>
-				filters.category.includes(course.category.toLowerCase().replace(/\s+/g, "-"))
-			);
-		}
-
-		// Apply level filter
-		if (filters.level.length && !filters.level.includes("all")) {
-			updatedCourses = updatedCourses.filter(course =>
-				filters.level.includes(course.level.toLowerCase())
-			);
-		}
-
-		// Set the filtered courses
-		setFilteredCourses(updatedCourses);
-	}, []);
+	// useEffect(() => {
+	// 	let updatedCourses = [...Courses];
+	//
+	// 	// Apply search filter
+	// 	if (filters.search) {
+	// 		updatedCourses = updatedCourses.filter(course =>
+	// 			course.title.toLowerCase().includes(filters.search.toLowerCase())
+	// 		);
+	// 	}
+	//
+	// 	// Apply type filter
+	// 	if (filters.type.length) {
+	// 		updatedCourses = updatedCourses.filter(course =>
+	// 			filters.type.includes(course.type)
+	// 		);
+	// 	}
+	//
+	// 	// Apply category filter
+	// 	if (filters.category.length) {
+	// 		updatedCourses = updatedCourses.filter(course =>
+	// 			filters.category.includes(course.category.toLowerCase().replace(/\s+/g, "-"))
+	// 		);
+	// 	}
+	//
+	// 	// Apply level filter
+	// 	if (filters.level.length && !filters.level.includes("all")) {
+	// 		updatedCourses = updatedCourses.filter(course =>
+	// 			filters.level.includes(course.level.toLowerCase())
+	// 		);
+	// 	}
+	//
+	// 	// Set the filtered courses
+	// 	setFilteredCourses(updatedCourses);
+	// }, []);
 
 
 	return (
@@ -119,7 +120,7 @@ export default function CourseSidebar() {
 		{FilterData.map((filter) => (
 		  <div key={filter.title} className="single-filter-left-wrapper">
 			<h6 className="title">{filter.title}</h6>
-			{filter.type === 'search' ? (
+			{filter.type === 'name' ? (
 			  <div className="search-filter filter-body">
 				<div className="input-wrapper">
 				  <input
@@ -146,7 +147,7 @@ export default function CourseSidebar() {
 						<label htmlFor={item.id}>{item.label}</label>
 						<br />
 					  </div>
-					  <span className="number">({calculateCounts(filter.title.toLowerCase(), item.id)})</span>
+					  {/*<span className="number">({calculateCounts(filter.title.toLowerCase(), item.id)})</span>*/}
 					</div>
 				  ))}
 				</div>

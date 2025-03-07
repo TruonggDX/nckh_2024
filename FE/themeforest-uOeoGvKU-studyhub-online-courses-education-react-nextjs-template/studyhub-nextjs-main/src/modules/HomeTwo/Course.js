@@ -6,7 +6,6 @@ import { Navigation, Pagination } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import {useEffect, useRef, useState} from 'react';
 
-
 import SingleCourse from "@/components/Course";
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -73,7 +72,7 @@ export default function Course() {
 					</div>
 				</div>
 				<div className="row g-5 mt--20">
-					<Swiper {...sliderOptions} className="mySwiper-category-1 swiper-float-right-course">
+					  <Swiper {...sliderOptions} className="mySwiper-category-1 swiper-float-right-course">
 						{
 							courses.map((course, index) => {
 								return (
@@ -102,3 +101,4 @@ export default function Course() {
 		</div>
 	)
 }
+

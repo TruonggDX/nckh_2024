@@ -22,6 +22,7 @@ export default function CourseDetailsSidebar(props) {
             router.push('/login')
         } else {
             addCart(itemId, {quantity});
+            window.location.reload();
             toast.success("Đã thêm vào giỏ hàng!", {
                 position: "top-right",
                 autoClose: 3000,
@@ -74,10 +75,10 @@ export default function CourseDetailsSidebar(props) {
                     {
                         item.price > 0 ?
                             <>
-                                <button href="#" onClick={() => handleAddToCart(item.id, 1)}
+                                <Link href="#" onClick={() => handleAddToCart(item.id, 1)}
                                       className="rts-btn btn-primary">
                                     Thêm vào giỏ hàng
-                                </button>;
+                                </Link>;
                             </> :
                             <Link href="#" className="rts-btn btn-primary">Enroll Now</Link>
                     }

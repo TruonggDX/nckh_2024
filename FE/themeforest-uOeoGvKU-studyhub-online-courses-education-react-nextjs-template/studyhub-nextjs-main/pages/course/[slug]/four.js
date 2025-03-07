@@ -49,6 +49,7 @@ export default function CourseDetails() {
 					type: res.content[0].categoryName,
 					updateDate: res.content[0].createdDate,
 					description: res.content[0].description,
+					code: res.content[0].code,
 				});
 			}
 		});
