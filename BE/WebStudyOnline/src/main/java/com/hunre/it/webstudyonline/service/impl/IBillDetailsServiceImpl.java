@@ -48,8 +48,8 @@ public class IBillDetailsServiceImpl implements IBillDetailsService {
     public BaseResponse<BillDetailsDto> createBillDetails(BillDetailsDto billDetailsDto) {
         BaseResponse<BillDetailsDto> response = new BaseResponse<>();
         BillDetailsEntity billDetailsEntity = billDetailsMapper.toEntity(billDetailsDto);
-        billDetailsEntity = billDetailsRepository.save(billDetailsEntity);
         billDetailsEntity.setDeleted(false);
+        billDetailsEntity = billDetailsRepository.save(billDetailsEntity);
         response.setData(billDetailsMapper.toDto(billDetailsEntity));
         response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
         response.setCode(HttpStatus.CREATED.value());

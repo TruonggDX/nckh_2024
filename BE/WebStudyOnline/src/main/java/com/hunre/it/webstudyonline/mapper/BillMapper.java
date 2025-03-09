@@ -22,11 +22,11 @@ public class BillMapper {
         return billDto;
     }
 
-    public BillEntity toEntity(BillDto billDto){
+    public BillEntity toEntity(String email,BillDto billDto){
         BillEntity billEntity = new BillEntity();
         billEntity.setId(billDto.getId());
         billEntity.setCode(billDto.getCode());
-        AccountEntity accountEntity = accountRepository.findById(billDto.getAccountId()).orElseThrow(()-> new RuntimeException("User not found"));
+        AccountEntity accountEntity = accountRepository.findByEmail(email).orElse(null);
         billEntity.setAccountEntity(accountEntity);
         return billEntity;
     }

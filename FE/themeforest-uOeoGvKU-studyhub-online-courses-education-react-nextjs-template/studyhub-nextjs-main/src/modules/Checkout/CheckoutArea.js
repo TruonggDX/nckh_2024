@@ -4,12 +4,16 @@ import {useEffect, useState} from "react";
 import api from '../../route/route'
 import carts from "../../route/cart";
 import {formatCurrency} from "@/utils/utils";
-
+import Link from "next/link";
+import pay from '../../route/payment'
+import bi from '../../route/bill'
 export default function CheckoutArea() {
 
     const [account, setAccount] = useState(null);
     const [selectedCourses, setSelectedCourses] = useState([]);
-    const [total,setTotal] = useState(0)
+    const [total,setTotal] = useState(0);
+    const [paymentMethod, setPaymentMethod] = useState('');
+
     useEffect(() => {
         api.getUser().then((response) => {
             setAccount(response.data);
@@ -24,6 +28,24 @@ export default function CheckoutArea() {
         setTotal(totalAmount)
     }, [selectedCourses]);
 
+    const handlePayment = async (e) => {
+        e.preventDefault()
+        if (paymentMethod === "VNPay"){
+            try {
+                const response = await pay.createVNPay(total, "NCB");
+                if (response && response.paymentUrl) {
+                    window.location.href = response.paymentUrl;
+                } else {
+                    console.error(response);
+                }
+            } catch (error) {
+                console.error(error);
+            }
+        }else {
+            alert("Vui lòng chọn phương thức thanh toán !!!")
+        }
+
+    };
     return (
         <div className="ms-main">
             <div className="ms-page-content">
@@ -74,12 +96,18 @@ export default function CheckoutArea() {
                                                     <div className="col-md-12 col-sm-12 col-xs-12">
                                                         <div className="form-group">
                                                             <label>Phương thức thanh toán</label>
-                                                            <select className="d-block" style={{height: '60px'}}
-                                                                    required="">
+                                                            <select
+                                                                className="d-block"
+                                                                style={{height: '60px'}}
+                                                                required=""
+                                                                value={paymentMethod}
+                                                                onChange={(e) => setPaymentMethod(e.target.value)}
+                                                            >
                                                                 <option value="">Chọn phương thức thanh toán</option>
-                                                                <option value="AX">VN Pay</option>
-                                                                <option value="AF">Momo</option>
+                                                                <option value="VNPay">VN Pay</option>
+                                                                <option value="Momo">Momo</option>
                                                             </select>
+
                                                         </div>
                                                     </div>
                                                 </div>
@@ -131,7 +159,11 @@ export default function CheckoutArea() {
                                         <div id="payment" className="woocommerce-checkout-payment">
                                             <div className="form-row place-order">
                                                 <div className="ms-proceed-to-checkout wc-proceed-to-checkout">
-                                                    <a href="#" className="rts-btn btn-primary button"> Thanh toán</a>
+                                                    <button onClick={handlePayment}
+                                                            className="rts-btn btn-primary button">
+                                                        Thanh toán
+                                                    </button>
+
                                                 </div>
                                             </div>
                                         </div>

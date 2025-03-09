@@ -5,9 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
+@Repository
 public interface BillRepository extends JpaRepository<BillEntity,Long> {
     @Query(value = "SELECT b FROM BillEntity b WHERE b.deleted=false ")
     Page<BillEntity> findAllByDeletedFalse(Pageable pageable);
@@ -17,4 +17,5 @@ public interface BillRepository extends JpaRepository<BillEntity,Long> {
             "AND (:code IS NULL OR b.code LIKE %:code%)" +
             "AND (:accountName IS NULL OR b.accountEntity.fullname LIKE %:accountName%)")
     Page<BillEntity> findBillByCodeAndAccountName(String code, String accountName, Pageable pageable);
+
 }

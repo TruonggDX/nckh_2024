@@ -21,9 +21,9 @@ export default function CourseDetailsSidebar(props) {
             router.push("/login");
         } else {
             addCart(itemId, { quantity });
-            toast.success("Đã thêm vào giỏ hàng!", {
+            toast.success("Thêm thành công!", {
                 position: "top-right",
-                autoClose: 3000,
+                autoClose: 2000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -32,7 +32,7 @@ export default function CourseDetailsSidebar(props) {
                 closeButton: false,
                 style: {
                     padding: "5px",
-                    width: "250px"
+                    width: "180px"
                 }
             });
         }
