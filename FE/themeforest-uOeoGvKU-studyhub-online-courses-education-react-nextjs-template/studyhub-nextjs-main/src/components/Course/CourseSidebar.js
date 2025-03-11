@@ -6,7 +6,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 export default function CourseSidebar() {
 	const [filters, setFilters] = useState({
-	  search: '',
+	  search: "",
 		category: "",
 	  aim: "",
 	});
@@ -23,15 +23,19 @@ export default function CourseSidebar() {
 		dispatch(setFilterData(a));
 	}, [filters]);
 	const handleFilterChange = (e, filterType) => {
-	  const { id, checked } = e.target;
-	  setFilters((prevFilters) => ({
-		...prevFilters,
-		[filterType]: checked
-		  ? [...prevFilters[filterType], id]
-		  : prevFilters[filterType].filter((item) => item !== id)
-	  }));
+		const { id, checked } = e.target;
+		setFilters((prevFilters) => ({
+			...prevFilters,
+			[filterType]: checked ? id : ""
+		}));
+		const elements = document.querySelectorAll('input[type="checkbox"]');
+		for (const element of elements) {
+			if (element.getAttribute("id")!=id && element.getAttribute("class")===filterType) {
+				element.checked = false;
+			}
+		}
 	};
-  
+
 	const handleSearchChange = (e) => {
 	  setFilters((prevFilters) => ({
 		...prevFilters,
@@ -41,10 +45,15 @@ export default function CourseSidebar() {
   
 	const clearFilters = () => {
 	  setFilters({
-		  search: '',
+		  search: "",
 		  category: "",
 		  aim: "",
 	  });
+	  	document.querySelectorAll('input[type="text"]').value = "";
+		const elements = document.querySelectorAll('input[type="checkbox"]');
+		for (const element of elements) {
+			element.checked = false;
+		}
 	};
 	useEffect(() => {
 		api.getCategory().then((res) => {
@@ -58,20 +67,22 @@ export default function CourseSidebar() {
 			}
 			SetFilterData(prev => [...prev,{
 				type: "checkbox",
-				title: "Danh mục",
+				titles: "Danh mục",
+				title: "category",
 				items: a
 			},{
 				type: "checkbox",
-				title: "Mục Tiêu",
+				titles: "Mục Tiêu",
+				title: "aim",
 				items:[
-					{ id: 1, label: "0-4.5", count: 0 },
-					{ id: 2, label: "4.5+", count: 0 },
-					{ id: 3, label: "5.5+", count: 0 },
-					{ id: 4, label: "7.5+", count: 0 },
-					{ id: 5, label: "0-450", count: 0 },
-					{ id: 6, label: "550+", count: 0 },
-					{ id: 7, label: "750+", count: 0 },
-					{ id: 8, label: "master toeic", count: 0 },
+					{ id: "0 - 450", label: "0 - 450", count: 0 },
+					{ id: "450+", label: "450+", count: 0 },
+					{ id: "700+", label: "700+", count: 0 },
+					{ id: "master toeic", label: "master toeic", count: 0 },
+					{ id: "0 - 5.5", label: "0 - 5.5", count: 0 },
+					{ id: "5.5+", label: "5.5+", count: 0 },
+					{ id: "6.5+", label: "6.5+", count: 0 },
+					{ id: "7.5+", label: "7.5+", count: 0 },
 				]
 			}]);
 		})
@@ -79,41 +90,6 @@ export default function CourseSidebar() {
 	useEffect(() => {
 		dispatch(setFilterData(filters));
 	}, [filters]);
-	// useEffect(() => {
-	// 	let updatedCourses = [...Courses];
-	//
-	// 	// Apply search filter
-	// 	if (filters.search) {
-	// 		updatedCourses = updatedCourses.filter(course =>
-	// 			course.title.toLowerCase().includes(filters.search.toLowerCase())
-	// 		);
-	// 	}
-	//
-	// 	// Apply type filter
-	// 	if (filters.type.length) {
-	// 		updatedCourses = updatedCourses.filter(course =>
-	// 			filters.type.includes(course.type)
-	// 		);
-	// 	}
-	//
-	// 	// Apply category filter
-	// 	if (filters.category.length) {
-	// 		updatedCourses = updatedCourses.filter(course =>
-	// 			filters.category.includes(course.category.toLowerCase().replace(/\s+/g, "-"))
-	// 		);
-	// 	}
-	//
-	// 	// Apply level filter
-	// 	if (filters.level.length && !filters.level.includes("all")) {
-	// 		updatedCourses = updatedCourses.filter(course =>
-	// 			filters.level.includes(course.level.toLowerCase())
-	// 		);
-	// 	}
-	//
-	// 	// Set the filtered courses
-	// 	setFilteredCourses(updatedCourses);
-	// }, []);
-
 
 	return (
 	  <div className="rts-course-filter-area">
@@ -139,9 +115,10 @@ export default function CourseSidebar() {
 					<div key={item.id} className="single-checkbox-filter">
 					  <div className="check-box">
 						<input
+							className={filter.title.toLowerCase()}
 						  type="checkbox"
 						  id={item.id}
-						  checked={filters[filter.title.toLowerCase()]?.includes(item.id)}
+						  checked={filters[filter.titles.toLowerCase()]?.includes(item.id)}
 						  onChange={(e) => handleFilterChange(e, filter.title.toLowerCase())}
 						/>
 						<label htmlFor={item.id}>{item.label}</label>

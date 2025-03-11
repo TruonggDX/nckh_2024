@@ -23,23 +23,12 @@ export default function PagiCourse() {
 
     useEffect(() => {
         if(filters.data !== undefined){
-            const hasValue = Object.values(filters.data).some(value => value[0] !== undefined);
-            if(hasValue){
-                api.getCourse({page: currentPage,size:itemsPerPage}).then((res) => {
+                api.getCourse({page: currentPage,size:itemsPerPage,name: filters.data.search,aim: filters.data.aim, category: filters.data.category}).then((res) => {
                     setCourses(res.content);
                     setTotalPaginate(res.totalPages)
                 })
-            }
-        }else {
-            if (totalPaginate === 0){
-                api.getCourse({page: currentPage,size:itemsPerPage}).then((res) => {
-                    setCourses(res.content);
-                    setTotalPaginate(res.totalPages)
-                })
-            }
         }
     }, [filters, currentPage]);
-
     const sliderOptions = {
         slidesPerView: 6,
         spaceBetween: 20,

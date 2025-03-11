@@ -247,6 +247,12 @@ public class ICourseServiceImpl implements ICourseService {
         if (name == null){
             name = "";
         }
+        if (aim == ""){
+            aim = null;
+        }
+        if (category == ""){
+            category = null;
+        }
 
         Page<CourseEntity> page = courseRepository.getCourseByCondition(pageable, code, name, aim,category,status);
         List<CourseDto> courseDtos = page.getContent().stream().map(courseEntity -> {
