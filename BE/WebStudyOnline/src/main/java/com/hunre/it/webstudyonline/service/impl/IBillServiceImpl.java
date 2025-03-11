@@ -78,7 +78,9 @@ public class IBillServiceImpl implements IBillService {
     @Override
     public BaseResponse<BillDto> createBill(BillDto billDto) {
         BaseResponse<BillDto> response = new BaseResponse<>();
-        BillEntity billEntity = billMapper.toEntity(billDto);
+        AuthDto authDto = jwtService.decodeToken();
+        String email = authDto.getEmail();
+        BillEntity billEntity = billMapper.toEntity(email,billDto);
         billEntity.setCode(GenerateCode.generateUniqueCode("BILL"));
         billEntity.setDeleted(false);
         billRepository.save(billEntity);

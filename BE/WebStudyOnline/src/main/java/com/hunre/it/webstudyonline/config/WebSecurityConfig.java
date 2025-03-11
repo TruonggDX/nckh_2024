@@ -61,6 +61,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/bill/delete/**","api/bill/findBillByAttribute").hasAnyRole("ADMIN")
                         .requestMatchers("/api/bill/getBillByEmail").hasAnyRole("USER")
                         .requestMatchers("/api/bill/findById/**","/api/bill/list/**","/api/bill/create/**").authenticated()
+                        .requestMatchers("/api/payment/**").permitAll()
                         .requestMatchers("/api/bill_details/create").authenticated()
                         .requestMatchers("/api/bill_details/list/**").authenticated()
                         .requestMatchers("/api/cart/**").authenticated()
