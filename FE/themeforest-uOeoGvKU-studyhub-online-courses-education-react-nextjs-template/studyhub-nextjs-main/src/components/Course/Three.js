@@ -6,7 +6,7 @@ export default function SingleCourseThree( props ) {
 
 	return (
 		<div className={ courseClass || 'single-course-style-three'} >
-			<Link href={`/course/${Slug || 'details'}`} className="thumbnail">
+			<Link href={`/course/details/four?${Slug || 'details'}`} className="thumbnail">
 				<Image src={Img || '/images/course/01.jpg'} width={imgWidth || 290} height={imgHeight || 210}alt="course" />
 				<div className="tag-thumb">
 					<span>{Category || 'Web Development'}</span>
@@ -19,7 +19,7 @@ export default function SingleCourseThree( props ) {
 					}
 					<div className="price">${Price || '49.50'}  <span className={"text-decoration-line-through text-secondary"}>{prevPrice}</span></div>
 				</div>
-				<Link href={`/course/${Slug || 'details'}`}>
+				<Link href={`/course/details/four?${Slug || 'details'}`}>
 					<h5 className="title">{Title || 'The Complete Web Developer in 2023: Zero to Mastery'}</h5>
 				</Link>
 				<div className="teacher-stars">
