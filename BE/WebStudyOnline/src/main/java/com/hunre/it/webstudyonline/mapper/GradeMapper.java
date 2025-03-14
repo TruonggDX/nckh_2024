@@ -27,7 +27,9 @@ public class GradeMapper {
         dto.setId(gradeEntity.getId());
         dto.setCode(gradeEntity.getCode());
         dto.setName(gradeEntity.getName());
+        dto.setRemain_student(gradeEntity.getRemainStudent());
         dto.setNumber_student(gradeEntity.getNumber_student());
+        dto.setStart_date(gradeEntity.getStart_date());
         dto.setCourse_id(gradeEntity.getCourseEntity().getId());
         dto.setCourse_name(gradeEntity.getCourseEntity().getName());
         Set<Long> accountEntities = gradeEntity.getAccounts().stream().map(AccountEntity::getId).collect(Collectors.toSet());
@@ -43,7 +45,9 @@ public class GradeMapper {
     public GradeEntity toEntity(GradeDto dto){
         GradeEntity gradeEntity = new GradeEntity();
         gradeEntity.setId(dto.getId());
+        gradeEntity.setStart_date(dto.getStart_date());
         gradeEntity.setCode(dto.getCode());
+        gradeEntity.setRemainStudent(dto.getRemain_student());
         gradeEntity.setName(dto.getName());
         gradeEntity.setNumber_student(dto.getNumber_student());
         CourseEntity courseEntity = courseRepository.findById(dto.getCourse_id()).orElseThrow(() -> new RuntimeException("Course not found"));

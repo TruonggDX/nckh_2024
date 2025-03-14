@@ -3,6 +3,7 @@ package com.hunre.it.webstudyonline.entity;
 import jakarta.persistence.*;
 import lombok.EqualsAndHashCode;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +13,8 @@ public class GradeEntity extends AbstractEntity {
     private String code;
     private String name;
     private Long number_student;
+    private Date start_date;
+    private Long remainStudent;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "grade_account",
@@ -24,6 +27,14 @@ public class GradeEntity extends AbstractEntity {
     @JoinColumn(name = "course_id")
     @EqualsAndHashCode.Exclude
     private CourseEntity courseEntity;
+
+    public Date getStart_date() {
+        return start_date;
+    }
+
+    public void setStart_date(Date start_date) {
+        this.start_date = start_date;
+    }
 
     public Set<AccountEntity> getAccounts() {
         return accounts;
@@ -63,5 +74,13 @@ public class GradeEntity extends AbstractEntity {
 
     public void setNumber_student(Long number_student) {
         this.number_student = number_student;
+    }
+
+    public Long getRemainStudent() {
+        return remainStudent;
+    }
+
+    public void setRemainStudent(Long remainStudent) {
+        this.remainStudent = remainStudent;
     }
 }

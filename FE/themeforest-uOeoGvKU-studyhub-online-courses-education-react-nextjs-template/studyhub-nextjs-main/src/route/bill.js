@@ -18,4 +18,9 @@ async function createBillDetails(req) {
     const response = await axiosInstance.post(`${apiBillDetails}/create`, req);
     return response.data;
 }
-export default {getBillByEmail,getBillDetailById,createBillDetails,createBill};
+async function getAllCourseEnrolled(req) {
+    const params = new URLSearchParams(req)
+    const response = await axiosInstance.get(`${apiBillDetails}/listCourseEnrolled`, {params});
+    return response.data;
+}
+export default {getBillByEmail,getBillDetailById,createBillDetails,createBill,getAllCourseEnrolled};

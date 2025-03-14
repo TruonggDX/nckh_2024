@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import {formatCurrency} from "@/utils/utils";
 
 export default function SingleCourse( props ) {
 	const { courseClass, Slug, Img, Title, Category, ratingCount, lessonCount, studentCount, Author, prevPrice, Price, imgWidth, imgHeight, type  } = props;
@@ -52,7 +53,7 @@ export default function SingleCourse( props ) {
 						</div>
 					}
 					<div className="price">
-						${Price || '79.99'}
+						{formatCurrency(Price)}
 					</div>
 				</div>
 			</div>

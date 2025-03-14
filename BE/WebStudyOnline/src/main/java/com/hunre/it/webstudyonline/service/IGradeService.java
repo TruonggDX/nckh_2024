@@ -14,4 +14,8 @@ public interface IGradeService {
     BaseResponse<GradeDto> updateGrade(String id, GradeDto gradeDto);
     BaseResponse<GradeDto> deleteGrade(String id);
     BaseResponse<List<GradeDto>> getGradeByEmail();
+
+    BaseResponse<List<GradeDto>> findByCourse(String id);
+
+    BaseResponse<String> signInGrade(String id);
 }

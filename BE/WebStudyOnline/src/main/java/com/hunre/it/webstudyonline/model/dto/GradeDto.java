@@ -1,5 +1,6 @@
 package com.hunre.it.webstudyonline.model.dto;
 
+import java.util.Date;
 import java.util.Set;
 
 public class GradeDto {
@@ -8,9 +9,19 @@ public class GradeDto {
     private String name;
     private Long number_student;
     private Long course_id;
+    private Long remain_student;
     private Set<Long> account_id;
     private String course_name;
     private Set<AccountDto> accountDto;
+    private Date start_date;
+
+    public Date getStart_date() {
+        return start_date;
+    }
+
+    public void setStart_date(Date start_date) {
+        this.start_date = start_date;
+    }
 
     public Set<AccountDto> getAccountDto() {
         return accountDto;
@@ -74,5 +85,13 @@ public class GradeDto {
 
     public void setNumber_student(Long number_student) {
         this.number_student = number_student;
+    }
+
+    public Long getRemain_student() {
+        return remain_student;
+    }
+
+    public void setRemain_student(Long remain_student) {
+        this.remain_student = remain_student;
     }
 }

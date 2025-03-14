@@ -22,9 +22,15 @@ public interface CourseRepository extends JpaRepository<CourseEntity,Long> {
 
     Page<CourseEntity> getCourseByCondition(Pageable pageable, String code, String name,
                                             String aim,String category, String status);
-    @Query(value = "SELECT c FROM CourseEntity c left join BillDetailsEntity b on c.id = b.courseEntity.id " +
+    @Query(value = "SELECT c FROM CourseEntity c left join BillDetailsEntity b on c.id = b.courseEntity.id where c.status = 'Đã Duyệt'" +
             "group by c.id order by sum(b.quantity) desc")
     Page<CourseEntity> getCourseBestSeller(Pageable pageable);
-    @Query(value = "SELECT c FROM CourseEntity c WHERE c.deleted=false AND c.createdBy=:createdByEmail")
+    @Query(value = "SELECT c FROM CourseEntity c WHERE c.deleted=false AND c.createdBy=:createdByEmail and c.status = 'Đã Duyệt'")
     Page<CourseEntity> getCourseByCreatedByEmail(Pageable pageable, String createdByEmail);
+
+    @Query(value = "SELECT c FROM CourseEntity c " +
+            "inner join BillDetailsEntity  bd on c.id =  bd.courseEntity.id " +
+            "inner join BillEntity  b on bd.billEntity.id =  b.id " +
+            "WHERE b.id =:id and c.deleted=false and c.status = 'Đã Duyệt'")
+    Page<CourseEntity> getAllCourseEnrolled(Long id, Pageable pageable);
 }

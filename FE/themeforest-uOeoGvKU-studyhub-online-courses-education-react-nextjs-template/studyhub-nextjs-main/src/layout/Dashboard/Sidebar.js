@@ -46,7 +46,7 @@ export default function DashboardSidebar() {
 					className={`single-item ${dashboardItemSlug === "enrolled" ? "active" : ""}`}
 				>
 					<i className="fa-light fa-graduation-cap"></i>
-					<p>Enrolled Courses</p>
+					<p>Lớp</p>
 				</Link>
 				{/* single item end */}
 				{/* single item */}

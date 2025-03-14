@@ -1,7 +1,10 @@
 package com.hunre.it.webstudyonline.service.impl;
 
+import com.hunre.it.webstudyonline.entity.AccountEntity;
+import com.hunre.it.webstudyonline.entity.CourseEntity;
 import com.hunre.it.webstudyonline.entity.GradeEntity;
 import com.hunre.it.webstudyonline.mapper.GradeMapper;
+import com.hunre.it.webstudyonline.model.dto.CourseDto;
 import com.hunre.it.webstudyonline.model.dto.GradeDto;
 import com.hunre.it.webstudyonline.model.dto.auth.AuthDto;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
@@ -35,7 +38,6 @@ public class IGradeServiceImpl implements IGradeService {
     private JwtService jwtService;
     @Autowired
     private AccountRepository accountRepository;
-
     @Override
     public ResponsePage<List<GradeDto>> getAllGrades(Pageable pageable) {
         ResponsePage<List<GradeDto>> responsePage = new ResponsePage<>();
@@ -78,6 +80,7 @@ public class IGradeServiceImpl implements IGradeService {
         BaseResponse<GradeDto> response = new BaseResponse<>();
         GradeEntity gradeEntity = gradeMapper.toEntity(gradeDto);
         gradeEntity.setDeleted(false);
+        gradeEntity.setRemainStudent(gradeDto.getNumber_student());
         gradeEntity.setCode(GenerateCode.generateUniqueCode("GR"));
         gradeRepository.save(gradeEntity);
         response.setData(gradeMapper.toDto(gradeEntity));
@@ -147,6 +150,52 @@ public class IGradeServiceImpl implements IGradeService {
         response.setCode(HttpStatus.OK.value());
         response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
         response.setData(gradeDtos);
+        return response;
+    }
+
+    @Override
+    public BaseResponse<List<GradeDto>> findByCourse(String id) {
+        BaseResponse<List<GradeDto>> response = new BaseResponse<>();
+        Utils<Long> utils = LongUtils.strToLong(id);
+        if (utils.getT()== null){
+            response.setCode(utils.getCode());
+            response.setMessage(utils.getMsg());
+            return response;
+        }
+        Long courseId = utils.getT();
+        List<GradeEntity> gradeEntities = gradeRepository.findByCourseId(courseId);
+        List<GradeDto> gradeDtos=gradeEntities.stream().map(gradeMapper::toDto).toList();
+        response.setCode(HttpStatus.OK.value());
+        response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
+        response.setData(gradeDtos);
+        return response;
+    }
+
+    @Override
+    public BaseResponse<String> signInGrade(String id) {
+        BaseResponse<String> response = new BaseResponse<>();
+        Utils<Long> utils = LongUtils.strToLong(id);
+        if (utils.getT()== null){
+            response.setCode(utils.getCode());
+            response.setMessage(utils.getMsg());
+            return response;
+        }
+        Long courseId = utils.getT();
+        AuthDto authDto=jwtService.decodeToken();
+        AccountEntity accountEntity = accountRepository.findByEmail(authDto.getEmail()).orElseThrow(()->new RuntimeException(Constant.HTTP_MESSAGE.NOTFOUND));
+        GradeEntity gradeEntity= gradeRepository.findById(courseId).orElseThrow(()->new RuntimeException(Constant.HTTP_MESSAGE.NOTFOUND));
+        if (gradeEntity.getRemainStudent()<0){
+            response.setCode(HttpStatus.BAD_REQUEST.value());
+            response.setMessage(Constant.HTTP_MESSAGE.FAILED);
+            response.setData("");
+            return response;
+        }
+        gradeEntity.getAccounts().add(accountEntity);
+        gradeEntity.setRemainStudent(gradeEntity.getRemainStudent()-1);
+        gradeRepository.save(gradeEntity);
+        response.setCode(HttpStatus.OK.value());
+        response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
+        response.setData("Đăng kí thành công");
         return response;
     }
 }

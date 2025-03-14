@@ -42,4 +42,13 @@ async function getCourseDetails (req) {
     const response = await axiosInstance.get(`/api/coursedetails/list/`+req);
     return response.data;
 }
-export default {login, getUser,signUp, verifyOtp,resendCode, getCategory, getCourse,getCourseBestSeller,getCourseDetails};
+async function getGradeByCourseId (req) {
+    const params = new URLSearchParams(req)
+    const response = await axiosInstance.get(`/api/grade/findByCourse`,{params});
+    return response.data;
+}
+async function signInGrade (req) {
+    const response = await axiosInstance.put(`/api/grade/signInGrade/`+req);
+    return response.data;
+}
+export default {login, getUser,signUp, verifyOtp,resendCode, getCategory, getCourse,getCourseBestSeller,getCourseDetails,getGradeByCourseId,signInGrade};

@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import {formatCurrency} from "@/utils/utils";
 
 export default function SingleCourseThree( props ) {
 	const { courseClass, Slug, Img, Title, Description, Category, ratingCount, lessonCount, studentCount, Author, bestSeller, Level, prevPrice, Price, imgWidth, imgHeight  } = props;
@@ -17,7 +18,7 @@ export default function SingleCourseThree( props ) {
 					{
 						bestSeller && <div className="tags">Best Seller</div>
 					}
-					<div className="price">${Price || '49.50'}  <span className={"text-decoration-line-through text-secondary"}>{prevPrice}</span></div>
+					<div className="price">{formatCurrency(Price)}  <span className={"text-decoration-line-through text-secondary"}>{prevPrice}</span></div>
 				</div>
 				<Link href={`/course/details/four?${Slug || 'details'}`}>
 					<h5 className="title">{Title || 'The Complete Web Developer in 2023: Zero to Mastery'}</h5>

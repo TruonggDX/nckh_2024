@@ -1,9 +1,13 @@
 import Image from "next/image";
 import Link from "next/link";
+import api from "@/route/bill";
+import {useState} from "react";
 
 export default function SingleCourseTwo( props ) {
-	const { courseClass, Slug, Img, Title, Category, ratingCount, lessonCount, studentCount, Author, bestSeller, prevPrice, Price, imgWidth, imgHeight, type, completePercent  } = props;
-
+	const {id, courseClass,status, Slug, Img, Title, Category, ratingCount, lessonCount, studentCount, Author, bestSeller, prevPrice, Price, imgWidth, imgHeight, type, completePercent  } = props;
+	const handleShow = (id) =>{
+			props.parentCallback(id)
+	}
 	return (
 		<div className={ courseClass || 'single-course-style-three'}>
 			<Link href={`/course/${Slug || 'details'}`} className="thumbnail">
@@ -39,13 +43,16 @@ export default function SingleCourseTwo( props ) {
 						<span>{lessonCount || '25'} Lessons</span>
 					</div>
 					<div className="students">
-						<i className="fa-light fa-users"></i>
-						<span>{studentCount || '54'} Students</span>
+						{/*<i className="fa-light fa-users"></i>*/}
+						{/*<span>{studentCount || '54'} Students</span>*/}
 					</div>
 				</div>
-				{
-					type==="dashboard" &&
 					<>
+					{status==="false" ?
+						<div className="progress-wrapper-lesson-compleate">
+							<button className="btn btn-success" style={{fontSize: "14px"}} onClick={() => handleShow(id)}> Chọn lớp học </button>
+						</div>
+						:
 						<div className="progress-wrapper-lesson-compleate">
 							<div className="compleate">
 								<div className="compl">
@@ -60,9 +67,8 @@ export default function SingleCourseTwo( props ) {
 								</div>
 							</div>
 						</div>
-						<Link href="#" className="rts-btn btn-border">Download Certificate</Link>
+					}
 					</>
-				}
 			</div>
 		</div>
 	)
