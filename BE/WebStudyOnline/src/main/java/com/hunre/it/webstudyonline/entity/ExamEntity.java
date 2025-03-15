@@ -10,7 +10,15 @@ public class ExamEntity extends AbstractEntity{
     private String name;
     private Integer duration;
     private Integer number_question;
+    private Boolean isFree;
 
+    public Boolean getFree() {
+        return isFree;
+    }
+
+    public void setFree(Boolean free) {
+        isFree = free;
+    }
     public String getCode() {
         return code;
     }

@@ -7,9 +7,8 @@ import lombok.EqualsAndHashCode;
 @Entity
 public class PointEntity extends AbstractEntity{
     private Double score;
-    private Integer rankLevel;
     private Long completionTime;
-
+    private Boolean submitted;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", nullable = false)
     @EqualsAndHashCode.Exclude
@@ -28,13 +27,6 @@ public class PointEntity extends AbstractEntity{
         this.score = score;
     }
 
-    public Integer getRankLevel() {
-        return rankLevel;
-    }
-
-    public void setRankLevel(Integer rankLevel) {
-        this.rankLevel = rankLevel;
-    }
 
     public Long getCompletionTime() {
         return completionTime;
@@ -58,5 +50,12 @@ public class PointEntity extends AbstractEntity{
 
     public void setExamEntity(ExamEntity examEntity) {
         this.examEntity = examEntity;
+    }
+    public Boolean getSubmitted() {
+        return submitted;
+    }
+
+    public void setSubmitted(Boolean submitted) {
+        this.submitted = submitted;
     }
 }

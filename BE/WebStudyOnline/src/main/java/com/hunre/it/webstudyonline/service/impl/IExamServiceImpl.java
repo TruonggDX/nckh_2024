@@ -3,9 +3,12 @@ package com.hunre.it.webstudyonline.service.impl;
 import com.hunre.it.webstudyonline.entity.ExamEntity;
 import com.hunre.it.webstudyonline.mapper.ExamMapper;
 import com.hunre.it.webstudyonline.model.dto.ExamDto;
+import com.hunre.it.webstudyonline.model.dto.auth.AuthDto;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
 import com.hunre.it.webstudyonline.model.response.ResponsePage;
+import com.hunre.it.webstudyonline.repository.BillRepository;
 import com.hunre.it.webstudyonline.repository.ExamRepository;
+import com.hunre.it.webstudyonline.security.service.JwtService;
 import com.hunre.it.webstudyonline.service.IExamService;
 import com.hunre.it.webstudyonline.utils.Constant;
 import com.hunre.it.webstudyonline.utils.GenerateCode;
@@ -26,11 +29,17 @@ public class IExamServiceImpl implements IExamService {
     private ExamRepository exampRepository;
     @Autowired
     private ExamMapper examMapper;
-
+    @Autowired
+    private JwtService jwtService;
+    @Autowired
+    private BillRepository billRepository;
     @Override
     public ResponsePage<List<ExamDto>> getAll(Pageable pageable) {
         ResponsePage<List<ExamDto>> responsePage = new ResponsePage<>();
-        Page<ExamEntity> page = exampRepository.getExams(pageable);
+        AuthDto authDto = jwtService.decodeToken();
+        String email = authDto.getEmail();
+        boolean check = billRepository.checkBill(email);
+        Page<ExamEntity> page = exampRepository.getExams(pageable,check);
         List<ExamDto> examDtos = page.getContent().stream().map(examMapper::toDto).toList();
         responsePage.setPageNumber(pageable.getPageNumber());
         responsePage.setPageSize(pageable.getPageSize());
@@ -101,7 +110,16 @@ public class IExamServiceImpl implements IExamService {
         responsePage.setContent(examDtos);
         return responsePage;
     }
-
+    @Override
+    public BaseResponse<ExamDto> getExamByCode(String examCode) {
+        BaseResponse<ExamDto> response = new BaseResponse<>();
+        ExamEntity examEntity = exampRepository.findByCode(examCode);
+        ExamDto examDto = examMapper.toDto(examEntity);
+        response.setData(examMapper.toDto(examEntity));
+        response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
+        response.setCode(HttpStatus.OK.value());
+        return response;
+    }
     public BaseResponse<ExamDto> handleExam(String id, boolean isDelete) {
         BaseResponse<ExamDto> response = new BaseResponse<>();
         Utils<Long> utils = LongUtils.strToLong(id);

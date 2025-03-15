@@ -17,5 +17,6 @@ public interface BillRepository extends JpaRepository<BillEntity,Long> {
             "AND (:code IS NULL OR b.code LIKE %:code%)" +
             "AND (:accountName IS NULL OR b.accountEntity.fullname LIKE %:accountName%)")
     Page<BillEntity> findBillByCodeAndAccountName(String code, String accountName, Pageable pageable);
-
+    @Query(value = "SELECT COUNT(o) > 0 FROM BillEntity o WHERE o.accountEntity.email=:email")
+    boolean checkBill(String email);
 }

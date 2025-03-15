@@ -22,8 +22,8 @@ public class PointMapper {
     public PointDto toDto(PointEntity pointEntity) {
         PointDto pointDto = new PointDto();
         pointDto.setId(pointEntity.getId());
-        pointDto.setRankLevel(pointEntity.getRankLevel());
         pointDto.setScore(pointEntity.getScore());
+        pointDto.setSubmitted(pointEntity.getSubmitted());
         pointDto.setCompletionTime(pointEntity.getCompletionTime());
         if (pointEntity.getAccountEntity() != null) {
             pointDto.setAccountId(pointEntity.getAccountEntity().getId());
@@ -31,20 +31,16 @@ public class PointMapper {
         if (pointEntity.getExamEntity() != null) {
             pointDto.setExamId(pointEntity.getExamEntity().getId());
         }
+        pointDto.setAccountName(pointEntity.getAccountEntity().getFullname());
         return pointDto;
     }
-
-    public PointEntity toEntity(PointDto pointDto) {
+    public PointEntity toEntity(String email,PointDto pointDto) {
         PointEntity pointEntity = new PointEntity();
         pointEntity.setId(pointDto.getId());
-        pointEntity.setRankLevel(pointDto.getRankLevel());
         pointEntity.setScore(pointDto.getScore());
         pointEntity.setCompletionTime(pointDto.getCompletionTime());
-        Optional<AccountEntity> checkAccId = accountRepository.findById(pointDto.getAccountId());
-        if (checkAccId.isEmpty()) {
-            throw new RuntimeException("Account not found");
-        }
-        pointEntity.setAccountEntity(checkAccId.get());
+        AccountEntity account = accountRepository.findByEmail(email).orElse(null);
+        pointEntity.setAccountEntity(account);
         Optional<ExamEntity> checkExamId = examRepository.findById(pointDto.getExamId());
         if (checkExamId.isEmpty()) {
             throw new RuntimeException("Exam not found");

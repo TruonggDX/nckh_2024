@@ -49,6 +49,13 @@ export default function DashboardSidebar() {
 					<p>Lớp</p>
 				</Link>
 				{/* single item end */}
+				<Link
+					href="/dashboard/exam"
+					className={`single-item ${dashboardItemSlug === "exam" ? "active" : ""}`}
+				>
+					<i className="fa-light fa-graduation-cap"></i>
+					<p>Bài thi</p>
+				</Link>
 				{/* single item */}
 				<Link
 					href="/dashboard/wishlist" 

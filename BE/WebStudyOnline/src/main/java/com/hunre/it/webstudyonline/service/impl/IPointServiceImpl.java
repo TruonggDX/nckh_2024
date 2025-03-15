@@ -1,11 +1,15 @@
 package com.hunre.it.webstudyonline.service.impl;
 
+import com.hunre.it.webstudyonline.entity.ExamEntity;
 import com.hunre.it.webstudyonline.entity.PointEntity;
 import com.hunre.it.webstudyonline.mapper.PointMapper;
 import com.hunre.it.webstudyonline.model.dto.PointDto;
+import com.hunre.it.webstudyonline.model.dto.auth.AuthDto;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
 import com.hunre.it.webstudyonline.model.response.ResponsePage;
+import com.hunre.it.webstudyonline.repository.ExamRepository;
 import com.hunre.it.webstudyonline.repository.PointRepository;
+import com.hunre.it.webstudyonline.security.service.JwtService;
 import com.hunre.it.webstudyonline.service.IPointService;
 import com.hunre.it.webstudyonline.utils.Constant;
 import com.hunre.it.webstudyonline.utils.LongUtils;
@@ -25,7 +29,10 @@ public class IPointServiceImpl implements IPointService {
     private PointRepository pointRepository;
     @Autowired
     private PointMapper pointMapper;
-
+    @Autowired
+    private JwtService jwtService;
+    @Autowired
+    private ExamRepository examRepository;
     @Override
     public ResponsePage<List<PointDto>> getAllPoints(Long examId,Pageable pageable) {
         ResponsePage<List<PointDto>> responsePage = new ResponsePage<>();
@@ -42,7 +49,10 @@ public class IPointServiceImpl implements IPointService {
     @Override
     public BaseResponse<PointDto> addPoint(PointDto pointDto) {
         BaseResponse<PointDto> response = new BaseResponse<>();
-        PointEntity pointEntity = pointMapper.toEntity(pointDto);
+        AuthDto authDto = jwtService.decodeToken();
+        String email = authDto.getEmail();
+        PointEntity pointEntity = pointMapper.toEntity(email,pointDto);
+        pointEntity.setSubmitted(true);
         pointEntity.setDeleted(false);
         pointRepository.save(pointEntity);
         response.setData(pointMapper.toDto(pointEntity));
@@ -50,6 +60,7 @@ public class IPointServiceImpl implements IPointService {
         response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
         return response;
     }
+
 
     @Override
     public BaseResponse<PointDto> updatePoint(String id, PointDto pointDto) {
@@ -67,7 +78,16 @@ public class IPointServiceImpl implements IPointService {
             response.setMessage(Constant.HTTP_MESSAGE.NOTFOUND);
             return response;
         }
-        PointEntity pointEntity = pointMapper.toEntity(pointDto);
+        Optional<ExamEntity> entity = examRepository.findById(pointDto.getExamId());
+        if (entity.isEmpty()){
+            response.setCode(HttpStatus.BAD_REQUEST.value());
+            response.setMessage(Constant.HTTP_MESSAGE.NOTFOUND);
+            return response;
+        }
+        PointEntity pointEntity = check.get();
+        pointEntity.setScore(pointDto.getScore());
+        pointEntity.setCompletionTime(pointDto.getCompletionTime());
+        pointEntity.setExamEntity(entity.get());
         pointEntity.setDeleted(false);
         pointEntity.setId(pointId);
         pointRepository.save(pointEntity);
@@ -76,7 +96,6 @@ public class IPointServiceImpl implements IPointService {
         response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
         return response;
     }
-
     @Override
     public BaseResponse<PointDto> deletePoint(String id) {
         return handle(id,true);
