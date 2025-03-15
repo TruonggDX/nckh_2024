@@ -39,6 +39,11 @@ public class ApiExam {
         BaseResponse<ExamDto> exam = iExamService.getExamById(id);
         return ResponseEntity.ok(exam);
     }
+    @GetMapping("/findByCode/{code}")
+    public ResponseEntity<BaseResponse<ExamDto>> getCodeById(@PathVariable String code) {
+        BaseResponse<ExamDto> exam = iExamService.getExamByCode(code);
+        return ResponseEntity.ok(exam);
+    }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<BaseResponse<ExamDto>> delete(@PathVariable String id) {
         BaseResponse<ExamDto> baseResponse = iExamService.deleteExam(id);

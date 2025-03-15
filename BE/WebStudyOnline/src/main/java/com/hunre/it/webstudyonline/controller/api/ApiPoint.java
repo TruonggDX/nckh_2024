@@ -24,7 +24,7 @@ public class ApiPoint {
         ResponsePage<List<PointDto>> responsePage = pointService.getAllPoints(examId,pageable);
         return ResponseEntity.ok(responsePage);
     }
-    @PostMapping
+    @PostMapping("/add")
     public ResponseEntity<BaseResponse<PointDto>> create(@Valid @RequestBody PointDto pointDto) {
         BaseResponse<PointDto> category = pointService.addPoint(pointDto);
         return ResponseEntity.ok(category);

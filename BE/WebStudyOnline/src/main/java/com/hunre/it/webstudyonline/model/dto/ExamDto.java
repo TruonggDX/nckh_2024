@@ -3,6 +3,8 @@ package com.hunre.it.webstudyonline.model.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+import java.time.LocalDateTime;
+
 public class ExamDto {
     private Long id;
     private String code;
@@ -12,6 +14,33 @@ public class ExamDto {
     private Integer duration;
     @NotNull(message = "Number question cannot be empty")
     private Integer number_question;
+    private LocalDateTime created_at;
+    private Boolean submitted;
+    private Boolean isFree;
+
+    public Boolean getFree() {
+        return isFree;
+    }
+
+    public void setFree(Boolean free) {
+        isFree = free;
+    }
+
+    public Boolean getSubmitted() {
+        return submitted;
+    }
+
+    public void setSubmitted(Boolean submitted) {
+        this.submitted = submitted;
+    }
+
+    public LocalDateTime getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(LocalDateTime created_at) {
+        this.created_at = created_at;
+    }
 
     public Long getId() {
         return id;
@@ -52,4 +81,5 @@ public class ExamDto {
     public void setNumber_question(Integer number_question) {
         this.number_question = number_question;
     }
+
 }

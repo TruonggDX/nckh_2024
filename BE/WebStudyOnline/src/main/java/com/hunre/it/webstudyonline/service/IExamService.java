@@ -13,5 +13,6 @@ public interface IExamService {
     BaseResponse<ExamDto> updateExam(String id,ExamDto examDto);
     BaseResponse<ExamDto> deleteExam(String id);
     BaseResponse<ExamDto> getExamById(String id);
+    BaseResponse<ExamDto> getExamByCode(String examCode);
     ResponsePage<List<ExamDto>> findByCodeAndName(String name, String code,Pageable pageable);
 }

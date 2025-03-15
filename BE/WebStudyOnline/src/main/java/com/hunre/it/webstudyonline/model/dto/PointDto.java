@@ -3,10 +3,27 @@ package com.hunre.it.webstudyonline.model.dto;
 public class PointDto {
     private Long id;
     private Double score;
-    private Integer rankLevel;
     private Long completionTime;
     private Long accountId;
     private Long examId;
+    private Boolean submitted;
+    private String accountName;
+
+    public String getAccountName() {
+        return accountName;
+    }
+
+    public void setAccountName(String accountName) {
+        this.accountName = accountName;
+    }
+
+    public Boolean getSubmitted() {
+        return submitted;
+    }
+
+    public void setSubmitted(Boolean submitted) {
+        this.submitted = submitted;
+    }
 
     public Long getId() {
         return id;
@@ -22,14 +39,6 @@ public class PointDto {
 
     public void setScore(Double score) {
         this.score = score;
-    }
-
-    public Integer getRankLevel() {
-        return rankLevel;
-    }
-
-    public void setRankLevel(Integer rankLevel) {
-        this.rankLevel = rankLevel;
     }
 
     public Long getCompletionTime() {
