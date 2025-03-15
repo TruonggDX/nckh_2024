@@ -20,7 +20,19 @@ export const getCourses = async (
     throw err;
   }
 };
-
+export const getCourses1 = async (req : {}): Promise<Course[]> => {
+  const token = getToken();
+  try {
+    const response = await axios.get(`${api}/list`, {
+      params: req,
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return response.data;
+  } catch (err) {
+    console.log(err);
+    throw err;
+  }
+};
 export const findCouseById = async (id: number) => {
   const token = getToken();
   try {

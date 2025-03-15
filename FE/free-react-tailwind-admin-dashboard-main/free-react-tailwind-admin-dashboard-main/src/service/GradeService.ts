@@ -57,10 +57,10 @@ export const addGrade = async (grade: Grade) => {
   }
 }
 
-export const updateGrade = async (id:number, grade:Grade) => {
+export const updateGrade = async (req :any) => {
   const token = getToken();
   try {
-    const response = await axios.put(`${api}/update/${id}`,grade,{
+    const response = await axios.put(`${api}/update/${req.id}`,req,{
       headers: { 'Authorization': `Bearer ${token}` }
     })
     return response.data;

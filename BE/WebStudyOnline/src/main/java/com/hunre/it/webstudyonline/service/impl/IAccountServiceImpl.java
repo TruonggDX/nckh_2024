@@ -99,7 +99,7 @@ public class IAccountServiceImpl implements IAccountService {
     @Override
     public ResponsePage<List<AccountDto>> findUserByRole(Pageable pageable, String fullname, String email, String roleCode) {
         ResponsePage<List<AccountDto>> responsePage = new ResponsePage<>();
-        Page<AccountEntity> page = accountRepository.findByRoleCode(fullname, email, roleCode, pageable);
+        Page<AccountEntity> page = accountRepository.findByRoleCode(fullname, roleCode, email, pageable);
         List<AccountDto> accountDtos = page.getContent().stream().map(accountMapper::toDto).collect(Collectors.toList());
         responsePage.setPageNumber(pageable.getPageNumber());
         responsePage.setPageSize(pageable.getPageSize());

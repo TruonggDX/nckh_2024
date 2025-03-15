@@ -2,32 +2,82 @@ import { useEffect, useState } from 'react';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb.tsx';
 import {Trash2 } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { findGradeById } from '../../service/GradeService.ts';
+import { updateGrade, findGradeById } from '../../service/GradeService.ts';
 import { Grade } from '../../types/Grade.ts';
 import { Account } from '../../types/Account.ts';
-import { getCourses } from '../../service/CourseService.ts';
-import { Course } from '../../types/Course.ts';
+import { formatDate1 } from '../../utils/dateUtils.ts';
+import { findByRole } from '../../service/AccountService.ts';
+import { showAlert } from '../../utils/swalUtils.ts';
 
 const GradeForm = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const [data,setData] = useState<Grade>();
   const [student,setStudent] = useState<Account[]>([])
-  const [course,setCourse] = useState<Course[]>([]);
   const {id} = useParams();
+  const [updateGradeform, setUpdateGrade] = useState({
+    number_student: 0,
+    course_id:0 ,
+    name: "",
+    id: 0,
+    code: "",
+    study_time : "",
+    study_date : '',
+    remain_student: 0,
+    start_date: "",
+    teacher: { id: 0, fullName: "" },
+    account_id: [0]
+  });
   const navigate = useNavigate();
+  const [teachers, setTeachers] = useState([{id: 0, fullName: ""}]);
+  let grade1: Grade
   useEffect(() => {
     void isEditing;
-    findGradeById(Number(id)).then((reponse:any) =>{
-      console.log('reponse',reponse.data);
-      setData(reponse.data);
-      const students = reponse.data.accountDto;
+    getAllTeacher()
+    findGradeById(Number(id)).then((response:any) =>{
+      grade1 = {
+        id: response.data.id || 0,
+        code: response.data.code || "",
+        name: response.data.name || "",
+        number_student: response.data.number_student || 0,
+        course_name: response.data.course_name || "",
+        course_id: response.data.course_id || 0,
+        start_date: response.data.start_date || "",
+        remain_student: response.data.remain_student || 0,
+        teacher:  {}, // Nếu teacher có thể là null, cần kiểm tra
+        study_time: response.data.study_time || "",
+        study_date: response.data.study_date || "",
+      };
+      for (const acc of response.data.accountDto) {
+        if (acc.roles.some(role => role.code === "TEACHER")) {
+          grade1.teacher = {id: acc.id,fullName: acc.fullName }
+        }
+      }
+      setUpdateGrade(grade1);
+      const students = response.data.accountDto.filter(acc => acc.id !== grade1.teacher?.id);
       setStudent(students);
-      getCourses(0,0).then((reponse:any) =>{
-        setCourse(reponse.content)
-      })
     })
   }, []);
+  function getAllTeacher() {
+    let arr = []
+    findByRole("TEACHER").then((response: any) => {
+      const teachers = response.content.map((teacher: any) => ({
+        id: teacher.id,
+        fullName: teacher.fullName
+      }));
+      arr.push(teachers);
+      setTeachers(teachers);
+    });
+  }
+  const handleSave = () => {
+    updateGradeform.account_id = [Number(updateGradeform.teacher.id)];
+    updateGrade(updateGradeform)
+      .then((response :any) => {
+        console.log(response)
+        showAlert('Cập nhật thành công!', 'Cập nhật lớp học thành công.', 'success');
+      })
+      .catch((error: any) => console.error("Lỗi Cập nhật:", error));
+  };
+
   return (
     <>
       <Breadcrumb pageName="Chỉnh sửa lớp học" />
@@ -43,12 +93,27 @@ const GradeForm = () => {
                   <input
                     type="text"
                     name="name"
-                    value={data?.code}
-                    readOnly
+                    value={updateGradeform.code}
                     disabled
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
+                <div className="w-1/2">
+                  <label className="block text-gray-700 font-medium">
+                    Tên khóa học
+                  </label>
+                  <div className="relative">
+                    <input
+                      disabled={true}
+                      type="text"
+                      name="number"
+                      value={updateGradeform.course_name}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="mb-4 flex gap-4">
                 <div className="w-1/2">
                   <label className="block text-gray-700 font-medium">
                     Tên Lớp
@@ -56,10 +121,26 @@ const GradeForm = () => {
                   <input
                     type="text"
                     name="organization"
-                    value={data?.name}
-                    readOnly
+                    value={updateGradeform.name}
+                    onChange={(e) => setUpdateGrade({ ...updateGradeform, name: (e.target.value) })}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
+                </div>
+                <div className="w-1/2">
+                  <label className="block text-gray-700 font-medium">Giáo viên</label>
+                  <select
+                    value={updateGradeform.teacher.id}
+                    onChange={(e) => setUpdateGrade({ ...updateGradeform, teacher: { id: Number(e.target.value), fullName: e.target.innerHTML } })}
+                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  >
+                    <option value={updateGradeform.teacher.id}>{updateGradeform.teacher.fullName}</option>
+                    <option value="">Chọn giáo viên</option>
+                    {teachers.map((teacher) => (
+                      <option key={teacher.id} value={teacher.id}>
+                        {teacher.fullName}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
               <div className="mb-4 flex gap-4">
@@ -70,28 +151,74 @@ const GradeForm = () => {
                   <input
                     type="text"
                     name="number"
-                    value={data?.number_student}
-                    readOnly
+                    value={updateGradeform.number_student}
+                    onChange={(e) => setUpdateGrade({ ...updateGradeform, number_student: Number(e.target.value) })}
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
                 <div className="w-1/2">
                   <label className="block text-gray-700 font-medium">
-                    Tên khóa học
+                    Còn lại
+                  </label>
+                  <input
+                    type="text"
+                    name="number"
+                    value={updateGradeform.remain_student}
+                    onChange={(e) => setUpdateGrade({ ...updateGradeform, remain_student: Number(e.target.value) })}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+              </div>
+              <div className="mb-4 flex gap-4">
+                <div className="w-1/2">
+                  <label className="block text-gray-700 font-medium">
+                    Khai giảng
+                  </label>
+                  <input
+                    type="date"
+                    name="number"
+                    value={formatDate1(updateGradeform.start_date)}
+                    onChange={(e) => setUpdateGrade({ ...updateGradeform, start_date: (e.target.value) })}
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
+                </div>
+                <div className="w-1/2">
+                  <label className="block text-gray-700 font-medium">
+                    Ngày học
                   </label>
                   <div className="relative">
-                    <select
-                      value={data?.course_id}
-                      className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
-                      {
-                        course.map((course)=>(
-                          <option>{course.name}</option>
-                        ))
-                      }
-                    </select>
+                    <input
+                      type="text"
+                      name="number"
+                      value={updateGradeform.study_date}
+                      onChange={(e) => setUpdateGrade({ ...updateGradeform, study_date: (e.target.value) })}
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
                   </div>
                 </div>
               </div>
+              <div className="mb-4 flex gap-4">
+                <div className="w-1/2">
+                  <label className="blo ck text-gray-700 font-medium">
+                    Giờ học
+                  </label>
+                  <select
+                    value={updateGradeform.study_time}
+                    onChange={(e) => setUpdateGrade({ ...updateGradeform, study_time: (e.target.value) })}
+                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
+                      <option value="">Chọn thời gian</option>
+                      <option value={"17:00-18:30"}>17:00-18:30</option>
+                      <option value={"18:00-19:30"}>18:00-19:30</option>
+                      <option value={"19:00-20:30"}>19:00-20:30</option>
+                      <option value={"20:00-21:30"}>20:00-21:30</option>
+                      <option value={"21:00-22:30"}>21:00-22:30</option>
+                  </select>
+                </div>
+              </div>
+              <div style={{textAlign: "right", width: "100%"}} >
+                <button className="w-50 mr-0 bg-green-600 text-white py-2 rounded hover:bg-green-700 mb-4  mt-4" onClick={()=>handleSave()}>Cập nhật</button>
+              </div>
+
               <label className="block text-gray-700 font-medium mt-10" style={{fontSize:22,textAlign:"center"}}>
                 Danh sách sinh viên
               </label>

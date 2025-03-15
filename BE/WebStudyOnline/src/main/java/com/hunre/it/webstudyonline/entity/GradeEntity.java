@@ -13,6 +13,8 @@ public class GradeEntity extends AbstractEntity {
     private String code;
     private String name;
     private Long number_student;
+    private String study_time;
+    private String study_date;
     private Date start_date;
     private Long remainStudent;
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
@@ -34,6 +36,22 @@ public class GradeEntity extends AbstractEntity {
 
     public void setStart_date(Date start_date) {
         this.start_date = start_date;
+    }
+
+    public String getStudy_time() {
+        return study_time;
+    }
+
+    public void setStudy_time(String study_time) {
+        this.study_time = study_time;
+    }
+
+    public String getStudy_date() {
+        return study_date;
+    }
+
+    public void setStudy_date(String study_date) {
+        this.study_date = study_date;
     }
 
     public Set<AccountEntity> getAccounts() {

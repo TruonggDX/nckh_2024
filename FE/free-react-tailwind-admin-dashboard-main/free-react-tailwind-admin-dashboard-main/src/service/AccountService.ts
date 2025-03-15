@@ -73,3 +73,18 @@ export const updateAccount = async (id: number, updateForm: FormData) => {
     throw error;
   }
 };
+export const findByRole = async (roleCode: string) => {
+  const token = getToken();
+
+  try {
+    const response = await axios.get(`${api}/findByRole?name=&email=&roleCode=${roleCode}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

@@ -106,7 +106,7 @@ public class IGradeServiceImpl implements IGradeService {
             return response;
         }
         GradeEntity gradeEntity = gradeMapper.toEntity(gradeDto);
-        gradeEntity.setDeleted(false);
+//        gradeEntity.setDeleted(false);
         gradeEntity.setId(gradeId);
         gradeRepository.save(gradeEntity);
         response.setData(gradeMapper.toDto(gradeEntity));

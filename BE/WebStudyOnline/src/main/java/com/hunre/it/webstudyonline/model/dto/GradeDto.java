@@ -14,6 +14,24 @@ public class GradeDto {
     private String course_name;
     private Set<AccountDto> accountDto;
     private Date start_date;
+    private String study_time;
+    private String study_date;
+
+    public String getStudy_time() {
+        return study_time;
+    }
+
+    public void setStudy_time(String study_time) {
+        this.study_time = study_time;
+    }
+
+    public String getStudy_date() {
+        return study_date;
+    }
+
+    public void setStudy_date(String study_date) {
+        this.study_date = study_date;
+    }
 
     public Date getStart_date() {
         return start_date;

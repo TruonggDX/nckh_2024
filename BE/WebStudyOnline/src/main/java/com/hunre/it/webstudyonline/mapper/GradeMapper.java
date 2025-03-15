@@ -31,13 +31,15 @@ public class GradeMapper {
         dto.setNumber_student(gradeEntity.getNumber_student());
         dto.setStart_date(gradeEntity.getStart_date());
         dto.setCourse_id(gradeEntity.getCourseEntity().getId());
+        dto.setStudy_date(gradeEntity.getStudy_date());
+        dto.setStudy_time(gradeEntity.getStudy_time());
         dto.setCourse_name(gradeEntity.getCourseEntity().getName());
         Set<Long> accountEntities = gradeEntity.getAccounts().stream().map(AccountEntity::getId).collect(Collectors.toSet());
         dto.setAccountDto(
                 gradeEntity.getAccounts()
                         .stream()
                         .map(accountMapper::toDto)
-                        .collect(Collectors.toSet()) 
+                        .collect(Collectors.toSet())
         );
         dto.setAccount_id(accountEntities);
         return dto;
@@ -47,6 +49,8 @@ public class GradeMapper {
         gradeEntity.setId(dto.getId());
         gradeEntity.setStart_date(dto.getStart_date());
         gradeEntity.setCode(dto.getCode());
+        gradeEntity.setStudy_date( dto.getStudy_date());
+        gradeEntity.setStudy_time(dto.getStudy_time());
         gradeEntity.setRemainStudent(dto.getRemain_student());
         gradeEntity.setName(dto.getName());
         gradeEntity.setNumber_student(dto.getNumber_student());
