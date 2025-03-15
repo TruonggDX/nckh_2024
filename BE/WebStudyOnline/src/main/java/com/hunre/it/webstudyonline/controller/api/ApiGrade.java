@@ -58,4 +58,14 @@ public class ApiGrade {
         BaseResponse<String> response = iGradeService.signInGrade(id);
         return ResponseEntity.ok(response);
     }
+    @PutMapping("/addStudentIntoGrade/{id}")
+    public ResponseEntity<BaseResponse<String>> addStudentIntoGrade(@PathVariable String id,@RequestBody List<String> studentEmails){
+        BaseResponse<String> response = iGradeService.addStudentIntoGrade(id,studentEmails);
+        return ResponseEntity.ok(response);
+    }
+    @PutMapping("/deleteStudentOuttoGrade/{id}/{studentEmail}")
+    public ResponseEntity<BaseResponse<String>> deleteStudentOuttoGrade(@PathVariable String id,@PathVariable String studentEmail){
+        BaseResponse<String> response = iGradeService.deleteStudentOuttoGrade(id,studentEmail);
+        return ResponseEntity.ok(response);
+    }
 }

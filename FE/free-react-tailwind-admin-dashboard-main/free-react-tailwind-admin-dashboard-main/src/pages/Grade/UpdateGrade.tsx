@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb.tsx';
 import {Trash2 } from 'lucide-react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { updateGrade, findGradeById } from '../../service/GradeService.ts';
+import { updateGrade,addStudentIntoGrade, deleteStudentOuttoGrade, findGradeById } from '../../service/GradeService.ts';
 import { Grade } from '../../types/Grade.ts';
 import { Account } from '../../types/Account.ts';
 import { formatDate1 } from '../../utils/dateUtils.ts';
@@ -12,7 +12,9 @@ import { showAlert } from '../../utils/swalUtils.ts';
 const GradeForm = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [check, setCheck] = useState(false);
   const [student,setStudent] = useState<Account[]>([])
+  const [studentDontErolled,setStudentDontErolled] = useState<Account[]>([])
   const {id} = useParams();
   const [updateGradeform, setUpdateGrade] = useState({
     number_student: 0,
@@ -55,8 +57,12 @@ const GradeForm = () => {
       setUpdateGrade(grade1);
       const students = response.data.accountDto.filter(acc => acc.id !== grade1.teacher?.id);
       setStudent(students);
+      findByRole("USER").then(response => {
+        const allStudents = response.content.filter(acc => !students.some(student => student.id === acc.id));
+        setStudentDontErolled(allStudents);
+      });
     })
-  }, []);
+  }, [check]);
   function getAllTeacher() {
     let arr = []
     findByRole("TEACHER").then((response: any) => {
@@ -71,13 +77,36 @@ const GradeForm = () => {
   const handleSave = () => {
     updateGradeform.account_id = [Number(updateGradeform.teacher.id)];
     updateGrade(updateGradeform)
-      .then((response :any) => {
-        console.log(response)
+      .then(() => {
         showAlert('Cập nhật thành công!', 'Cập nhật lớp học thành công.', 'success');
       })
       .catch((error: any) => console.error("Lỗi Cập nhật:", error));
   };
+  const handleAddStudent = () =>{
+      addStudentIntoGrade({id: updateGradeform.id,studentEmails: selectedEmails})
+        .then(response => {
+          showAlert(response.data, response.data, 'success');
+          setCheck(prevState => !prevState);
+          setModalOpen(false);
+        })
+  }
+  const [selectedEmails, setSelectedEmails] = useState<string[]>([]);
+  const addListStd = async (e :any) => {
+    const { value, checked } = e.target;
 
+    if (checked){
+      setSelectedEmails(prev =>  [...prev, value])
+    }else {
+      setSelectedEmails(prev =>  prev.filter(email => email !== value))
+    }
+  };
+  const deleteStudent = (email: string)=> {
+    deleteStudentOuttoGrade({id: updateGradeform.id,studentEmail: email})
+      .then(response => {
+        showAlert(response.data, response.data, 'success');
+        setCheck(prevState => !prevState);
+      })
+  }
   return (
     <>
       <Breadcrumb pageName="Chỉnh sửa lớp học" />
@@ -130,15 +159,22 @@ const GradeForm = () => {
                   <label className="block text-gray-700 font-medium">Giáo viên</label>
                   <select
                     value={updateGradeform.teacher.id}
-                    onChange={(e) => setUpdateGrade({ ...updateGradeform, teacher: { id: Number(e.target.value), fullName: e.target.innerHTML } })}
+                    onChange={(e) => {
+                      const selectedTeacher = teachers.find(teacher => teacher.id === Number(e.target.value));
+                      setUpdateGrade({
+                        ...updateGradeform,
+                        teacher: {
+                          id: Number(e.target.value),
+                          fullName: selectedTeacher ? selectedTeacher.fullName : ""
+                        }
+                      });
+                    }}
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
                     <option value={updateGradeform.teacher.id}>{updateGradeform.teacher.fullName}</option>
                     <option value="">Chọn giáo viên</option>
                     {teachers.map((teacher) => (
-                      <option key={teacher.id} value={teacher.id}>
-                        {teacher.fullName}
-                      </option>
+                      <option key={teacher.id} value={teacher.id}>{teacher.fullName}</option>
                     ))}
                   </select>
                 </div>
@@ -226,42 +262,50 @@ const GradeForm = () => {
           </div>
           {modalOpen && (
             <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
-              <div className="bg-white p-6 rounded-xl shadow-xl w-[500px] relative">
+              <div className="bg-white p-6 rounded-xl shadow-xl w-[1000px] relative">
+
+                {/* Nút đóng modal */}
+                <button
+                  className="absolute top-2 right-2 text-gray-600 hover:text-red-600 text-2xl font-bold"
+                  onClick={()=> setModalOpen(false)}
+                >
+                  ×
+                </button>
+
                 <div className="overflow-x-auto">
                   <table className="min-w-full bg-white border border-gray-300">
                     <thead>
-                      <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                        <th className="py-3 px-6 text-left">Chọn</th>
-                        <th className="py-3 px-6 text-left">ID</th>
-                        <th className="py-3 px-6 text-left">Tên</th>
-                        <th className="py-3 px-6 text-left">Tuổi</th>
-                      </tr>
+                    <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                      <th className="py-3 px-6 text-left">Chọn</th>
+                      <th className="py-3 px-6 text-left">Mã</th>
+                      <th className="py-3 px-6 text-left">Tên</th>
+                      <th className="py-3 px-6 text-left">Email</th>
+                    </tr>
                     </thead>
                     <tbody className="text-gray-600 text-sm font-light">
-                      <tr className="border-b border-gray-200 hover:bg-gray-100">
+                    {studentDontErolled.map(student => (
+                      <tr className="border-b border-gray-200 hover:bg-gray-100" key={student.email}>
                         <td className="py-3 px-6 text-left">
-                          <input type="checkbox" />
+                          <input type="checkbox" value={student.email} onChange={(e) => addListStd(e)} />
                         </td>
-                        <td className="py-3 px-6 text-left">1</td>
-                        <td className="py-3 px-6 text-left">aaaa</td>
-                        <td className="py-3 px-6 text-left">11</td>
+                        <td className="py-3 px-6 text-left">{student.code}</td>
+                        <td className="py-3 px-6 text-left">{student.fullName}</td>
+                        <td className="py-3 px-6 text-left">{student.email}</td>
                       </tr>
-                      <tr className="border-b border-gray-200 hover:bg-gray-100">
-                        <td className="py-3 px-6 text-left">
-                          <input type="checkbox" />
-                        </td>
-                        <td className="py-3 px-6 text-left">2</td>
-                        <td className="py-3 px-6 text-left">bbbb</td>
-                        <td className="py-3 px-6 text-left">12</td>
-                      </tr>
+                    ))}
                     </tbody>
                   </table>
                 </div>
-                <button className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 mb-4  mt-4">
+
+                <button
+                  className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 mb-4 mt-4"
+                  onClick={() => handleAddStudent()}
+                >
                   Thêm sinh viên
                 </button>
               </div>
             </div>
+
           )}
           <div className="mt-6">
             <div className="flex justify-end mt-6">
@@ -283,6 +327,7 @@ const GradeForm = () => {
                     <th className="py-4 px-6 font-semibold">STT</th>
                     <td className="py-4 px-6 font-semibold">Mã học sinh</td>
                     <th className="py-4 px-6 font-semibold">Tên học sinh</th>
+                    <th className="py-4 px-6 font-semibold">Email</th>
                     <th className="py-4 px-6 font-semibold">Thao tác</th>
                   </tr>
                 </thead>
@@ -292,8 +337,10 @@ const GradeForm = () => {
                       <td className="py-4 px-6">{index + 1}</td>
                       <td className="py-4 px-6">{data.code}</td>
                       <td className="py-4 px-6">{data.fullName}</td>
+                      <td className="py-4 px-6">{data.email}</td>
                       <td className="py-4 px-4" >
-                        <button style={{marginLeft:33}} className="text-red-600 hover:text-red-800 transition">
+                        <button style={{marginLeft:33}} className="text-red-600 hover:text-red-800 transition"
+                          onClick={()=>deleteStudent(data.email)}>
                           <Trash2 />
                         </button>
                       </td>

@@ -47,7 +47,7 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/account/delete/**","/api/account/findByCondition/**").hasAnyRole("ADMIN")
                         .requestMatchers("/api/account/update/**","/api/account/updatePassWord/**").permitAll()
                         .requestMatchers("/api/account/list").hasAnyRole("ADMIN")
-                        .requestMatchers("/api/account/findByRole/**").hasAnyRole(new String[]{"ADMIN", "TEACHER"})
+                        .requestMatchers("/api/account/findByRole/**","api/grade/addStudentIntoGrade/**","/api/grade/deleteStudentOuttoGrade/**").hasAnyRole(new String[]{"ADMIN", "TEACHER"})
                         .requestMatchers("/api/account/getUser").permitAll()
                         .requestMatchers("/api/coursedetails","/api/coursedetails/update/**","/api/coursedetails/delete/**","/api/coursedetails/updateRecord/**").hasAnyRole("ADMIN","TEACHER")
                         .requestMatchers("/api//coursedetails/list/**").permitAll()

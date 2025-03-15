@@ -16,6 +16,8 @@ public interface IGradeService {
     BaseResponse<List<GradeDto>> getGradeByEmail();
 
     BaseResponse<List<GradeDto>> findByCourse(String id);
-
     BaseResponse<String> signInGrade(String id);
+    BaseResponse<String> addStudentIntoGrade(String id, List<String> studentEmails);
+    BaseResponse<String> deleteStudentOuttoGrade(String id, String studentEmail);
+
 }

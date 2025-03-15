@@ -69,3 +69,43 @@ export const updateGrade = async (req :any) => {
     throw error;
   }
 }
+
+export const addStudentIntoGrade = async (req: any) => {
+  const token = getToken();
+
+  try {
+    const response = await axios.put(
+      `${api}/addStudentIntoGrade/${req.id}`,
+      req.studentEmails,
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+    return response.data;
+  } catch (error :any) {
+    console.error("Lỗi gọi API:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
+export const deleteStudentOuttoGrade = async (req: any) => {
+  const token = getToken();
+  try {
+    const response = await axios.put(
+      `${api}/deleteStudentOuttoGrade/${req.id}/${req.studentEmail}`,{},
+      {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          "Content-Type": "application/json"
+        }
+      }
+    );
+    return response.data;
+  } catch (error :any) {
+    console.error("Lỗi gọi API:", error.response?.data || error.message);
+    throw error;
+  }
+};

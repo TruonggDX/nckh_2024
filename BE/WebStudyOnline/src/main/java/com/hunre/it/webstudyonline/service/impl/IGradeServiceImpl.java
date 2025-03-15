@@ -24,8 +24,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -106,7 +108,7 @@ public class IGradeServiceImpl implements IGradeService {
             return response;
         }
         GradeEntity gradeEntity = gradeMapper.toEntity(gradeDto);
-//        gradeEntity.setDeleted(false);
+        gradeEntity.setDeleted(false);
         gradeEntity.setId(gradeId);
         gradeRepository.save(gradeEntity);
         response.setData(gradeMapper.toDto(gradeEntity));
@@ -198,4 +200,59 @@ public class IGradeServiceImpl implements IGradeService {
         response.setData("Đăng kí thành công");
         return response;
     }
+
+    @Override
+    public BaseResponse<String> addStudentIntoGrade(String id, List<String> studentEmails) {
+        BaseResponse<String> response = new BaseResponse<>();
+        Utils<Long> utils = LongUtils.strToLong(id);
+        if (utils.getT()== null){
+            response.setCode(utils.getCode());
+            response.setMessage(utils.getMsg());
+            return response;
+        }
+        Long courseId = utils.getT();
+        GradeEntity gradeEntity= gradeRepository.findById(courseId).orElseThrow(()->new RuntimeException(Constant.HTTP_MESSAGE.NOTFOUND));
+        if (gradeEntity.getRemainStudent()<0){
+            response.setCode(HttpStatus.BAD_REQUEST.value());
+            response.setMessage(Constant.HTTP_MESSAGE.FAILED);
+            response.setData("");
+            return response;
+        }
+        for(String studentEmail : studentEmails){
+            AccountEntity accountEntity = accountRepository.findByEmail(studentEmail).orElseThrow(()->new RuntimeException(Constant.HTTP_MESSAGE.NOTFOUND));
+            gradeEntity.getAccounts().add(accountEntity);
+        }
+        gradeEntity.setRemainStudent(gradeEntity.getRemainStudent()-1);
+        gradeRepository.save(gradeEntity);
+        response.setCode(HttpStatus.OK.value());
+        response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
+        response.setData("Thêm thành công");
+        return response;
+    }
+
+    @Override
+    public BaseResponse<String> deleteStudentOuttoGrade(String id, String studentEmail) {
+        BaseResponse<String> response = new BaseResponse<>();
+        Utils<Long> utils = LongUtils.strToLong(id);
+        if (utils.getT()== null){
+            response.setCode(utils.getCode());
+            response.setMessage(utils.getMsg());
+            return response;
+        }
+        Long courseId = utils.getT();
+        AccountEntity accountEntity = accountRepository.findByEmail(studentEmail).orElseThrow(()->new RuntimeException(Constant.HTTP_MESSAGE.NOTFOUND));
+        GradeEntity gradeEntity= gradeRepository.findById(courseId).orElseThrow(()->new RuntimeException(Constant.HTTP_MESSAGE.NOTFOUND));
+        if (gradeEntity.getRemainStudent()<0){
+            response.setCode(HttpStatus.BAD_REQUEST.value());
+            response.setMessage(Constant.HTTP_MESSAGE.FAILED);
+            response.setData("");
+            return response;
+        }
+        gradeEntity.getAccounts().remove(accountEntity);
+        gradeEntity.setRemainStudent(gradeEntity.getRemainStudent()-1);
+        gradeRepository.save(gradeEntity);
+        response.setCode(HttpStatus.OK.value());
+        response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
+        response.setData("Xóa thành công");
+        return response;    }
 }

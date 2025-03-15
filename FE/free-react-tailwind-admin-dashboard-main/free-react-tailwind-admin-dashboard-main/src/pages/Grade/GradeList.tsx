@@ -101,6 +101,7 @@ const GradeList = () =>{
             }
         }
         gradeArray.push(a)
+        console.log(response.content);
       }
       setGrades(gradeArray);
       setTotalCertificate(response.totalElements)
