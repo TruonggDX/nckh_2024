@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb.tsx';
 import { Grade } from '../../types/Grade.ts'
 import { useNavigate } from 'react-router-dom';
-import { addGrade, deleteGrade,getGrades } from '../../service/GradeService.ts';
+import { addGrade, deleteGrade,getGrades,createDiscord } from '../../service/GradeService.ts';
 import { confirmDelete, showAlert } from '../../utils/swalUtils.ts';
 import { Pencil, Trash2 } from 'lucide-react';
 import { Course } from '../../types/Course.ts';
@@ -101,7 +101,6 @@ const GradeList = () =>{
             }
         }
         gradeArray.push(a)
-        console.log(response.content);
       }
       setGrades(gradeArray);
       setTotalCertificate(response.totalElements)
@@ -140,7 +139,9 @@ const GradeList = () =>{
             showAlert('Thêm thành công!', 'Thêm lớp học thành công.', 'success');
             resetGrade();
 
-          })
+          }).then(() => {
+            createDiscord(grade.name).catch(() => {});
+        })
           .catch((error: any) => console.error("Lỗi thêm mới:", error));
   };
 
@@ -270,6 +271,7 @@ const GradeList = () =>{
         <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
           <div className="bg-white p-6 rounded-xl shadow-xl w-[1000px] relative">
             <h3 className="text-xl font-semibold mb-4">Thêm lớp học</h3>
+            <span style={{color : "red"}}>Chú ý nhập đúng ngày giờ khai giảng, học để tự động tạo thời khóa biểu</span>
             <div style={{display: 'flex', flexWrap: 'wrap'}}>
               <div className={"col"} style={{ flexBasis: '46%'}}>
                 <div className="mb-4">

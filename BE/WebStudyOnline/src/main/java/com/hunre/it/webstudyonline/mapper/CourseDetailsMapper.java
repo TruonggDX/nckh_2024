@@ -13,6 +13,7 @@ public class CourseDetailsMapper {
         courseDetailsDto.setDescription(courseDetailsEntity.getDescription());
         courseDetailsDto.setPeriod(courseDetailsEntity.getPeriod());
         courseDetailsDto.setUrl(courseDetailsEntity.getUrl());
+        courseDetailsDto.setCourseId(courseDetailsEntity.getCourseEntity().getId());
         return courseDetailsDto;
     }
 

@@ -13,6 +13,8 @@ import java.util.List;
 public interface CourseDetailsRepository extends JpaRepository<CourseDetailsEntity,Long> {
     @Query(value = "SELECT c FROM CourseDetailsEntity c WHERE c.courseEntity.id =:courseId AND c.deleted=false ")
     Page<CourseDetailsEntity> findByCourseId(Long courseId, Pageable pageable);
+    @Query(value = "SELECT c FROM CourseDetailsEntity c WHERE c.courseEntity.id =:courseId AND c.deleted=false ")
+    List<CourseDetailsEntity> findByCourseId(Long courseId);
 
     List<CourseDetailsEntity> findBycourseEntityId(Long courseId);
 

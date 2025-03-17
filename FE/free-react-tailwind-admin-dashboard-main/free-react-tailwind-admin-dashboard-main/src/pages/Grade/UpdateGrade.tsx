@@ -151,30 +151,45 @@ const GradeForm = () => {
                     type="text"
                     name="organization"
                     value={updateGradeform.name}
-                    onChange={(e) => setUpdateGrade({ ...updateGradeform, name: (e.target.value) })}
+                    onChange={(e) =>
+                      setUpdateGrade({
+                        ...updateGradeform,
+                        name: e.target.value,
+                      })
+                    }
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
                 <div className="w-1/2">
-                  <label className="block text-gray-700 font-medium">Giáo viên</label>
+                  <label className="block text-gray-700 font-medium">
+                    Giáo viên
+                  </label>
                   <select
                     value={updateGradeform.teacher.id}
                     onChange={(e) => {
-                      const selectedTeacher = teachers.find(teacher => teacher.id === Number(e.target.value));
+                      const selectedTeacher = teachers.find(
+                        (teacher) => teacher.id === Number(e.target.value),
+                      );
                       setUpdateGrade({
                         ...updateGradeform,
                         teacher: {
                           id: Number(e.target.value),
-                          fullName: selectedTeacher ? selectedTeacher.fullName : ""
-                        }
+                          fullName: selectedTeacher
+                            ? selectedTeacher.fullName
+                            : '',
+                        },
                       });
                     }}
                     className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   >
-                    <option value={updateGradeform.teacher.id}>{updateGradeform.teacher.fullName}</option>
+                    <option value={updateGradeform.teacher.id}>
+                      {updateGradeform.teacher.fullName}
+                    </option>
                     <option value="">Chọn giáo viên</option>
                     {teachers.map((teacher) => (
-                      <option key={teacher.id} value={teacher.id}>{teacher.fullName}</option>
+                      <option key={teacher.id} value={teacher.id}>
+                        {teacher.fullName}
+                      </option>
                     ))}
                   </select>
                 </div>
@@ -188,7 +203,12 @@ const GradeForm = () => {
                     type="text"
                     name="number"
                     value={updateGradeform.number_student}
-                    onChange={(e) => setUpdateGrade({ ...updateGradeform, number_student: Number(e.target.value) })}
+                    onChange={(e) =>
+                      setUpdateGrade({
+                        ...updateGradeform,
+                        number_student: Number(e.target.value),
+                      })
+                    }
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -200,7 +220,12 @@ const GradeForm = () => {
                     type="text"
                     name="number"
                     value={updateGradeform.remain_student}
-                    onChange={(e) => setUpdateGrade({ ...updateGradeform, remain_student: Number(e.target.value) })}
+                    onChange={(e) =>
+                      setUpdateGrade({
+                        ...updateGradeform,
+                        remain_student: Number(e.target.value),
+                      })
+                    }
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -211,10 +236,16 @@ const GradeForm = () => {
                     Khai giảng
                   </label>
                   <input
+                    disabled
                     type="date"
                     name="number"
                     value={formatDate1(updateGradeform.start_date)}
-                    onChange={(e) => setUpdateGrade({ ...updateGradeform, start_date: (e.target.value) })}
+                    onChange={(e) =>
+                      setUpdateGrade({
+                        ...updateGradeform,
+                        start_date: e.target.value,
+                      })
+                    }
                     className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                   />
                 </div>
@@ -224,10 +255,16 @@ const GradeForm = () => {
                   </label>
                   <div className="relative">
                     <input
+                      disabled
                       type="text"
                       name="number"
                       value={updateGradeform.study_date}
-                      onChange={(e) => setUpdateGrade({ ...updateGradeform, study_date: (e.target.value) })}
+                      onChange={(e) =>
+                        setUpdateGrade({
+                          ...updateGradeform,
+                          study_date: e.target.value,
+                        })
+                      }
                       className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                     />
                   </div>
@@ -238,24 +275,34 @@ const GradeForm = () => {
                   <label className="blo ck text-gray-700 font-medium">
                     Giờ học
                   </label>
-                  <select
+                  <input
+                    disabled
+                    type="text"
+                    name="number"
                     value={updateGradeform.study_time}
-                    onChange={(e) => setUpdateGrade({ ...updateGradeform, study_time: (e.target.value) })}
-                    className="w-full rounded border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary">
-                      <option value="">Chọn thời gian</option>
-                      <option value={"17:00-18:30"}>17:00-18:30</option>
-                      <option value={"18:00-19:30"}>18:00-19:30</option>
-                      <option value={"19:00-20:30"}>19:00-20:30</option>
-                      <option value={"20:00-21:30"}>20:00-21:30</option>
-                      <option value={"21:00-22:30"}>21:00-22:30</option>
-                  </select>
+                    onChange={(e) =>
+                      setUpdateGrade({
+                        ...updateGradeform,
+                        study_time: e.target.value,
+                      })
+                    }
+                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                  />
                 </div>
               </div>
-              <div style={{textAlign: "right", width: "100%"}} >
-                <button className="w-50 mr-0 bg-green-600 text-white py-2 rounded hover:bg-green-700 mb-4  mt-4" onClick={()=>handleSave()}>Cập nhật</button>
+              <div style={{ textAlign: 'right', width: '100%' }}>
+                <button
+                  className="w-50 mr-0 bg-green-600 text-white py-2 rounded hover:bg-green-700 mb-4  mt-4"
+                  onClick={() => handleSave()}
+                >
+                  Cập nhật
+                </button>
               </div>
 
-              <label className="block text-gray-700 font-medium mt-10" style={{fontSize:22,textAlign:"center"}}>
+              <label
+                className="block text-gray-700 font-medium mt-10"
+                style={{ fontSize: 22, textAlign: 'center' }}
+              >
                 Danh sách sinh viên
               </label>
             </div>
@@ -263,11 +310,10 @@ const GradeForm = () => {
           {modalOpen && (
             <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50">
               <div className="bg-white p-6 rounded-xl shadow-xl w-[1000px] relative">
-
                 {/* Nút đóng modal */}
                 <button
                   className="absolute top-2 right-2 text-gray-600 hover:text-red-600 text-2xl font-bold"
-                  onClick={()=> setModalOpen(false)}
+                  onClick={() => setModalOpen(false)}
                 >
                   ×
                 </button>
@@ -275,24 +321,37 @@ const GradeForm = () => {
                 <div className="overflow-x-auto">
                   <table className="min-w-full bg-white border border-gray-300">
                     <thead>
-                    <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
-                      <th className="py-3 px-6 text-left">Chọn</th>
-                      <th className="py-3 px-6 text-left">Mã</th>
-                      <th className="py-3 px-6 text-left">Tên</th>
-                      <th className="py-3 px-6 text-left">Email</th>
-                    </tr>
+                      <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                        <th className="py-3 px-6 text-left">Chọn</th>
+                        <th className="py-3 px-6 text-left">Mã</th>
+                        <th className="py-3 px-6 text-left">Tên</th>
+                        <th className="py-3 px-6 text-left">Email</th>
+                      </tr>
                     </thead>
                     <tbody className="text-gray-600 text-sm font-light">
-                    {studentDontErolled.map(student => (
-                      <tr className="border-b border-gray-200 hover:bg-gray-100" key={student.email}>
-                        <td className="py-3 px-6 text-left">
-                          <input type="checkbox" value={student.email} onChange={(e) => addListStd(e)} />
-                        </td>
-                        <td className="py-3 px-6 text-left">{student.code}</td>
-                        <td className="py-3 px-6 text-left">{student.fullName}</td>
-                        <td className="py-3 px-6 text-left">{student.email}</td>
-                      </tr>
-                    ))}
+                      {studentDontErolled.map((student) => (
+                        <tr
+                          className="border-b border-gray-200 hover:bg-gray-100"
+                          key={student.email}
+                        >
+                          <td className="py-3 px-6 text-left">
+                            <input
+                              type="checkbox"
+                              value={student.email}
+                              onChange={(e) => addListStd(e)}
+                            />
+                          </td>
+                          <td className="py-3 px-6 text-left">
+                            {student.code}
+                          </td>
+                          <td className="py-3 px-6 text-left">
+                            {student.fullName}
+                          </td>
+                          <td className="py-3 px-6 text-left">
+                            {student.email}
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                   </table>
                 </div>
@@ -305,7 +364,6 @@ const GradeForm = () => {
                 </button>
               </div>
             </div>
-
           )}
           <div className="mt-6">
             <div className="flex justify-end mt-6">
@@ -338,9 +396,12 @@ const GradeForm = () => {
                       <td className="py-4 px-6">{data.code}</td>
                       <td className="py-4 px-6">{data.fullName}</td>
                       <td className="py-4 px-6">{data.email}</td>
-                      <td className="py-4 px-4" >
-                        <button style={{marginLeft:33}} className="text-red-600 hover:text-red-800 transition"
-                          onClick={()=>deleteStudent(data.email)}>
+                      <td className="py-4 px-4">
+                        <button
+                          style={{ marginLeft: 33 }}
+                          className="text-red-600 hover:text-red-800 transition"
+                          onClick={() => deleteStudent(data.email)}
+                        >
                           <Trash2 />
                         </button>
                       </td>
@@ -353,7 +414,8 @@ const GradeForm = () => {
           <div className="flex justify-end mt-6">
             <button
               onClick={() => navigate('/grade')}
-              className="bg-primary w-30 h-12 text-white py-2 px-6 rounded mb-4">
+              className="bg-primary w-30 h-12 text-white py-2 px-6 rounded mb-4"
+            >
               Quay lại
             </button>
           </div>

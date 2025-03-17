@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -24,7 +25,7 @@ public class ApiGrade {
         return ResponseEntity.ok(responsePage);
     }
     @PostMapping
-    public ResponseEntity<BaseResponse<GradeDto>> create(@Valid @RequestBody GradeDto gradeDto){
+    public ResponseEntity<BaseResponse<GradeDto>> create(@Valid @RequestBody GradeDto gradeDto) throws ParseException {
         BaseResponse<GradeDto> response = iGradeService.addGrade(gradeDto);
         return ResponseEntity.ok(response);
     }

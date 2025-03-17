@@ -27,6 +27,7 @@ import ExamComponent from './pages/Exam/ExamComponent.tsx';
 import UpdateGrade from './pages/Grade/UpdateGrade.tsx';
 import CertificateTeacher from './pages/CertificateTeacher.tsx';
 import ListCourseTeacher from './pages/Course/ListCourseTeacher.tsx';
+import Timetable from './pages/Timetable/Timetable.tsx';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -163,7 +164,15 @@ function App() {
             </>
           }
         />
-
+        <Route
+          path="/timetable"
+          element={
+            <>
+              <PageTitle title="ADMIN" />
+              <Timetable />
+            </>
+          }
+        />
         <Route
           path="/updateGrade/:id"
           element={
