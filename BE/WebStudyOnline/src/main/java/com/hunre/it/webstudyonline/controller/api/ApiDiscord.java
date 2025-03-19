@@ -13,16 +13,16 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/dis")
 public class ApiDiscord {
-    @Value("${discord.api_key}")
-    private String DISCORD_BOT_TOKEN ;
-    @Value("${discord.channel_key}")
+    @Value("${discord.api}")
+    private String DISCORD_BOT ;
+    @Value("${discord.channel}")
     private String GUILD_ID ;
     private final WebClient webClient;
 
     public ApiDiscord() {
         webClient= WebClient.builder()
                 .baseUrl("https://discord.com/api/v10")
-                .defaultHeader(HttpHeaders.AUTHORIZATION, "Bot " + DISCORD_BOT_TOKEN)
+                .defaultHeader(HttpHeaders.AUTHORIZATION, "Bot " + DISCORD_BOT)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
     }
