@@ -13,9 +13,9 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/dis")
 public class ApiDiscord {
-    @Value("${discord.api}")
+    @Value("${discord.api_key}")
     private String DISCORD_BOT ;
-    @Value("${discord.channel}")
+    @Value("${discord.channel_key}")
     private String GUILD_ID ;
     private final WebClient webClient;
 
