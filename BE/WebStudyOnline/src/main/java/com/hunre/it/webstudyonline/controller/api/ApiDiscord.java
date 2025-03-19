@@ -12,7 +12,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/dis")
 public class ApiDiscord {
-    private final String TOKEN = "MTM1MDg0Nzc3NjA0ODU1MDExMg.GIz0Jy.Z1cOUyCH3GlZpMC1398U-u7D91cNTT1pAM3Cjk";
+    private final String TOKEN = "";
     private final String GUILD_ID = "1346742537758441572";
     private final WebClient webClient;
 
