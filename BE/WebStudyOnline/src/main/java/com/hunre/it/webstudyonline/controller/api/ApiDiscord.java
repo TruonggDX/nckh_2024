@@ -12,14 +12,14 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/dis")
 public class ApiDiscord {
-    private final String DISCORD_BOT_TOKEN = "MTM1MDg0Nzc3NjA0ODU1MDExMg.Gl8IY-.NigukGnoYQQrO-GtpThcG07qnhZsoSGxWqnGaA";
+    private final String TOKEN = "MTM1MDg0Nzc3NjA0ODU1MDExMg.GIz0Jy.Z1cOUyCH3GlZpMC1398U-u7D91cNTT1pAM3Cjk";
     private final String GUILD_ID = "1346742537758441572";
     private final WebClient webClient;
 
     public ApiDiscord() {
         webClient= WebClient.builder()
                 .baseUrl("https://discord.com/api/v10")
-                .defaultHeader(HttpHeaders.AUTHORIZATION, "Bot " + DISCORD_BOT_TOKEN)
+                .defaultHeader(HttpHeaders.AUTHORIZATION, "Bot " + TOKEN)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
     }
