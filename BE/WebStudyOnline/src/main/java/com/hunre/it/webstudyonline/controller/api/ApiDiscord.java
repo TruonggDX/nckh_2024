@@ -1,6 +1,5 @@
 package com.hunre.it.webstudyonline.controller.api;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,16 +12,14 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/dis")
 public class ApiDiscord {
-    @Value("${discord.api_key}")
-    private String DISCORD_BOT ;
-    @Value("${discord.channel_key}")
-    private String GUILD_ID ;
+    private final String DISCORD_BOT_TOKEN = "MTM1MDg0Nzc3NjA0ODU1MDExMg.GX-oE9.qSB41ZvIYsKPsmPrWpv9WHbjM-leg4jndTNHSA";
+    private final String GUILD_ID = "1346742537758441572";
     private final WebClient webClient;
 
     public ApiDiscord() {
         webClient= WebClient.builder()
                 .baseUrl("https://discord.com/api/v10")
-                .defaultHeader(HttpHeaders.AUTHORIZATION, "Bot " + DISCORD_BOT)
+                .defaultHeader(HttpHeaders.AUTHORIZATION, "Bot " + DISCORD_BOT_TOKEN)
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
     }
