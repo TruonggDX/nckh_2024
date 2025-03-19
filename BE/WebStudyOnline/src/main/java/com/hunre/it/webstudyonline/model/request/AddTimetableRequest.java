@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-public class AddTimetableRequest{
+public class AddTimetableRequest {
     private Long gradeId;
     private Date start_date;
     private String study_time;
