@@ -12,4 +12,6 @@ public interface IBillDetailsService {
     ResponsePage<List<BillDetailsDto>> getAllBillDetails(String billId, Pageable pageable);
     BaseResponse<BillDetailsDto> createBillDetails(BillDetailsDto billDetailsDto);
     ResponsePage<List<CourseDto>> getAllCourseEnrolled(Pageable pageable);
+
+    BaseResponse<CourseDto> getCourse(Long courseId);
 }

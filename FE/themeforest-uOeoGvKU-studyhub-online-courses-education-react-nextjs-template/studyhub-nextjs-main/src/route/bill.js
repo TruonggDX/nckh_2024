@@ -22,5 +22,9 @@ async function getAllCourseEnrolled(req) {
     const params = new URLSearchParams(req)
     const response = await axiosInstance.get(`${apiBillDetails}/listCourseEnrolled`, {params});
     return response.data;
+}async function getCourseInBill(req) {
+    const params = new URLSearchParams(req)
+    const response = await axiosInstance.get(`${apiBillDetails}/getCourse`, {params});
+    return response.data;
 }
-export default {getBillByEmail,getBillDetailById,createBillDetails,createBill,getAllCourseEnrolled};
+export default {getBillByEmail,getCourseInBill,getBillDetailById,createBillDetails,createBill,getAllCourseEnrolled};

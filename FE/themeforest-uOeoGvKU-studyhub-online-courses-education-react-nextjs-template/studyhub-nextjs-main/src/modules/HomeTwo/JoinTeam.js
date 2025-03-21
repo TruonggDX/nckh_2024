@@ -26,10 +26,10 @@ export default function JoinTeam() {
 						<div className="title-area-left-style">
 							<div className="pre-title">
 								<Image src="/images/banner/bulb.png" alt="icon" width="22" height="22" />
-								<span>Joint Our Team</span>
+								<span>Trở thành giảng viên & Truyền cảm hứng học tập</span>
 							</div>
-							<h2 className="title">Join Us Become an Instructor <br /> & Inspire Learning</h2>
-							<p className="post-title">As an instructor with us, you'll have the opportunity to inspire, guide, and mentor our diverse community of students. Whether you're an industry expert, an academic guru, or an experienced professional</p>
+							<h2 className="title">Là giảng viên tại Studyhub, bạn sẽ có cơ hội truyền cảm hứng, hướng dẫn và dìu dắt một cộng đồng học viên đa dạng.</h2>
+							<p className="post-title"> Chia sẻ kiến thức – Biến kinh nghiệm của bạn thành tài liệu học tập giá trị.</p>
 							<Link href="/registration" className="rts-btn btn-primary with-arrow">Join Us <i className="fa-regular fa-arrow-right"></i></Link>
 						</div>
 					</div>
