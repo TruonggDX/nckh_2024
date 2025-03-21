@@ -45,7 +45,7 @@ public class ApiRole {
         return ResponseEntity.ok(response);
     }
 
-    @DeleteMapping("/delele/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<BaseResponse<RoleDto>> deleteRole(@PathVariable String id) {
         BaseResponse<RoleDto> response = roleService.deleteRole(id);
         return ResponseEntity.ok(response);

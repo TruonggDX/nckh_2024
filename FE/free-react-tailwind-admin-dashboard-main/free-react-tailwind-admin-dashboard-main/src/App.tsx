@@ -28,6 +28,7 @@ import UpdateGrade from './pages/Grade/UpdateGrade.tsx';
 import CertificateTeacher from './pages/CertificateTeacher.tsx';
 import ListCourseTeacher from './pages/Course/ListCourseTeacher.tsx';
 import Timetable from './pages/Timetable/Timetable.tsx';
+import RoleList from './pages/Role/RoleList.tsx';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -70,6 +71,15 @@ function App() {
             <>
               <PageTitle title="ADMIN" />
               <CategoryList />
+            </>
+          }
+        />
+        <Route
+          path="/role"
+          element={
+            <>
+              <PageTitle title="ADMIN" />
+              <RoleList />
             </>
           }
         />

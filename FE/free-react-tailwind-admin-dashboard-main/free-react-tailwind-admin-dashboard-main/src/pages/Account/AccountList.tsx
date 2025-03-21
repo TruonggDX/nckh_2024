@@ -1,8 +1,14 @@
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb.tsx';
-import { Pencil, Trash2,} from 'lucide-react';
+import { Building, List, Pencil, RefreshCcw, Search, Tag, Trash2 } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Account } from '../../types/Account.ts';
-import { deleteAccount, findAccountById, getAllAccount, updateAccount } from '../../service/AccountService.ts';
+import {
+  deleteAccount,
+  findAccountById,
+  findByCondition,
+  getAllAccount,
+  updateAccount
+} from '../../service/AccountService.ts';
 import { confirmDelete, showLoadingThenExecute } from '../../utils/swalUtils.ts';
 import { Role } from '../../types/Role.ts';
 import { getAllRole } from '../../service/RoleService.ts';
@@ -17,12 +23,25 @@ const AccountList = () => {
   const [role,setRole] = useState<Role[]>([]);
 
   const [file, setFile] = useState<File | null>(null);
+  const [param,setParam] = useState({
+    fullname : '',
+    email : '',
+    role : ''
+  })
 
 
   useEffect(() => {
     void setItemsPerPage;
-    getAccount();
+    dataSearchAndAccount()
   }, [currentPage,itemsPerPage]);
+
+  function dataSearchAndAccount(){
+    if (param.fullname || param.email || param.role){
+      dataSearch()
+    }else {
+      getAccount();
+    }
+  }
   function getAccount(){
     getAllAccount(currentPage,itemsPerPage).then((response:any)=>{
       setAccounts(response.content)
@@ -57,6 +76,7 @@ const AccountList = () => {
 
   const handlePageChange = (pageNumber:number) => {
     setCurrentPage(pageNumber);
+    dataSearchAndAccount()
   };
   const handleRemove = (id:number) =>{
     confirmDelete('Bạn chắc chắn xóa tài khoản này ?','Hành động này không thể hoàn tác !',() =>{
@@ -74,85 +94,168 @@ const AccountList = () => {
     if (!data) return;
     try {
       const formData = new FormData();
-      formData.append("fullName", data.fullName);
-      selectedRoles.forEach(roleId => formData.append("roleId", roleId.toString()));
+      formData.append('fullName', data.fullName);
+      selectedRoles.forEach((roleId) =>
+        formData.append('roleId', roleId.toString()),
+      );
       if (file) {
-        formData.append("file", file);
+        formData.append('file', file);
       }
-      showLoadingThenExecute(async () => {
-        await updateAccount(id, formData);
-      },'Cập nhật thành công!','Có lỗi xảy ra !','/account')
+      showLoadingThenExecute(
+        async () => {
+          await updateAccount(id, formData);
+        },
+        'Cập nhật thành công!',
+        'Có lỗi xảy ra !',
+        '/account',
+      );
       setOpenModal(false);
-      getAccount()
+      getAccount();
     } catch (error) {
-      console.error("Lỗi khi cập nhật tài khoản:", error);
+      console.error('Lỗi khi cập nhật tài khoản:', error);
     }
   };
-
-
-
-
+  const handleSearch = () =>{
+    dataSearch()
+  }
+  function dataSearch(){
+    findByCondition(currentPage,itemsPerPage,param).then((response:any)=>{
+      setAccounts(response.content);
+      setTotalAccount(response.totalElements)
+      console.log('jsdhfjsndf',response.content);
+    }).catch((e) => console.error(e));
+  }
+const handleReset = () =>{
+    setParam({  fullname : '',
+      email : '',
+      role : ''})
+  getAccount();
+}
   return (
     <>
       <Breadcrumb pageName="Danh sách tài khoản" />
+      <div className="flex flex-wrap items-center gap-4 mb-6 p-4 bg-white rounded-xl shadow-md">
+        <div className="relative flex-1 min-w-[350px]">
+          <Tag
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
+            size={20}
+          />
+          <input
+            type="text"
+            name="name"
+            value={param.fullname}
+            className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-black outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+            placeholder="Họ và tên"
+            onChange={(e) => setParam({ ...param, fullname: e.target.value })}
+          />
+        </div>
+
+        <div className="relative flex-1 min-w-[250px]">
+          <Building
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
+            size={20}
+          />
+          <input
+            type="text"
+            name="aim"
+            value={param.email}
+            className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-black outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+            placeholder="email"
+            onChange={(e) => setParam({ ...param, email: e.target.value })}
+          />
+        </div>
+
+        <div className="relative flex-1 min-w-[350px]">
+          <List
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
+            size={20}
+          />
+          <select
+            value={param.role}
+            onChange={(e) => setParam({ ...param, role: e.target.value })}
+            className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-black outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+          >
+            <option>Chọn quyền</option>
+            {role.map((roles) => (
+              <option key={roles.id} value={roles.code}>{roles.code}</option>
+            ))}
+          </select>
+        </div>
+        <button
+          onClick={handleReset}
+          className="flex items-center justify-center gap-2 bg-gray-500 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-gray-700 transition-all text-lg font-semibold"
+        >
+          <RefreshCcw size={20} />
+          Làm mới
+        </button>
+
+        <button
+          onClick={handleSearch}
+          className="flex items-center justify-center gap-2 bg-blue-600 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-blue-700 transition-all text-lg font-semibold"
+        >
+          <Search size={20} />
+          Tìm kiếm
+        </button>
+      </div>
+
       <div className="flex flex-col gap-10">
         <div className="rounded-lg border border-gray-300 bg-white shadow-lg p-6">
           <div className="max-w-full overflow-x-auto">
             <table className="w-full table-auto text-left">
               <thead>
-              <tr className="bg-gray-100 text-gray-700">
-                <th className="py-4 px-6 font-semibold">STT</th>
-                <th className="py-4 px-6 font-semibold">Mã tài khoản</th>
-                <th className="py-4 px-6 font-semibold">Ảnh</th>
-                <th className="py-4 px-6 font-semibold">Họ tên</th>
-                <th className="py-4 px-6 font-semibold">Email</th>
-                <th className="py-4 px-6 font-semibold">Số điện thoại</th>
-                <th className="py-4 px-6 font-semibold">Quyền</th>
-                <th className="py-4 px-6 font-semibold">Thao tác</th>
-              </tr>
+                <tr className="bg-gray-100 text-gray-700">
+                  <th className="py-4 px-6 font-semibold">STT</th>
+                  <th className="py-4 px-6 font-semibold">Mã tài khoản</th>
+                  <th className="py-4 px-6 font-semibold">Ảnh</th>
+                  <th className="py-4 px-6 font-semibold">Họ tên</th>
+                  <th className="py-4 px-6 font-semibold">Email</th>
+                  <th className="py-4 px-6 font-semibold">Số điện thoại</th>
+                  <th className="py-4 px-6 font-semibold">Quyền</th>
+                  <th className="py-4 px-6 font-semibold">Thao tác</th>
+                </tr>
               </thead>
               <tbody>
-              {accounts.map((account, index) => (
-                <tr
-                  key={account.id}
-                  className="hover:bg-gray-50 transition duration-200"
-                >
-                  <td className="py-4 px-6">
-                    {index + 1 + currentPage * itemsPerPage}
-                  </td>
-
-                  <td className="py-4 px-6">{account.code}</td>
-                  <td className="py-4 px-6">
-                    <img
-                      src={account.imageUrl}
-                      className="w-16 h-16 object-cover rounded"
-                    />
-                  </td>
-                  <td className="py-4 px-6">{account.fullName}</td>
-                  <td className="py-4 px-6">{account.email}</td>
-                  <td className="py-4 px-6">{account.phone}</td>
-                  <td className="py-4 px-6">
-                    {account.roles.map((role) => role.name).join(',')}
-                  </td>
-                  <td
-                    style={{ marginTop: 15 }}
-                    className="py-4 px-6 flex gap-4"
+                {accounts.map((account, index) => (
+                  <tr
+                    key={account.id}
+                    className="hover:bg-gray-50 transition duration-200"
                   >
-                    <button
-                      onClick={() => handleEdit(account.id)}
-                      className="text-yellow-600 hover:text-yellow-800 transition"
+                    <td className="py-4 px-6">
+                      {index + 1 + currentPage * itemsPerPage}
+                    </td>
+
+                    <td className="py-4 px-6">{account.code}</td>
+                    <td className="py-4 px-6">
+                      <img
+                        src={account.imageUrl}
+                        className="w-16 h-16 object-cover rounded"
+                      />
+                    </td>
+                    <td className="py-4 px-6">{account.fullName}</td>
+                    <td className="py-4 px-6">{account.email}</td>
+                    <td className="py-4 px-6">{account.phone}</td>
+                    <td className="py-4 px-6">
+                      {account.roles.map((role) => role.name).join(',')}
+                    </td>
+                    <td
+                      style={{ marginTop: 15 }}
+                      className="py-4 px-6 flex gap-4"
                     >
-                      <Pencil size={20} />
-                    </button>
-                    <button
-                      onClick={() => handleRemove(account.id)}
-                      className="text-red-600 hover:text-red-800 transition"
-                    >
-                      <Trash2 size={20} />
-                    </button>
-                  </td>
-                </tr>
-              ))}
+                      <button
+                        onClick={() => handleEdit(account.id)}
+                        className="text-yellow-600 hover:text-yellow-800 transition"
+                      >
+                        <Pencil size={20} />
+                      </button>
+                      <button
+                        onClick={() => handleRemove(account.id)}
+                        className="text-red-600 hover:text-red-800 transition"
+                      >
+                        <Trash2 size={20} />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
             <nav aria-label="Page navigation example">
@@ -230,7 +333,11 @@ const AccountList = () => {
                 <input
                   type="text"
                   value={data?.fullName}
-                  onChange={(e) => setData((prev) => prev ? { ...prev, fullName: e.target.value } : prev)}
+                  onChange={(e) =>
+                    setData((prev) =>
+                      prev ? { ...prev, fullName: e.target.value } : prev,
+                    )
+                  }
                   name="name"
                   className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
                 />
@@ -275,7 +382,6 @@ const AccountList = () => {
               }
             />
 
-
             <div className="mb-4">
               <label className="mb-3 block text-black dark:text-white">
                 Ảnh đại diện
@@ -292,7 +398,10 @@ const AccountList = () => {
             </div>
 
             <div className="flex gap-4">
-              <button onClick={() => handleSaveData(Number(data?.id))} className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">
+              <button
+                onClick={() => handleSaveData(Number(data?.id))}
+                className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
+              >
                 Lưu
               </button>
               <button

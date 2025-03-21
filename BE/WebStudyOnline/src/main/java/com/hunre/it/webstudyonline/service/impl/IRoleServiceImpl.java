@@ -56,6 +56,7 @@ public class IRoleServiceImpl implements IRoleService {
 
         RoleEntity roleEntity = roleMapper.toRoleEntity(role);
         roleEntity.setCode(roleEntity.getName().toUpperCase());
+        roleEntity.setDeleted(false);
         roleEntity = roleRepository.save(roleEntity);
         role.setId(roleEntity.getId());
         response.setData(roleMapper.toDto(roleEntity));
@@ -82,6 +83,7 @@ public class IRoleServiceImpl implements IRoleService {
         }
 
         RoleEntity roleEntity1 = roleMapper.toRoleEntity(role);
+        roleEntity1.setDeleted(false);
         roleEntity1.setId(roleId);
         roleEntity1 = roleRepository.save(roleEntity1);
         response.setData(roleMapper.toDto(roleEntity1));

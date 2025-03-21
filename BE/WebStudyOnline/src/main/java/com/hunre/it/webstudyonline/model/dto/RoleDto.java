@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 
 public class RoleDto {
     private Long id;
-    @NotBlank(message = "Code must not be blank.")
     private String code;
     @NotBlank(message = "Name must not be blank.")
     private String name;
