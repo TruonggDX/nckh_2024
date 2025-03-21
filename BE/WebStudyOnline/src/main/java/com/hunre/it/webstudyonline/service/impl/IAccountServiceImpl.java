@@ -269,4 +269,17 @@ public class IAccountServiceImpl implements IAccountService {
         return response;
     }
 
+    @Override
+    public ResponsePage<List<AccountDto>> findAccountByAttribute(String fullname, String email, String role, Pageable pageable) {
+        ResponsePage<List<AccountDto>> responsePage = new ResponsePage<>();
+        Page<AccountEntity> page = accountRepository.findAccountByAttributes(fullname, email, role, pageable);
+        List<AccountDto> accountDtos = page.getContent().stream().map(accountMapper::toDto).collect(Collectors.toList());
+        responsePage.setPageNumber(pageable.getPageNumber());
+        responsePage.setPageSize(pageable.getPageSize());
+        responsePage.setTotalElements(page.getTotalElements());
+        responsePage.setTotalPages(page.getTotalPages());
+        responsePage.setContent(accountDtos);
+        return responsePage;
+    }
+
 }

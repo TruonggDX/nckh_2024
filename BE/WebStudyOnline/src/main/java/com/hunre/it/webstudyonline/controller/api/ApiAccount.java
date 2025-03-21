@@ -36,8 +36,14 @@ public class ApiAccount {
         return ResponseEntity.ok(respondPage);
     }
 
+    @GetMapping("/findByAttribute")
+    public ResponseEntity<ResponsePage<List<AccountDto>>> findByAttributes( @RequestParam(value = "fullname") String fullname, @RequestParam String email,@RequestParam("role") String role,Pageable pageable) {
+        ResponsePage<List<AccountDto>> respondPage = accountService.findAccountByAttribute(fullname,email,role,pageable);
+        return ResponseEntity.ok(respondPage);
+    }
+
     @GetMapping("/findByRole")
-    public ResponseEntity<ResponsePage<List<AccountDto>>> findByRole( @RequestParam(value = "name") String name, Pageable pageable, @RequestParam String email,@RequestParam String roleCode) {
+    public ResponseEntity<ResponsePage<List<AccountDto>>> findByRole( @RequestParam(value = "name", required = false) String name, Pageable pageable, @RequestParam(value = "email" , required = false) String email,@RequestParam(value = "roleCode" , required = false) String roleCode) {
         ResponsePage<List<AccountDto>> respondPage = accountService.findUserByRole(pageable,name,email,roleCode);
         return ResponseEntity.ok(respondPage);
     }

@@ -27,6 +27,12 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
             "join c.roles r " +
             "where c.fullname like %:username% and c.email like %:email% and r.code = :role and c.deleted = false")
     Page<AccountEntity> findByRoleCode(String username, String role, String email, Pageable pageable);
+
+    @Query("select c from AccountEntity c " +
+            "join c.roles r " +
+            "where c.fullname like %:fullname% and c.email like %:email% and r.code like %:role and c.deleted = false")
+    Page<AccountEntity> findAccountByAttributes(String fullname, String email, String role,Pageable pageable);
+
     @Query(value = "select a.grades from AccountEntity a where a.email =:email")
     List<GradeEntity> findGradesByEmail(@Param("email") String email);
 }
