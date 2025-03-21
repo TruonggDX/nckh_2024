@@ -276,5 +276,25 @@ public class IGradeServiceImpl implements IGradeService {
         response.setCode(HttpStatus.OK.value());
         response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
         response.setData("Xóa thành công");
-        return response;    }
+        return response;
+    }
+
+    @Override
+    public BaseResponse<GradeDto> findByCourseAndUser(String id) {
+        BaseResponse<GradeDto> response = new BaseResponse<>();
+        Utils<Long> utils = LongUtils.strToLong(id);
+        if (utils.getT()== null){
+            response.setCode(utils.getCode());
+            response.setMessage(utils.getMsg());
+            return response;
+        }
+        Long courseId = utils.getT();
+        AuthDto authDto = jwtService.decodeToken();
+        GradeEntity gradeEntity = gradeRepository.findByCourseIdandEmail(courseId,authDto.getEmail());
+        GradeDto gradeDto=gradeMapper.toDto(gradeEntity);
+        response.setCode(HttpStatus.OK.value());
+        response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
+        response.setData(gradeDto);
+        return response;
+    }
 }

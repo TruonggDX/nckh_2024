@@ -35,4 +35,9 @@ public class ApiBillDetails {
         ResponsePage<List<CourseDto>> response = billDetailsService.getAllCourseEnrolled(pageable);
         return ResponseEntity.ok(response);
     }
+    @GetMapping("/getCourse")
+    public ResponseEntity<BaseResponse<CourseDto>> getCourse(@RequestParam Long courseId) {
+        BaseResponse<CourseDto> response = billDetailsService.getCourse(courseId);
+        return ResponseEntity.ok(response);
+    }
 }

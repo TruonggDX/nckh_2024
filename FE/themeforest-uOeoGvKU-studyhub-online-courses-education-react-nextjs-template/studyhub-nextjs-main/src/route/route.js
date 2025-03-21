@@ -51,4 +51,9 @@ async function signInGrade (req) {
     const response = await axiosInstance.put(`/api/grade/signInGrade/`+req);
     return response.data;
 }
-export default {login, getUser,signUp, verifyOtp,resendCode, getCategory, getCourse,getCourseBestSeller,getCourseDetails,getGradeByCourseId,signInGrade};
+async function getGradeByCourseAndUser(req){
+    const params = new URLSearchParams(req)
+    const response = await axiosInstance.get(`/api/grade/findByCourseAndUser`,{params});
+    return response.data;
+}
+export default {login,getGradeByCourseAndUser, getUser,signUp, verifyOtp,resendCode, getCategory, getCourse,getCourseBestSeller,getCourseDetails,getGradeByCourseId,signInGrade};

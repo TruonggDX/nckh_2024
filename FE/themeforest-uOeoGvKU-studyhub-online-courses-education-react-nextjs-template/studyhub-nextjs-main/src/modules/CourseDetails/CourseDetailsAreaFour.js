@@ -6,12 +6,29 @@ import CourseInfo from "./CourseInfo";
 import FeatureCourse from "./FeatureCourse";
 import CourseDetailsSidebar from "./Sidebar";
 import {formatCurrency} from "@/utils/utils";
+import api from "/src/route/route"
+import bill from "/src/route/bill";
 
 export default function CourseDetailsAreaFour(props) {
 	let {type, item} = props;
 	if (!item) {
 		item = Courses[0]
 	}
+	bill.getCourseInBill({courseId:item.id})
+		.then(response => {
+			if (response.data != null) {
+				api.getGradeByCourseAndUser({id : item.id})
+					.then(response => {
+						if(response.code == 200) {
+							document.getElementById("checkGrade").innerHTML = `<button class="rts-btn btn-primary " style="padding: 1%;margin-bottom : 1%"> ${response.data.name} </button>`
+						}
+					})
+			}else {
+				document.querySelector(".course-top-enroll-area1").setAttribute("class","d-none")
+			}
+		})
+
+
 	const [activeTab, setActiveTab] = useState("course");
 
 	function handleTab(tab) {
@@ -24,19 +41,11 @@ export default function CourseDetailsAreaFour(props) {
 				<div className="container">
 					<div className="row g-5">
 						<div className="col-lg-8 order-cl-1 order-lg-1 order-md-2 order-sm-2 order-2">
-							<div className="course-top-enroll-area">
-								<div className="single-course-top">
-									<span>Trạng thái</span>
-									<p  className="">Chưa đăng kí</p>
+							<div className="course-top-enroll-area1 ">
+								<div className="single-course-top " id="checkGrade">
+									<a href="/dashboard/enrolled" className="rts-btn btn-primary" style={{padding: "1%",marginBottom : "1%"}}> Đăng kí lớp </a>
 								</div>
-								<div className="single-course-top">
-									<span>Giá</span>
-									<h2 className="title">{formatCurrency(item.price)}</h2>
-								</div>
-								<div className="single-course-top">
-									<span>Tham gia</span>
-									<Link href="/login" className="rts-btn btn-primary">Đăng nhập</Link>
-								</div>
+
 							</div>
 
 							<div className="course-details-btn-wrapper materials full-width pb--50">

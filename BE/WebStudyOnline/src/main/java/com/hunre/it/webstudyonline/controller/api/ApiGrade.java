@@ -54,6 +54,11 @@ public class ApiGrade {
         BaseResponse<List<GradeDto>> response = iGradeService.findByCourse(id);
         return ResponseEntity.ok(response);
     }
+    @GetMapping("/findByCourseAndUser")
+    public ResponseEntity<BaseResponse<GradeDto>> findByCourseAndUser(@RequestParam String id){
+        BaseResponse<GradeDto> response = iGradeService.findByCourseAndUser(id);
+        return ResponseEntity.ok(response);
+    }
     @PutMapping("/signInGrade/{id}")
     public ResponseEntity<BaseResponse<String>> signInGrade(@PathVariable String id){
         BaseResponse<String> response = iGradeService.signInGrade(id);
