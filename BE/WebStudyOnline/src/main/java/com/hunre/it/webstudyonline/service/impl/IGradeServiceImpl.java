@@ -1,18 +1,22 @@
 package com.hunre.it.webstudyonline.service.impl;
 
 import com.hunre.it.webstudyonline.entity.AccountEntity;
-import com.hunre.it.webstudyonline.entity.CourseEntity;
+import com.hunre.it.webstudyonline.entity.CourseDetailsEntity;
 import com.hunre.it.webstudyonline.entity.GradeEntity;
+import com.hunre.it.webstudyonline.mapper.CourseDetailsMapper;
 import com.hunre.it.webstudyonline.mapper.GradeMapper;
-import com.hunre.it.webstudyonline.model.dto.CourseDto;
+import com.hunre.it.webstudyonline.model.dto.CourseDetailsDto;
 import com.hunre.it.webstudyonline.model.dto.GradeDto;
 import com.hunre.it.webstudyonline.model.dto.auth.AuthDto;
+import com.hunre.it.webstudyonline.model.request.AddTimetableRequest;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
 import com.hunre.it.webstudyonline.model.response.ResponsePage;
 import com.hunre.it.webstudyonline.repository.AccountRepository;
+import com.hunre.it.webstudyonline.repository.CourseDetailsRepository;
 import com.hunre.it.webstudyonline.repository.GradeRepository;
 import com.hunre.it.webstudyonline.security.service.JwtService;
 import com.hunre.it.webstudyonline.service.IGradeService;
+import com.hunre.it.webstudyonline.service.ITimeTableService;
 import com.hunre.it.webstudyonline.utils.Constant;
 import com.hunre.it.webstudyonline.utils.GenerateCode;
 import com.hunre.it.webstudyonline.utils.LongUtils;
@@ -24,10 +28,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
+import java.text.ParseException;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 @Service
 @Transactional
@@ -40,6 +43,12 @@ public class IGradeServiceImpl implements IGradeService {
     private JwtService jwtService;
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private CourseDetailsRepository courseDetailsRepository;
+    @Autowired
+    private CourseDetailsMapper courseDetailsMapper;
+    @Autowired
+    private ITimeTableService timeTableService;
     @Override
     public ResponsePage<List<GradeDto>> getAllGrades(Pageable pageable) {
         ResponsePage<List<GradeDto>> responsePage = new ResponsePage<>();
@@ -78,16 +87,29 @@ public class IGradeServiceImpl implements IGradeService {
     }
 
     @Override
-    public BaseResponse<GradeDto> addGrade(GradeDto gradeDto) {
+    public BaseResponse<GradeDto> addGrade(GradeDto gradeDto) throws ParseException {
         BaseResponse<GradeDto> response = new BaseResponse<>();
         GradeEntity gradeEntity = gradeMapper.toEntity(gradeDto);
         gradeEntity.setDeleted(false);
         gradeEntity.setRemainStudent(gradeDto.getNumber_student());
         gradeEntity.setCode(GenerateCode.generateUniqueCode("GR"));
-        gradeRepository.save(gradeEntity);
+        GradeEntity gradeEntity1 = gradeRepository.save(gradeEntity);
+
         response.setData(gradeMapper.toDto(gradeEntity));
         response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
         response.setCode(HttpStatus.CREATED.value());
+
+        List<CourseDetailsEntity> courseDetailsEntities = courseDetailsRepository.findByCourseId(gradeEntity1.getCourseEntity().getId());
+        List<CourseDetailsDto> courseDetailsDtos = courseDetailsEntities.stream().map(courseDetailsMapper::toDto).toList();
+
+        AddTimetableRequest addTimetableRequest = new AddTimetableRequest();
+        addTimetableRequest.setStart_date(gradeEntity1.getStart_date());
+        addTimetableRequest.setStudy_time(gradeEntity1.getStudy_time());
+        addTimetableRequest.setStudy_date(gradeEntity1.getStudy_date());
+        addTimetableRequest.setCourseDetailsDto(courseDetailsDtos);
+        addTimetableRequest.setGradeId(gradeEntity1.getId());
+        addTimetableRequest.setUrl("https://discord.com/channels/1346742537758441572");
+        timeTableService.addTimeTable(addTimetableRequest);
         return response;
     }
 
@@ -254,5 +276,25 @@ public class IGradeServiceImpl implements IGradeService {
         response.setCode(HttpStatus.OK.value());
         response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
         response.setData("Xóa thành công");
-        return response;    }
+        return response;
+    }
+
+    @Override
+    public BaseResponse<GradeDto> findByCourseAndUser(String id) {
+        BaseResponse<GradeDto> response = new BaseResponse<>();
+        Utils<Long> utils = LongUtils.strToLong(id);
+        if (utils.getT()== null){
+            response.setCode(utils.getCode());
+            response.setMessage(utils.getMsg());
+            return response;
+        }
+        Long courseId = utils.getT();
+        AuthDto authDto = jwtService.decodeToken();
+        GradeEntity gradeEntity = gradeRepository.findByCourseIdandEmail(courseId,authDto.getEmail());
+        GradeDto gradeDto=gradeMapper.toDto(gradeEntity);
+        response.setCode(HttpStatus.OK.value());
+        response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
+        response.setData(gradeDto);
+        return response;
+    }
 }

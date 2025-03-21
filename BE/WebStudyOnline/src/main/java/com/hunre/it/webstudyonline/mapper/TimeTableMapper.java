@@ -19,9 +19,9 @@ public class TimeTableMapper {
         timeTableDto.setId(timetableEntity.getId());
         timeTableDto.setName(timetableEntity.getName());
         timeTableDto.setPeriod(timetableEntity.getPeriod());
-        LocalDate dateUtls = timetableEntity.getDate();
-        timeTableDto.setDate(dateUtls.format(DateTimeFormatter.ofPattern(DateUtils.YYYYMMDD)));
+        timeTableDto.setDate(timetableEntity.getDate());
         timeTableDto.setUrl(timetableEntity.getUrl());
+        timeTableDto.setTime(timetableEntity.getTime());
         timeTableDto.setGradeId(timetableEntity.getGradeEntity().getId());
         timeTableDto.setGradeName(timetableEntity.getGradeEntity().getName());
         return timeTableDto;
@@ -31,8 +31,8 @@ public class TimeTableMapper {
         timetableEntity.setId(timeTableDto.getId());
         timetableEntity.setName(timeTableDto.getName());
         timetableEntity.setPeriod(timeTableDto.getPeriod());
-        String dateUtils = timeTableDto.getDate();
-        timetableEntity.setDate(DateUtils.strToDate(dateUtils));
+        timetableEntity.setDate(timeTableDto.getDate());
+        timetableEntity.setTime(timeTableDto.getTime());
         timetableEntity.setUrl(timeTableDto.getUrl());
         return timetableEntity;
     }

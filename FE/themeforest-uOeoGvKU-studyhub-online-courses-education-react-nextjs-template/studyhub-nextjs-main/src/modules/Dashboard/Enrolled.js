@@ -29,6 +29,7 @@ export default function DashboardEnrolled() {
 	useEffect(() => {
 			apiBill.getAllCourseEnrolled({page: currentPage,size:itemsPerPage}).then((res) => {
 				setCourses(res.content);
+				console.log(res)
 				setTotalPaginate(res.totalPages)
 			})
 	}, [ currentPage, checked]);

@@ -1,6 +1,7 @@
 package com.hunre.it.webstudyonline.controller.api;
 
 import com.hunre.it.webstudyonline.model.dto.TimeTableDto;
+import com.hunre.it.webstudyonline.model.request.AddTimetableRequest;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
 import com.hunre.it.webstudyonline.model.response.ResponsePage;
 import com.hunre.it.webstudyonline.service.ITimeTableService;
@@ -10,7 +11,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/timetable")
@@ -28,8 +31,8 @@ public class ApiTimeTable {
         return ResponseEntity.ok(responsePage);
     }
     @PostMapping()
-    public ResponseEntity<BaseResponse<TimeTableDto>> addTimeTable(@RequestBody TimeTableDto timeTableDto) {
-        BaseResponse<TimeTableDto> response = timeTableService.addTimeTable(timeTableDto);
+    public ResponseEntity<BaseResponse<List<TimeTableDto>>> addTimeTable(@RequestBody AddTimetableRequest AddTimetableRequest) throws ParseException {
+        BaseResponse<List<TimeTableDto>> response = timeTableService.addTimeTable(AddTimetableRequest);
         return ResponseEntity.ok(response);
     }
     @PutMapping("/update/{id}")

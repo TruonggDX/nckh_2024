@@ -13,6 +13,11 @@ export default function CourseDetailsBreadcrumbs(props) {
 
 	return (
 		<div className="course-details-breadcrumb-1 bg_image rts-section-gap">
+			<style>
+				{`.rts-section-gap {
+					padding: 24px 0 !important;
+				}`}
+			</style>
 			<div className="container">
 				<div className="row">
 					<div className={`col-lg-12 ${type==='three' && "center-align-course-breadcrumb"}`}>

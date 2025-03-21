@@ -7,24 +7,27 @@ import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 
 import java.time.LocalDate;
+import java.util.Date;
+
 @Entity
 @Table(name = "timetable")
 public class TimetableEntity extends AbstractEntity {
-    private LocalDate date;
+    private Date date;
     private String url;
     private String period;
     private String name;
+    private String time;
 
     @ManyToOne
     @JoinColumn(name = "grade_id")
     @EqualsAndHashCode.Exclude
     private GradeEntity gradeEntity;
 
-    public LocalDate getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -58,5 +61,13 @@ public class TimetableEntity extends AbstractEntity {
 
     public void setGradeEntity(GradeEntity gradeEntity) {
         this.gradeEntity = gradeEntity;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 }

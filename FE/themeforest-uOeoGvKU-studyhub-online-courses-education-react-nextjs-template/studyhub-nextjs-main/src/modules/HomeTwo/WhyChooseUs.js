@@ -37,11 +37,11 @@ export default function WhyChooseUs() {
 						<div className="title-area-left-style">
 							<div className="pre-title">
 								<Image src="/images/banner/bulb-2.png" alt="icon" width="22" height="22" />
-								<span>Why Choose Us</span>
+								<span>Tại sao chọn chúng tôi?</span>
 							</div>
-							<h2 className="title">Studyhub Your Path to
-								Excellence & Success</h2>
-							<p className="post-title">We are passionate about education and dedicated to providing high- <br /> quality learning resources for learners of all backgrounds.</p>
+							<h2 className="title">Chúng tôi cung cấp các tài nguyên học tập chất lượng cao </h2>
+							<p className="post-title">Phương pháp học hiệu quả – Giáo trình được thiết kế khoa học, phù hợp với mọi cấp độ.</p>
+								<p className="post-title"> Cộng đồng học tập – Kết nối với những người học khác để cùng trao đổi và phát triển.</p>
 						</div>
 						<div className="why-choose-main-wrapper-1">
 							{/* single choose reason */}

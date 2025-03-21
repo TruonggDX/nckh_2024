@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface CourseRepository extends JpaRepository<CourseEntity,Long> {
     @Query(value = "SELECT c FROM CourseEntity c WHERE c.deleted=false ")
@@ -31,6 +33,11 @@ public interface CourseRepository extends JpaRepository<CourseEntity,Long> {
     @Query(value = "SELECT c FROM CourseEntity c " +
             "inner join BillDetailsEntity  bd on c.id =  bd.courseEntity.id " +
             "inner join BillEntity  b on bd.billEntity.id =  b.id " +
-            "WHERE b.id =:id and c.deleted=false and c.status = 'Đã Duyệt'")
-    Page<CourseEntity> getAllCourseEnrolled(Long id, Pageable pageable);
+            "WHERE b.accountEntity.id =:userId and c.deleted=false and c.status = 'Đã Duyệt'")
+    Page<CourseEntity> getAllCourseEnrolled(Long userId, Pageable pageable);
+    @Query(value = "SELECT c FROM CourseEntity c " +
+            "inner join BillDetailsEntity  bd on c.id =  bd.courseEntity.id " +
+            "inner join BillEntity  b on bd.billEntity.id =  b.id " +
+            "WHERE b.accountEntity.id =:uid and c.id  = :courseId and c.deleted=false and c.status = 'Đã Duyệt'")
+    Optional<CourseEntity> getCourseByUser(Long uid, Long courseId);
 }

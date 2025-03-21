@@ -18,6 +18,19 @@ export const getGrades = async (page:number, size:number): Promise<Grade[]> => {
   }
 }
 
+export const createDiscord = async (channelName :string):Promise<any> => {
+  const token = getToken();
+  try {
+    const response = await axios.get(`${API_KEY}/dis`,{
+      params: { channelName },
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+    return response;
+  }catch(err){
+    throw err;
+  }
+
+}
 export const findGradeById = async (id:number) => {
   const token = getToken();
   try {

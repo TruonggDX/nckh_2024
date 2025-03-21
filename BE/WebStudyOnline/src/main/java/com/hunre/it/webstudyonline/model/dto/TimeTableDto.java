@@ -1,15 +1,25 @@
 package com.hunre.it.webstudyonline.model.dto;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 public class TimeTableDto {
     private Long id;
-    private String date;
+    private Date date;
     private String url;
     private String period;
     private String name;
+    private String time;
     private String gradeName;
     private Long gradeId;
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
 
     public Long getId() {
         return id;
@@ -19,11 +29,11 @@ public class TimeTableDto {
         this.id = id;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
