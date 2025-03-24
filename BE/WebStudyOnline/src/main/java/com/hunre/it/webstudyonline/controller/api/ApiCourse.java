@@ -68,4 +68,10 @@ public class ApiCourse {
         ResponsePage<List<CourseDto>> response = courseService.getCourseByCreatedBy(pageable);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/findCourseByEmailTeacher")
+    public ResponseEntity<ResponsePage<List<CourseDto>>> findByCourseByEmailTeacher(Pageable pageable,@RequestParam(value = "email") String email) {
+        ResponsePage<List<CourseDto>> response = courseService.getCourseByEmailTeacher(pageable,email);
+        return ResponseEntity.ok(response);
+    }
 }
