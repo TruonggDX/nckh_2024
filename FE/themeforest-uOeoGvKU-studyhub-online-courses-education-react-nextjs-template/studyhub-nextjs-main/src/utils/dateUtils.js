@@ -9,3 +9,6 @@ export const formatDateTime = (isoString) => {
 
     return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
 };
+export const formatDatee = (isoString) => {
+    return new Date(isoString).toLocaleDateString("hi-IN") || "12/2024"
+};

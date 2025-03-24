@@ -10,6 +10,10 @@
   },
   "dependencies": {
     "@emailjs/browser": "^4.1.0",
+    "@fullcalendar/daygrid": "^6.1.15",
+    "@fullcalendar/interaction": "^6.1.15",
+    "@fullcalendar/react": "^6.1.15",
+    "@fullcalendar/timegrid": "^6.1.15",
     "@ramonak/react-progress-bar": "^5.2.0",
     "@reduxjs/toolkit": "^2.2.5",
     "@szhsin/react-accordion": "^1.2.4",

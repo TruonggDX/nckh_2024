@@ -12,5 +12,8 @@ async function updateAccount(id, formData) {
     });
     return response.data;
 }
-
-export default { changePassword,updateAccount };
+async function getAccount (req) {
+    const response = await axiosInstance.get(`/api/account/findById/${req}`);
+    return response.data;
+}
+export default { changePassword,updateAccount, getAccount};

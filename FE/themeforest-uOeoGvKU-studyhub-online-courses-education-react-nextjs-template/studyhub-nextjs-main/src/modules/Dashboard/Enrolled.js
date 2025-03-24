@@ -12,6 +12,7 @@ import 'swiper/css/pagination';
 import apiBill from "/src/route/bill"
 import api from "/src/route/route"
 import {useSelector} from "react-redux";
+import {formatDatee} from "@/utils/dateUtils";
 SwiperCore.use([Navigation, Pagination]);
 export default function DashboardEnrolled() {
 	const [activeTab, setActiveTab] = useState("enrolled");
@@ -29,7 +30,6 @@ export default function DashboardEnrolled() {
 	useEffect(() => {
 			apiBill.getAllCourseEnrolled({page: currentPage,size:itemsPerPage}).then((res) => {
 				setCourses(res.content);
-				console.log(res)
 				setTotalPaginate(res.totalPages)
 			})
 	}, [ currentPage, checked]);
@@ -73,6 +73,9 @@ export default function DashboardEnrolled() {
 					name: grade.name,
 					remain_student: grade.remain_student,
 					start_date: grade.start_date,
+					study_date: grade.study_date,
+					study_time: grade.study_time,
+					url: grade.url,
 					teacher: ""
 				}
 				for (const acc of grade.accountDto){
@@ -126,11 +129,11 @@ export default function DashboardEnrolled() {
 					z-index: 1000;
 				}
 				.search-modal {
+					width: 100%;
 					background: white;
 					padding: 25px;
 					border-radius: 10px;
-					width: 600px;
-					max-width: 90%;
+					max-width: 70%;
 					box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 					position: relative;
 					text-align: center;
@@ -169,7 +172,8 @@ export default function DashboardEnrolled() {
 								{
 									Grades.map((grade, index) => {
 										return(
-											<option value={grade.id}>{grade.name} - {grade.teacher} - Còn: {grade.remain_student} học viên</option>
+											<option value={grade.id}>{grade.name} - {grade.teacher} - Còn: {grade.remain_student} học viên -
+												Khai giảng: {formatDatee(grade.start_date)} - {grade.study_time} Thứ {grade.study_date}</option>
 										)
 									})
 								}

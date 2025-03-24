@@ -29,6 +29,10 @@ async function getCategory () {
     const response = await axiosInstance.get(`/api/category/list`);
     return response.data;
 }
+async function getTimetable (req) {
+    const response = await axiosInstance.get(`/api/timetable/getTimeTable/${req}`);
+    return response.data;
+}
 async function getCourse (req) {
     const params = new URLSearchParams(req)
     const response = await axiosInstance.get(`/api/course/findByCondition`, {params});
@@ -56,4 +60,4 @@ async function getGradeByCourseAndUser(req){
     const response = await axiosInstance.get(`/api/grade/findByCourseAndUser`,{params});
     return response.data;
 }
-export default {login,getGradeByCourseAndUser, getUser,signUp, verifyOtp,resendCode, getCategory, getCourse,getCourseBestSeller,getCourseDetails,getGradeByCourseId,signInGrade};
+export default {login,getTimetable,getGradeByCourseAndUser, getUser,signUp, verifyOtp,resendCode, getCategory, getCourse,getCourseBestSeller,getCourseDetails,getGradeByCourseId,signInGrade};

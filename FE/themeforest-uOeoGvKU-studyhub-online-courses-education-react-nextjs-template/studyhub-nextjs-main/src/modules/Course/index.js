@@ -10,11 +10,11 @@ const CourseFourModule = dynamic(() => import('@/modules/Course/Four'), {
 export default function Course() {
 	return (
 		<main>
-			<Header
-				headerClass= "header-one v-2 header--sticky"
-				topbarEnable= {true}
-				menuItemsLeft = {true}
-			/>
+			{/*<Header*/}
+			{/*	headerClass= "header-one v-2 header--sticky"*/}
+			{/*	topbarEnable= {true}*/}
+			{/*	menuItemsLeft = {true}*/}
+			{/*/>*/}
 
 			<CourseFourModule />
 
