@@ -1,6 +1,6 @@
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb.tsx';
 import { useNavigate, useParams } from 'react-router-dom';
-import {findCouseById, updateCourseById } from '../../service/CourseService.ts';
+import { findCouseById, updateCourseById } from '../../service/CourseService.ts';
 import {
   addCourseDetails,
   deleteCourseDetail,
@@ -31,9 +31,9 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
     categoryId: 0,
     aim: '',
     imageUrl: '',
-    createdDate: '',
+    createdDate: ''
   });
-  const [file,setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<File | null>(null);
 
   const [lesson, setLesson] = useState<CourseDetails>();
   const [openModal, setOpenModal] = useState(false);
@@ -44,12 +44,12 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [totalCourseDetails, setTotalExamDetails] = useState(0);
   const totalPages = Math.ceil(totalCourseDetails / itemsPerPage);
-  const [hidden,setHidden] = useState(false)
+  const [hidden, setHidden] = useState(false);
   useEffect(() => {
     const storedRoles = localStorage.getItem('role');
     const roles: string[] = storedRoles ? JSON.parse(storedRoles) : [];
-    if (roles.includes("ADMIN")) {
-      setHidden(true)
+    if (roles.includes('ADMIN')) {
+      setHidden(true);
     }
   }, []);
 
@@ -66,7 +66,7 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
     }
   };
 
-  const handlePageChange = (pageNumber:number) => {
+  const handlePageChange = (pageNumber: number) => {
     setCurrentPage(pageNumber);
   };
   useEffect(() => {
@@ -85,13 +85,14 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
     listCategories(0, 0).then((response: any) => {
       setCategories(response.content);
     });
-    getDetails()
-  }, [currentPage,itemsPerPage]);
-  function getDetails(){
-    getCourseDetails(Number(id),currentPage,itemsPerPage)
+    getDetails();
+  }, [currentPage, itemsPerPage]);
+
+  function getDetails() {
+    getCourseDetails(Number(id), currentPage, itemsPerPage)
       .then((reponse: any) => {
         setCourseDetails(reponse.content);
-        setTotalExamDetails(reponse.totalElements)
+        setTotalExamDetails(reponse.totalElements);
       })
       .catch((error: any) => {
         console.log(error);
@@ -106,23 +107,22 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
     });
   };
   const handleUpdateCourse = (id: number) => {
-    console.log('id update',id);
     showLoadingThenExecute(async () => {
       const formData = new FormData();
-      if (file){
-        formData.append("file", file);
+      if (file) {
+        formData.append('file', file);
       }
-      formData.append("name", data.name);
-      formData.append("description", data.description);
-      formData.append("price", data.price.toString());
-      formData.append("discount", data.discount.toString());
-      formData.append("status", data.status);
-      formData.append("categoryId", data.categoryId.toString());
-      formData.append("aim", data.aim);
+      formData.append('name', data.name);
+      formData.append('description', data.description);
+      formData.append('price', data.price.toString());
+      formData.append('discount', data.discount.toString());
+      formData.append('status', data.status);
+      formData.append('categoryId', data.categoryId.toString());
+      formData.append('aim', data.aim);
 
-      await updateCourseById(id,formData);
-    }, "Cập nhật thành công!", "Có lỗi xảy ra, vui lòng thử lại.", "/course");
-  }
+      await updateCourseById(id, formData);
+    }, 'Cập nhật thành công!', 'Có lỗi xảy ra, vui lòng thử lại.', '/course');
+  };
 
 
   const handleRemove = (id: number) => {
@@ -135,7 +135,7 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
             setCourseDetails((prev) => prev.filter((item) => item.id !== id));
           })
           .catch((error: any) => console.error(error));
-      },
+      }
     );
   };
 
@@ -150,20 +150,20 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
           showAlert(
             'Cập nhật thành công!',
             'Nội dung đã được cập nhật.',
-            'success',
+            'success'
           );
           setCourseDetails((prev) =>
-            prev.map((item) => (item.id === lesson.id ? { ...lesson } : item)),
+            prev.map((item) => (item.id === lesson.id ? { ...lesson } : item))
           );
         })
         .catch((error) => console.log(error));
-    }else {
-      const link = (url:string) => {
-        return url.replace("https://www.youtube.com/watch?v=", "").split("&")[0];
+    } else {
+      const link = (url: string) => {
+        return url.replace('https://www.youtube.com/watch?v=', '').split('&')[0];
       };
-      const obj = { ...lesson, url: link(lesson.url), courseId:Number(data.id)};
+      const obj = { ...lesson, url: link(lesson.url), courseId: Number(data.id) };
       addCourseDetails(obj).then(() => {
-        showAlert('Thành công','Thêm nội dung khóa học thành công!','success');
+        showAlert('Thành công', 'Thêm nội dung khóa học thành công!', 'success');
         setOpenModal(false);
         setLesson({
           id: 0,
@@ -171,10 +171,10 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
           name: '',
           period: '',
           url: '',
-          courseId: 0,
+          courseId: 0
         });
-        getDetails()
-      })
+        getDetails();
+      });
     }
   };
 
@@ -282,21 +282,50 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
               </div>
 
               <div className="mb-4 flex gap-4">
-                <div className="w-1/2">
-                  <label className="block text-gray-700 font-medium">
-                    Trạng thái
-                  </label>
-                  <input
-                    type="text"
-                    name="status"
-                    value={data?.status}
-                    readOnly={!isEditMode}
-                    onChange={(e) =>
-                      setData((prev) => ({ ...prev, status: e.target.value }))
-                    }
-                    className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
-                  />
-                </div>
+                {!hidden && (
+                  <div className="w-1/2">
+                    <label className="block text-gray-700 font-medium">
+                      Trạng thái
+                    </label>
+
+                    <input
+                      type="text"
+                      name="status"
+                      disabled
+                      value={data?.status}
+                      readOnly={!isEditMode}
+                      onChange={(e) =>
+                        setData((prev) => ({ ...prev, status: e.target.value }))
+                      }
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    />
+                  </div>
+                )}
+
+                {hidden && (
+                  <div className="w-1/2">
+                    <label className="block text-gray-700 font-medium">
+                      Trạng thái
+                    </label>
+
+                    <select
+                      name="status"
+                      disabled={!isEditMode}
+                      value={data?.status}
+                      onChange={(e) =>
+                        setData((prev) => ({ ...prev, status: e.target.value }))
+                      }
+                      className="w-full rounded-lg border-[1.5px] border-stroke bg-transparent py-3 px-5 text-black outline-none transition focus:border-primary active:border-primary disabled:cursor-default disabled:bg-whiter dark:border-form-strokedark dark:bg-form-input dark:text-white dark:focus:border-primary"
+                    >
+                      <option value="" disabled>
+                        Chọn trạng thái
+                      </option>
+                      <option value="Đã duyệt">Đã duyệt</option>
+                      <option value="Chờ duyệt">Chờ duyệt</option>
+                      <option value="Từ chối">Từ chối</option>
+                    </select>
+                  </div>
+                )}
                 <div className="w-1/2">
                   <label className="block text-gray-700 font-medium">
                     Danh mục
@@ -406,8 +435,11 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
                 >
                   <div className="flex justify-between items-center">
                     <div>
-                      <h3 className="text-lg font-semibold">Tiêu đề: {lesson.name}</h3>
-                      <p className="text-sm text-gray-600">Mô tả:
+                      <h3 className="text-lg font-semibold">
+                        Tiêu đề: {lesson.name}
+                      </h3>
+                      <p className="text-sm text-gray-600">
+                        Mô tả:
                         {lesson.description}
                       </p>
                       <span className="text-xs text-gray-500">
@@ -460,7 +492,7 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
                 className="bg-primary w-40 h-12 text-white py-2 px-6 rounded"
                 onClick={() => navigate('/courseTeacher')}
               >
-                Quay lại teacher
+                Quay lại
               </button>
             </div>
           )}

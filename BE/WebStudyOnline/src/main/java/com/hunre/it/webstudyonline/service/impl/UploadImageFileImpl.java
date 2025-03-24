@@ -35,7 +35,12 @@ public class UploadImageFileImpl implements UploadImageFile {
         String publicValue = generatePublicValue(file.getOriginalFilename());
         String extension = getFileName(file.getOriginalFilename())[1];
         File fileUpload = convert(file);
-        var uploadResult = cloudinary.uploader().upload(fileUpload, ObjectUtils.asMap("public_id", publicValue));
+        var uploadResult = cloudinary.uploader().upload(fileUpload,
+                ObjectUtils.asMap("public_id",
+                        "eager", Arrays.asList(
+                                new EagerTransformation().width(290).height(210).crop("pad").audioCodec("none"),
+                                new EagerTransformation().width(160).height(100).crop("crop").gravity("south").audioCodec("none")),
+                        publicValue));
         cleanDisk(fileUpload);
 
         ImageDto imageDTO = new ImageDto();

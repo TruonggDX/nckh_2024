@@ -88,3 +88,25 @@ export const findByRole = async (roleCode: string) => {
     throw error;
   }
 };
+export const findByCondition = async (page:number,size:number,filter:any) => {
+  const token = getToken();
+  const params = {
+    page:page,
+    size:size,
+    fullname: filter.fullname,
+    role:filter.role,
+    email:filter.email
+  }
+  try {
+    const response = await axios.get(`${api}/findByAttribute`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+      params:params
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};

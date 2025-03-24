@@ -179,8 +179,8 @@ const CourseList = () => {
             onChange={(e) => setParam({...param,status: e.target.value})}
             className="w-full rounded-lg border border-gray-300 bg-white py-3 pl-10 pr-4 text-black outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-200">
             <option>Chọn trạng thái</option>
-            <option value="Đã duyệt">Đã Duyệt</option>
-            <option value="Chờ duyệt">Chờ Duyệt</option>
+            <option value="Đã duyệt">Đã duyệt</option>
+            <option value="Chờ duyệt">Chờ duyệt</option>
           </select>
         </div>
 
