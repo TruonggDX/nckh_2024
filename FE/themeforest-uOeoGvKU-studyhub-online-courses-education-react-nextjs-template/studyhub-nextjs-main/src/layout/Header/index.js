@@ -85,7 +85,6 @@ export default function Header(props) {
             setAccount(response.data)
         }).catch((e) => console.error(e))
     }, []);
-
     useEffect(() => {
         const total = cartData.reduce((sum,course) => sum + course.item.price * course.quantity * (1-course.item.discount/100),0);
         setTotalPrice(total)
@@ -209,6 +208,7 @@ export default function Header(props) {
                                                                         className="studyhub__header__popup__header__subtitle">{account?.email}</span>
                                                                 </div>
                                                             </div>
+
                                                             <div className="studyhub__header__popup__content">
                                                                 <ul className="studyhub__header__popup__items">
                                                                     <li className="studyhub__header__popup__item">
@@ -223,6 +223,13 @@ export default function Header(props) {
                                                                               href="/dashboard/order">
                                                                             <i className="uil uil-receipt"></i>
                                                                             Khóa học đã mua
+                                                                        </Link>
+                                                                    </li>
+                                                                    <li className="studyhub__header__popup__item">
+                                                                        <Link className="studyhub__header__popup__link"
+                                                                              href="/dashboard/enrolled">
+                                                                            <i className="uil uil-enrolled"></i>
+                                                                            Lớp
                                                                         </Link>
                                                                     </li>
                                                                 </ul>

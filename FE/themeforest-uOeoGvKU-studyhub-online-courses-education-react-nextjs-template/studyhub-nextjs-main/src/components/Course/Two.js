@@ -1,16 +1,39 @@
 import Image from "next/image";
 import Link from "next/link";
-import api from "@/route/bill";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import api from "/src/route/route"
 
 export default function SingleCourseTwo( props ) {
 	const {id, courseClass,status, Slug, Img, Title, Category, ratingCount, lessonCount, studentCount, Author, bestSeller, prevPrice, Price, imgWidth, imgHeight, type, completePercent  } = props;
 	const handleShow = (id) =>{
 			props.parentCallback(id)
 	}
+	const [Grade, setGrade] = useState({});
+	useEffect(() => {
+		api.getGradeByCourseAndUser({id: id})
+			.then(response => {
+				let grade = {
+					id: response.data.id,
+					name: response.data.name,
+					number_student: response.data.number_student,
+					remain_student: response.data.remain_student,
+					start_date: response.data.start_date,
+					teacherName: "",
+					teacherId : 0,
+					url: response.data.url,
+				}
+				for (const acc of response.data.accountDto) {
+					if (acc.roles.some(role => role.code === "TEACHER")) {
+						grade.teacherName =  acc.fullName
+						grade.teacherId = acc.id
+					}
+				}
+				setGrade(grade)
+			})
+	},[status==="true"])
 	return (
 		<div className={ courseClass || 'single-course-style-three'}>
-			<Link href={`/course/${Slug || 'details'}`} className="thumbnail">
+			<Link href={`/grade/details/four?${JSON.stringify(Grade) || 'details'}`} className="thumbnail">
 				<Image src={Img || '/images/course/01.jpg'} width={imgWidth || 290} height={imgHeight || 210}alt="course" />
 				<div className="tag-thumb">
 					<span>{Category || 'Web Development'}</span>
@@ -23,7 +46,7 @@ export default function SingleCourseTwo( props ) {
 					}
 					<div className="price">${Price || '79.99'}</div>
 				</div>
-				<Link href={`/course/${Slug || 'details'}`}>
+				<Link href={`/grade/details/four?${JSON.stringify(Grade) || 'details'}`}>
 					<h5 className="title">{Title || 'The Complete Web Developer in 2023: Zero to Mastery'}</h5>
 				</Link>
 				<div className="teacher-stars">
@@ -38,17 +61,24 @@ export default function SingleCourseTwo( props ) {
 					</ul>
 				</div>
 				<div className="leasson-students">
-					<div className="lesson">
-						<i className="far fa-calendar-alt"></i>
-						<span>{lessonCount || '25'} Lessons</span>
-					</div>
-					<div className="students">
-						{/*<i className="fa-light fa-users"></i>*/}
-						{/*<span>{studentCount || '54'} Students</span>*/}
-					</div>
+					{status === "false" ?
+						<div></div>
+						:
+						<div>
+							<div className="lesson">
+								<i className="far fa-calendar-alt"></i>
+								<span>Giáo viên: {Grade.teacherName || '25'}</span>
+							</div>
+
+							<div className="lesson">
+								<i className="fa-solid fa-book-open"></i>
+								<span>Lớp: {Grade.name} </span>
+							</div>
+						</div>
+					}
 				</div>
-					<>
-					{status==="false" ?
+				<>
+					{status === "false" ?
 						<div className="progress-wrapper-lesson-compleate">
 							<button className="btn btn-success" style={{fontSize: "14px"}} onClick={() => handleShow(id)}> Chọn lớp học </button>
 						</div>
@@ -66,6 +96,7 @@ export default function SingleCourseTwo( props ) {
 								<div className="progress-bar wow fadeInLeft bg--primary" role="progressbar" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style={{"width": completePercent + "%"}}>
 								</div>
 							</div>
+
 						</div>
 					}
 					</>

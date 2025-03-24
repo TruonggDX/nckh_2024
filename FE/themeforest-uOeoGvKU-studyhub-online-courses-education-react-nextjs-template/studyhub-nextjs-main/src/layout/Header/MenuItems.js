@@ -13,28 +13,32 @@ export default function MenuItems(props) {
 						<Link className="nav-link" href="/">Trang chủ</Link>
 					</li>
 
-					<li className="has-dropdown">
-						<Link className="nav-link" href="#">Pages</Link>
-						<ul className="submenu">
-							<li><Link href="/about">About Us</Link></li>
-							<li><Link href="/about/two">About Two</Link></li>
-							<li><Link href="/contact">Contact</Link></li>
-							<li className="sub-dropdown">
-								<Link href="#">Zoom</Link>
-								<ul className="submenu third-lvl base">
-									<li><Link className="mobile-menu-link" href="/meeting">Zoom Meeting</Link></li>
-									<li><Link className="mobile-menu-link" href="/meeting/details">Zoom Details</Link></li>
-								</ul>
-							</li>
-							<li className="sub-dropdown">
-								<Link href="#">Event</Link>
-								<ul className="submenu third-lvl base">
-									<li><Link className="mobile-menu-link" href="/event">Event</Link></li>
-									<li><Link className="mobile-menu-link" href="/event/two">Event Two</Link></li>
-									<li><Link className="mobile-menu-link" href="/event/details">Event Details</Link></li>
-								</ul>
-							</li>
-						</ul>
+					{/*<li className="has-dropdown">*/}
+					{/*	<Link className="nav-link" href="#">Pages</Link>*/}
+					{/*	<ul className="submenu">*/}
+					{/*		<li><Link href="/about">About Us</Link></li>*/}
+					{/*		<li><Link href="/about/two">About Two</Link></li>*/}
+					{/*		<li><Link href="/contact">Contact</Link></li>*/}
+					{/*		<li className="sub-dropdown">*/}
+					{/*			<Link href="#">Zoom</Link>*/}
+					{/*			<ul className="submenu third-lvl base">*/}
+					{/*				<li><Link className="mobile-menu-link" href="/meeting">Zoom Meeting</Link></li>*/}
+					{/*				<li><Link className="mobile-menu-link" href="/meeting/details">Zoom Details</Link></li>*/}
+					{/*			</ul>*/}
+					{/*		</li>*/}
+					{/*		<li className="sub-dropdown">*/}
+					{/*			<Link href="#">Event</Link>*/}
+					{/*			<ul className="submenu third-lvl base">*/}
+					{/*				<li><Link className="mobile-menu-link" href="/event">Event</Link></li>*/}
+					{/*				<li><Link className="mobile-menu-link" href="/event/two">Event Two</Link></li>*/}
+					{/*				<li><Link className="mobile-menu-link" href="/event/details">Event Details</Link></li>*/}
+					{/*			</ul>*/}
+					{/*		</li>*/}
+					{/*	</ul>*/}
+					{/*</li>*/}
+
+					<li className="">
+						<Link className="nav-link" href="/course">Khóa học</Link>
 					</li>
 
 					<li className="has-dropdown" style={{position: 'static'}}>
