@@ -228,7 +228,7 @@ export default function Header(props) {
                                                                     <li className="studyhub__header__popup__item">
                                                                         <Link className="studyhub__header__popup__link"
                                                                               href="/dashboard/enrolled">
-                                                                            <i className="uil uil-enrolled"></i>
+                                                                            <i className="uil uil-receipt"></i>
                                                                             Lớp
                                                                         </Link>
                                                                     </li>

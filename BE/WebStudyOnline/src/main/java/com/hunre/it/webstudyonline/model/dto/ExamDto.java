@@ -15,7 +15,6 @@ public class ExamDto {
     @NotNull(message = "Number question cannot be empty")
     private Integer number_question;
     private LocalDateTime created_at;
-    private Boolean submitted;
     private Boolean isFree;
 
     public Boolean getFree() {
@@ -26,13 +25,6 @@ public class ExamDto {
         isFree = free;
     }
 
-    public Boolean getSubmitted() {
-        return submitted;
-    }
-
-    public void setSubmitted(Boolean submitted) {
-        this.submitted = submitted;
-    }
 
     public LocalDateTime getCreated_at() {
         return created_at;

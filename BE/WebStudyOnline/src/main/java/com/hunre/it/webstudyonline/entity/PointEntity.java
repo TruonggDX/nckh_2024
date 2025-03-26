@@ -8,7 +8,6 @@ import lombok.EqualsAndHashCode;
 public class PointEntity extends AbstractEntity{
     private Double score;
     private Long completionTime;
-    private Boolean submitted;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "account_id", nullable = false)
     @EqualsAndHashCode.Exclude
@@ -50,12 +49,5 @@ public class PointEntity extends AbstractEntity{
 
     public void setExamEntity(ExamEntity examEntity) {
         this.examEntity = examEntity;
-    }
-    public Boolean getSubmitted() {
-        return submitted;
-    }
-
-    public void setSubmitted(Boolean submitted) {
-        this.submitted = submitted;
     }
 }

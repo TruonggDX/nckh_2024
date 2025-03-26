@@ -23,7 +23,6 @@ public class PointMapper {
         PointDto pointDto = new PointDto();
         pointDto.setId(pointEntity.getId());
         pointDto.setScore(pointEntity.getScore());
-        pointDto.setSubmitted(pointEntity.getSubmitted());
         pointDto.setCompletionTime(pointEntity.getCompletionTime());
         if (pointEntity.getAccountEntity() != null) {
             pointDto.setAccountId(pointEntity.getAccountEntity().getId());

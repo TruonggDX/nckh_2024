@@ -25,15 +25,6 @@ public class ExamMapper {
         examDto.setCreated_at(examEntity.getCreatedDate());
         AuthDto authDto = jwtService.decodeToken();
         String email = authDto.getEmail();
-        if (email != null) {
-            PointEntity pointEntity = pointRepository
-                    .findByExamAndAccountEmail(examEntity.getId(), email)
-                    .orElse(null);
-
-            examDto.setSubmitted(pointEntity != null && pointEntity.getSubmitted());
-        } else {
-            examDto.setSubmitted(false);
-        }
         examDto.setFree(examEntity.getFree());
         return examDto;
     }
