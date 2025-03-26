@@ -598,10 +598,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                             : setSidebarExpanded(true);
                         }}
                       >
-                        <i
-                          className="fa-solid fa-chalkboard-teacher"
-                          style={{ fontSize: '18px', color: 'currentColor' }}
-                        ></i>
+                        <i className="fa-solid fa-calendar-days"
+                           style={{ fontSize: '18px', color: 'currentColor' }}></i>
+
                         Thời khóa biểu
                         <svg
                           className={`absolute right-4 top-1/2 -translate-y-1/2 fill-current ${

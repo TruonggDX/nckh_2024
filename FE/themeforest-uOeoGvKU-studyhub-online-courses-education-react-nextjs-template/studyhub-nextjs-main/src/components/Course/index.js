@@ -9,7 +9,18 @@ export default function SingleCourse( props ) {
 		<div className={ courseClass || 'rts-single-course'}>
 			<div style={{ position: 'relative', width: 'fit-content' }}>
 				<Link href={`/course/detail/four?${Slug || 'details'}`} className="thumbnail">
-					<img src={Img } width={imgWidth || 290} height={imgHeight || 210} alt="course" />
+					<img
+						src={Img || '/images/course/01.jpg'}
+						width={imgWidth}
+						height={imgHeight}
+						alt="course"
+						style={{
+							width: '300px',
+							height: '180px',
+							objectFit: 'cover'
+						}}
+					/>
+
 					{discount > 0 && (
 						<div style={{
 							position: 'absolute',
@@ -51,15 +62,17 @@ export default function SingleCourse( props ) {
 			</Link>
 			<p className="teacher">{Author || 'Dr. Angela Yu'}</p>
 			<div className="rating-and-price">
-				<div className="price-area">
+				<div className="price-area" style={{display:'block'}}>
 					{
-						type !== "dashboard" &&
-						<div className="not price">
-							{formatCurrency(prevPrice) || '79.99'}
-						</div>
-					}
-					<div className="price">
-						{formatCurrency(Price)}
+						type !== "dashboard" && discount > 0 && (
+                            <div className="not price">
+                                {formatCurrency(prevPrice) || '79.99'}
+                            </div>
+                        )
+
+                    }
+                    <div className="price" style={{fontSize: '22px'}}>
+                        {formatCurrency(Price)}
 					</div>
 				</div>
 			</div>
