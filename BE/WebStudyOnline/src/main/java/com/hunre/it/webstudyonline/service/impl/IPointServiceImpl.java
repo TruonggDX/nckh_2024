@@ -52,7 +52,6 @@ public class IPointServiceImpl implements IPointService {
         AuthDto authDto = jwtService.decodeToken();
         String email = authDto.getEmail();
         PointEntity pointEntity = pointMapper.toEntity(email,pointDto);
-        pointEntity.setSubmitted(true);
         pointEntity.setDeleted(false);
         pointRepository.save(pointEntity);
         response.setData(pointMapper.toDto(pointEntity));
@@ -131,4 +130,5 @@ public class IPointServiceImpl implements IPointService {
         response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
         return response;
     }
+
 }

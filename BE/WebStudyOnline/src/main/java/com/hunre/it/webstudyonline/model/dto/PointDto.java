@@ -6,7 +6,6 @@ public class PointDto {
     private Long completionTime;
     private Long accountId;
     private Long examId;
-    private Boolean submitted;
     private String accountName;
 
     public String getAccountName() {
@@ -15,14 +14,6 @@ public class PointDto {
 
     public void setAccountName(String accountName) {
         this.accountName = accountName;
-    }
-
-    public Boolean getSubmitted() {
-        return submitted;
-    }
-
-    public void setSubmitted(Boolean submitted) {
-        this.submitted = submitted;
     }
 
     public Long getId() {

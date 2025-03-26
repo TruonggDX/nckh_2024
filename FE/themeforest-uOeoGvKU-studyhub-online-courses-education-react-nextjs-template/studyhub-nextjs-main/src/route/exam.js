@@ -7,7 +7,12 @@ async function getExam(page, size) {
     });
     return response.data;
 }
-
+async function getExamByName(req) {
+    const response = await axiosInstance.get(`/api/exam/findByAttribute`, {
+        params:  req ,
+    });
+    return response.data;
+}
 async function getExamById(id) {
     const response = await axiosInstance.get(`${api}/findById/${id}`);
     return response.data;
@@ -22,4 +27,4 @@ async function getExamDetailsByExamId(page,size,id) {
     });
     return response.data;
 }
-export default {getExam,getExamById,getExamByCode,getExamDetailsByExamId};
+export default {getExam,getExamById,getExamByName,getExamByCode,getExamDetailsByExamId};
