@@ -3,13 +3,31 @@ import Link from "next/link";
 import {formatCurrency} from "@/utils/utils";
 
 export default function SingleCourse( props ) {
-	const { courseClass, Slug, Img, Title, Category, ratingCount, lessonCount, studentCount, Author, prevPrice, Price, imgWidth, imgHeight, type  } = props;
+	const { courseClass, Slug, Img, Title, Category, ratingCount, lessonCount, studentCount, Author, prevPrice, Price, imgWidth, imgHeight, type, discount  } = props;
 
 	return (
 		<div className={ courseClass || 'rts-single-course'}>
-			<Link href={`/course/detail/four?${Slug || 'details'}`} className="thumbnail">
-				<img src={Img } width={imgWidth || 290} height={imgHeight || 210}alt="course" />
-			</Link>
+			<div style={{ position: 'relative', width: 'fit-content' }}>
+				<Link href={`/course/detail/four?${Slug || 'details'}`} className="thumbnail">
+					<img src={Img } width={imgWidth || 290} height={imgHeight || 210} alt="course" />
+					{discount > 0 && (
+						<div style={{
+							position: 'absolute',
+							top: '10px',
+							right: '10px',
+							backgroundColor: '#ff4d4f',
+							color: '#fff',
+							padding: '5px 10px',
+							fontSize: '14px',
+							fontWeight: 'bold',
+							borderRadius: '4px',
+							zIndex: 10
+						}}>
+							-{discount}%
+						</div>
+					)}
+				</Link>
+			</div>
 			<div className="save-icon" data-bs-toggle="modal" data-bs-target="#exampleModal-login">
 				<i className="fa-sharp fa-light fa-bookmark"></i>
 			</div>
@@ -33,23 +51,11 @@ export default function SingleCourse( props ) {
 			</Link>
 			<p className="teacher">{Author || 'Dr. Angela Yu'}</p>
 			<div className="rating-and-price">
-				<div className="rating-area">
-					<span>{ratingCount || '4.5'}</span>
-					<div className="stars">
-						<ul>
-							<li><i className="fa-sharp fa-solid fa-star"></i></li>
-							<li><i className="fa-sharp fa-solid fa-star"></i></li>
-							<li><i className="fa-sharp fa-solid fa-star"></i></li>
-							<li><i className="fa-sharp fa-solid fa-star"></i></li>
-							<li><i className="fa-sharp fa-solid fa-star"></i></li>
-						</ul>
-					</div>
-				</div>
 				<div className="price-area">
 					{
-						type!=="dashboard" &&
+						type !== "dashboard" &&
 						<div className="not price">
-							${prevPrice || '79.99'}
+							{formatCurrency(prevPrice) || '79.99'}
 						</div>
 					}
 					<div className="price">
