@@ -95,9 +95,14 @@ export default function CourseSidebar() {
 	  <div className="rts-course-filter-area">
 		{FilterData.map((filter) => (
 		  <div key={filter.title} className="single-filter-left-wrapper">
-			<h6 className="title">{filter.title}</h6>
-			{filter.type === 'name' ? (
-			  <div className="search-filter filter-body">
+			  {filter.title == "Tìm kiếm" ?
+				  <h6 className="title">{filter.title}</h6>
+				  :
+				  <h6 className="title">{filter.titles}</h6>
+
+			  }
+			  {filter.type === 'name' ? (
+				  <div className="search-filter filter-body">
 				<div className="input-wrapper">
 				  <input
 					type="text"
