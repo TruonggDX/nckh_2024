@@ -27,40 +27,46 @@ export default function Banner() {
 							<div className="banner-content-one">
 								<div className="inner">
 									<div className="pre-title-banner">
-										<Image src="/images/banner/bulb-3.png" alt="icon" width="22" height="22" />
-										<span>Gateway to Lifelong Learning</span>
+										<Image src="/images/banner/bulb-3.png" alt="icon" width="22" height="22"/>
+										<span>Cánh cửa dẫn đến tri thức suốt đời</span>
 									</div>
 									<h1 className="title-banner">
-										Welcome to Your Online
-										<span> Learning Journey</span>
-										<Image src="/images/banner/06.png" alt="banner" width="243" height="14" />
+										Chào mừng bạn đến với hành trình
+										<span> học tập trực tuyến</span>
+										<Image src="/images/banner/06.png" alt="banner" width="243" height="14"/>
 									</h1>
-									<p className="disc">Chào mừng đến với Bình Nguyên vô tận.</p>
+									<p className="disc">Bắt đầu hành trình khám phá tri thức không giới hạn!</p>
 									<form action="#">
 										<div className="category-search-input">
 											<div className="select-banner-search-left">
-												<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 15 15" fill="none">
-													<path fillRule="evenodd" clipRule="evenodd" d="M0 0H3V3H0V0ZM6 0H9V3H6V0ZM3 6.00001H0V9.00001H3V6.00001ZM6 6.00001H9V9.00001H6V6.00001ZM3 12H0V15H3V12ZM6 12H9V15H6V12Z" fill="#553CDF" />
-													<path d="M15 0H12V3H15V0Z" fill="#553CDF" />
-													<path d="M15 6H12V9H15V6Z" fill="#553CDF" />
-													<path d="M15 12H12V15H15V12Z" fill="#553CDF" />
+												<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
+													 viewBox="0 0 15 15" fill="none">
+													<path fillRule="evenodd" clipRule="evenodd"
+														  d="M0 0H3V3H0V0ZM6 0H9V3H6V0ZM3 6.00001H0V9.00001H3V6.00001ZM6 6.00001H9V9.00001H6V6.00001ZM3 12H0V15H3V12ZM6 12H9V15H6V12Z"
+														  fill="#553CDF"/>
+													<path d="M15 0H12V3H15V0Z" fill="#553CDF"/>
+													<path d="M15 6H12V9H15V6Z" fill="#553CDF"/>
+													<path d="M15 12H12V15H15V12Z" fill="#553CDF"/>
 												</svg>
 												<select className="nice-select" name="price">
 													<option value="">Danh mục</option>
 													{categories.map((category) => (
-														<option value={category.id}>{category.name}</option>
+														<option key={category.id}
+																value={category.id}>{category.name}</option>
 													))}
 												</select>
 											</div>
-											<input type="email" placeholder="Tìm khóa học" required />
-											<button>Search</button>
+											<input type="text" placeholder="Nhập từ khóa để tìm khóa học..." required/>
+											<button>Tìm kiếm</button>
 										</div>
 									</form>
 									<div className="banner-tags-wrapper">
 										{/* single tags wrapper */}
 										{categories.map((category) => (
 											<div key={category.id} className="single-tags-banner">
-												<a href={"/course/four?category="+category.name}><p>{category.name}</p></a>
+												<a href={`/course/four?category=${category.name}`}>
+													<p>{category.name}</p>
+												</a>
 											</div>
 										))}
 										{/* single tags wrapper end */}

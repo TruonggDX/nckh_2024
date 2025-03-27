@@ -138,7 +138,7 @@ export default function CourseSidebar() {
 		  </div>
 		))}
 		<button onClick={clearFilters} className="rts-btn btn-border">
-		  <i className="fa-regular fa-x"></i> Clear All Filters
+		  <i className="fa-regular fa-x"></i> Xóa bộ lọc
 		</button>
 	  </div>
 	);

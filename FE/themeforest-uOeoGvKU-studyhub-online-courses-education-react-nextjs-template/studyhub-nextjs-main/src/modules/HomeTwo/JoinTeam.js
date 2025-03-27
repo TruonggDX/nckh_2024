@@ -29,8 +29,8 @@ export default function JoinTeam() {
 								<span>Trở thành giảng viên & Truyền cảm hứng học tập</span>
 							</div>
 							<h2 className="title">Là giảng viên tại Studyhub, bạn sẽ có cơ hội truyền cảm hứng, hướng dẫn và dìu dắt một cộng đồng học viên đa dạng.</h2>
-							<p className="post-title"> Chia sẻ kiến thức – Biến kinh nghiệm của bạn thành tài liệu học tập giá trị.</p>
-							<Link href="/registration" className="rts-btn btn-primary with-arrow">Join Us <i className="fa-regular fa-arrow-right"></i></Link>
+							<p className="post-title"> Chia sẻ kiến thức – Biến kinh nghiệm của bạn thành tài liệu học tập giá trị</p>
+							<Link href="http://localhost:3000/instructor" className="rts-btn btn-primary with-arrow">Tham gia <i className="fa-regular fa-arrow-right"></i></Link>
 						</div>
 					</div>
 				</div>

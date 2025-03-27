@@ -24,8 +24,8 @@ export default function Category() {
 								<Image src="/images/banner/bulb.png" alt="icon" width="44" height="44" />
 								<span>Top các khóa học</span>
 							</div>
-							<h2 className="title">Explore 2000+ Free Online Courses</h2>
-							<p className="post-title">You'll find something to spark your curiosity and enhance</p>
+							<h2 className="title">Khám phá hơn 2000 khóa học trực tuyến</h2>
+							<p className="post-title">Bạn sẽ tìm thấy thứ gì đó khơi dậy sự tò mò của bạn và nâng cao</p>
 						</div>
 					</div>
 				</div>

@@ -6,8 +6,8 @@ export default function CourseFourModule() {
 	return (
 		<main>
 			<BreadCrumbs
-				Title="Our Course"
-				subTitle="All Course"
+				Title="Danh sách khóa học"
+				subTitle="Khóa học"
 			/>
 			<CourseFourArea />
 			<ScrollTop />

@@ -41,7 +41,28 @@ export default function CheckoutArea() {
             } catch (error) {
                 console.error(error);
             }
-        }else {
+        }else if (paymentMethod === "MoMo"){
+            try {
+                const amount = total.toString();
+                const req ={amount}
+                const res = await pay.createMomo(req);
+                localStorage.setItem('orderId', res.orderId);
+                window.location.href = res.payUrl;
+            }catch (e) {
+                console.error(e);
+            }
+        }else if (paymentMethod === "ZaloPay"){
+            try {
+                const amount = {
+                    "amount" : total
+                }
+                const res = await pay.createZaloPay(amount);
+                window.location.href = res.order_url;
+            }catch (e) {
+                console.error(e);
+            }
+        }
+        else {
             alert("Vui lòng chọn phương thức thanh toán !!!")
         }
 
@@ -105,7 +126,8 @@ export default function CheckoutArea() {
                                                             >
                                                                 <option value="">Chọn phương thức thanh toán</option>
                                                                 <option value="VNPay">VN Pay</option>
-                                                                <option value="Momo">Momo</option>
+                                                                <option value="MoMo">Momo</option>
+                                                                <option value="ZaloPay">ZaloPay</option>
                                                             </select>
 
                                                         </div>

@@ -6,7 +6,7 @@ export default function InstructorModule() {
 	return (
 		<main>
 			<BreadCrumbs
-				Title="All Instructor"
+				Title="Danh sách giảng viên"
 			/>
 			<InstructorArea />
 			<ScrollTop />
