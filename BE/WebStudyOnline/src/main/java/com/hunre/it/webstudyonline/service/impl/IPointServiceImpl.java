@@ -131,4 +131,16 @@ public class IPointServiceImpl implements IPointService {
         return response;
     }
 
+    @Override
+    public ResponsePage<List<PointDto>> findByUser(Pageable pageable) {
+        AuthDto authDto =jwtService.decodeToken();
+        ResponsePage<List<PointDto>> responsePage = new ResponsePage<>();
+        Page<PointEntity> page = pointRepository.findBytEmail(authDto.getEmail(),pageable);
+        List<PointDto> pointDtos = page.getContent().stream().map(pointMapper::toDto).toList();
+        responsePage.setPageNumber(pageable.getPageNumber());
+        responsePage.setPageSize(pageable.getPageSize());
+        responsePage.setTotalElements(page.getTotalElements());
+        responsePage.setTotalPages(page.getTotalPages());
+        responsePage.setContent(pointDtos);
+        return responsePage;    }
 }

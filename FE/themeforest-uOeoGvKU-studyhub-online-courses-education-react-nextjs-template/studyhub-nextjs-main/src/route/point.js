@@ -10,4 +10,10 @@ async function getAllPoints(id,page,size) {
     });
     return response.data;
 }
-export default {createPoint,getAllPoints};
+async function getPoints(req) {
+    const response = await axiosInstance.get(`${api}/findByUser`,{
+        params:req
+    });
+    return response.data;
+}
+export default {createPoint,getPoints,getAllPoints};

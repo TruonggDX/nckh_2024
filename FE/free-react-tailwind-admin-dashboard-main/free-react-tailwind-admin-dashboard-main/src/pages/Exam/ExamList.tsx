@@ -11,6 +11,7 @@ const ExamList = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(5);
   const [totalExam, setTotalExam] = useState(0);
+  const [check,SetCheck] = useState<boolean>(true);
   const [openModal, setOpenModal] = useState(false);
   const [data, setData] = useState({
     id: 0,
@@ -26,7 +27,7 @@ const ExamList = () => {
   useEffect(() => {
     void setItemsPerPage;
     getAll()
-  }, [currentPage, itemsPerPage]);
+  }, [currentPage, itemsPerPage,check]);
 
   function getExam() {
     getAllExams(currentPage, itemsPerPage)
@@ -77,11 +78,15 @@ const ExamList = () => {
 
   const handleEdit = (id: number) => {
     navigate(`/updateExam/${id}`)
+    SetCheck(prevState => !prevState);
+
   };
   const handleRemove = (id: number) => {
     confirmDelete('Bạn chắc chắn xóa bài thi này ?','Hành động này không thể hoàn tác !',() =>{
       deleteExamById(id).then(() =>{
         getExam()
+        SetCheck(prevState => !prevState);
+
       }).catch((error: any) => console.error(error));
     })
   };
@@ -92,6 +97,7 @@ const ExamList = () => {
         'Bài thi đã được thêm vào hệ thống.',
         'success',
       );
+      SetCheck(prevState => !prevState);
       setOpenModal(false);
     }).catch((error: any) => console.error(error));
   };

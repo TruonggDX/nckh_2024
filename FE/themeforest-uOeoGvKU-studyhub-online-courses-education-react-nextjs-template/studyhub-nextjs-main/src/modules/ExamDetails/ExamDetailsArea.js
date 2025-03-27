@@ -76,7 +76,7 @@ export default function ExamDetailsArea({item}) {
         point.createPoint(obj).then((result) => {
             console.log('result', result.data);
             alert("Nộp bài thành công!");
-            window.location.href = "/dashboard/exam";
+            window.location.href = "/dashboard/point";
         }).catch((error) => {
             console.error(error);
         });
