@@ -16,6 +16,7 @@ import { confirmDelete, showAlert, showLoadingThenExecute } from '../../utils/sw
 import { listCategories } from '../../service/CategoryService.ts';
 import { Category } from '../../types/Category.ts';
 import { formatDateToInput, formatInputToISO } from '../../utils/dateUtils.ts';
+import userThree from '../../images/user/user-03.png';
 
 const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
   const { id } = useParams();
@@ -193,7 +194,14 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
           <div className="mb-4 flex gap-4">
             <div className="w-1/3">
               <div className="flex items-center justify-center pt-2">
-                <img src={data?.imageUrl} />
+                <img
+                  // src={data?.imageUrl}
+                  src={
+                    file
+                      ? URL.createObjectURL(file)
+                      : data?.imageUrl || userThree
+                  }
+                />
               </div>
               <div hidden={!isEditMode} className="mb-6 pt-7.5">
                 <label className="mb-3 block text-black dark:text-white">
