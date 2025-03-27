@@ -34,7 +34,7 @@ export default function SingleCourseTwo( props ) {
 	return (
 		<div className={ courseClass || 'single-course-style-three'}>
 			<Link href={`/grade/details/four?${JSON.stringify(Grade) || 'details'}`} className="thumbnail">
-				<Image src={Img || '/images/course/01.jpg'} width={imgWidth || 290} height={imgHeight || 210}alt="course" />
+				<Image src={Img || '/images/course/01.jpg'} width={imgWidth || 290} height={imgHeight || 210} alt="course" />
 				<div className="tag-thumb">
 					<span>{Category || 'Web Development'}</span>
 				</div>

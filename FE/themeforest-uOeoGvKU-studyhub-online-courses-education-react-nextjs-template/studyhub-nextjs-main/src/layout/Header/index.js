@@ -24,7 +24,7 @@ export default function Header(props) {
     const router = useRouter();
     const dispatch = useDispatch();
 
-    const { cartData, removeData } = useCart();
+    const {cartData, removeData} = useCart();
 
     const handleRemoveProduct = (id) => {
         removeData(id)
@@ -86,9 +86,27 @@ export default function Header(props) {
         }).catch((e) => console.error(e))
     }, []);
     useEffect(() => {
-        const total = cartData.reduce((sum,course) => sum + course.item.price * course.quantity * (1-course.item.discount/100),0);
+        const total = cartData.reduce((sum, course) => sum + course.item.price * course.quantity * (1 - course.item.discount / 100), 0);
         setTotalPrice(total)
     }, [cartData]);
+
+    const [filter, setFilter] = useState({name: ''});
+    const [courses, setCourses] = useState([]);
+
+    const handleSearch = (e) => {
+        const value = e.target.value;
+        setFilter({name: value});
+        if (value.trim() !== '') {
+            api.getCourse({name: value}).then((response) => {
+                setCourses(response.content);
+                console.log('res', response);
+            });
+        } else {
+            setCourses([]);
+        }
+    };
+
+
     return (
         <>
             <header className={`${headerClass || "header-one header--sticky"} ${isVisible ? 'sticky' : ''}`}>
@@ -236,7 +254,7 @@ export default function Header(props) {
                                                                 </ul>
                                                             </div>
                                                             <div className="studyhub__header__popup__footer">
-                                                            <button
+                                                                <button
                                                                     className="studyhub__header__popup__footer__link"
                                                                     onClick={handleLogout}
                                                                 >
@@ -359,20 +377,121 @@ export default function Header(props) {
             {/* Search Modal Start */}
             <div className={`search-input-area ${searchModal ? 'show' : ''}`}>
                 <div className="container">
-                    <div className="search-input-inner">
+                    <div className="search-input-inner" style={{position: 'relative'}}>
                         <div className="input-div">
-                            <input className="search-input autocomplete" type="text"
-                                   placeholder="Search by keyword or #"/>
-                            <button><i className="far fa-search"></i></button>
+                            <input
+                                onChange={handleSearch}
+                                className="search-input autocomplete"
+                                type="text"
+                                placeholder="Nhập tên khóa học cần tìm"
+                                style={{
+                                    width: '100%',
+                                    padding: '12px',
+                                    borderRadius: '8px',
+                                    border: '1px solid #ddd',
+                                    outline: 'none',
+                                    fontSize: '16px',
+                                }}
+                            />
+                            <button
+                            >
+                                <i className="far fa-search"></i>
+                            </button>
                         </div>
+
+                        {filter.name && (
+                            <div
+                                className="search-results"
+                                style={{
+                                    position: 'absolute',
+                                    top: '100%',
+                                    left: 138,
+                                    width: '80%',
+                                    zIndex: 10,
+                                    backgroundColor: '#fff',
+                                    border: '1px solid #ddd',
+                                    borderRadius: '8px',
+                                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                                    maxHeight: '300px',
+                                    overflowY: 'auto',
+                                    marginTop: '5px',
+                                    padding: '10px'
+                                }}
+                            >
+                                {courses.length > 0 ? (
+                                    courses.map((course) => (
+                                        <Link href={`/course/detail/four?${course.code || 'details'}`} className="thumbnail">
+                                            <div
+                                                key={course.id}
+                                                className="search-item"
+                                                style={{
+                                                    display: 'flex',
+                                                    alignItems: 'center',
+                                                    padding: '12px',
+                                                    borderBottom: '1px solid #eee',
+                                                    cursor: 'pointer',
+                                                    transition: 'background-color 0.2s',
+                                                    gap: '12px',
+                                                }}
+                                            >
+                                                <img
+                                                    src={course.imageUrl || '/default-book.jpg'}
+                                                    alt={course.name}
+                                                    style={{
+                                                        width: '50px',
+                                                        height: '50px',
+                                                        objectFit: 'cover',
+                                                        borderRadius: '5px',
+                                                        backgroundColor: '#f9f9f9',
+                                                    }}
+                                                />
+
+                                                <div style={{display: 'flex', flexDirection: 'column'}}>
+                                                    <div className="book-title" style={{
+                                                        fontWeight: 'bold',
+                                                        fontSize: '16px',
+                                                        color: '#333',
+                                                    }}>
+                                                        {course.name}
+                                                    </div>
+                                                    <div className="book-author" style={{
+                                                        fontSize: '14px',
+                                                        color: '#666',
+                                                        marginTop: '4px',
+                                                    }}>Mục tiêu : {course.aim}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </Link>
+                                    ))
+                                ) : (
+                                    <div style={{
+                                        padding: '12px',
+                                        textAlign: 'center',
+                                        color: '#999'
+                                    }}>
+                                        Không có khóa học phù hợp nào
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
                     </div>
                 </div>
-                <div id="close" className="search-close-icon" onClick={closeModal}><i className="far fa-times"></i>
+                <div
+                    id="close"
+                    className="search-close-icon"
+                    onClick={closeModal}
+                >
+                    <i className="far fa-times"></i>
                 </div>
             </div>
+
             {/* Search Modal End */}
 
+
             <div id="anywhere-home" className={modalOpen ? 'bgshow' : ""} onClick={closeModal}></div>
+
         </>
     )
 }

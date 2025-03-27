@@ -16,9 +16,9 @@ export default function BreadCrumbs( props ) {
 							<h1 className="title">{Title ? Title : 'About Us'}</h1>
 							{/* breadcrumb pagination area */}
 							<div className="pagination-wrapper">
-								<Link href="/">Home</Link>
+								<Link href="/">Trang chủ</Link>
 								<i className="fa-regular fa-chevron-right"></i>
-								<Link href="#" className="active">{subTitle ? subTitle : 'About Us'}</Link>
+								<Link href="#" className="active">{subTitle ? subTitle : 'Giảng viên'}</Link>
 							</div>
 							{/* breadcrumb pagination area end */}
 						</div>

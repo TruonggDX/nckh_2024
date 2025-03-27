@@ -9,9 +9,9 @@ export default function DashboardFooter() {
 				<div className="row">
 					<div className="col-lg-12">
 						<div className="footer-dashboard-inner">
-							<p>Copyright © 2024 All Rights Reserved by <a href="#">Studyhub</a></p>
+							<p>Bản quyền © 2024. Đã đăng ký bản quyền bởi <a href="#">Studyhub</a></p>
 							<Link href="/">
-								<Image src="/images/logo/logo-4.svg" width={126} height={25} alt="logo" />
+							<Image src="/images/logo/logo-4.svg" width={126} height={25} alt="logo" />
 							</Link>
 							<div className="social-area-dashboard-footer">
 								<ul>

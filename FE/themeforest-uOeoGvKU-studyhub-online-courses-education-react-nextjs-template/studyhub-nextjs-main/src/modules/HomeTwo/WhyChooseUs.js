@@ -49,8 +49,7 @@ export default function WhyChooseUs() {
 								<div className="icon">
 									<Image src="/images/why-choose/icon/01.png" alt="icon" width="32" height="34" />
 								</div>
-								<h6 className="title">Expert
-									Instructors</h6>
+								<h6 className="title">Giảng viên chuyên gia</h6>
 							</div>
 							{/* single choose reason end */}
 							{/* single choose reason */}
@@ -58,8 +57,7 @@ export default function WhyChooseUs() {
 								<div className="icon">
 									<Image src="/images/why-choose/icon/02.png" alt="icon" width="32" height="34" />
 								</div>
-								<h6 className="title">Interactive
-									Learning</h6>
+								<h6 className="title">Học tập tương tác</h6>
 							</div>
 							{/* single choose reason end */}
 							{/* single choose reason */}
@@ -67,8 +65,7 @@ export default function WhyChooseUs() {
 								<div className="icon">
 									<Image src="/images/why-choose/icon/03.png" alt="icon" width="32" height="34" />
 								</div>
-								<h6 className="title">Affordable
-									Learning</h6>
+								<h6 className="title">Học tập giá cả phải chăng</h6>
 							</div>
 							{/* single choose reason end */}
 							{/* single choose reason */}
@@ -76,8 +73,7 @@ export default function WhyChooseUs() {
 								<div className="icon">
 									<Image src="/images/why-choose/icon/04.png" alt="icon" width="32" height="34" />
 								</div>
-								<h6 className="title">Career
-									Advance</h6>
+								<h6 className="title">Tiến triển sự nghiệp</h6>
 							</div>
 							{/* single choose reason end */}
 							{/* single choose reason */}
@@ -85,8 +81,7 @@ export default function WhyChooseUs() {
 								<div className="icon">
 									<Image src="/images/why-choose/icon/05.png" alt="icon" width="32" height="34" />
 								</div>
-								<h6 className="title">Course
-									Selection</h6>
+								<h6 className="title">Lựa chọn khóa học</h6>
 							</div>
 							{/* single choose reason end */}
 							{/* single choose reason */}
@@ -94,13 +89,12 @@ export default function WhyChooseUs() {
 								<div className="icon">
 									<Image src="/images/why-choose/icon/06.png" alt="icon" width="32" height="34" />
 								</div>
-								<h6 className="title">Support
-									Community</h6>
+								<h6 className="title">Cộng đồng hỗ trợ</h6>
 							</div>
 							{/* single choose reason end */}
 						</div>
 						<Link href="/course" className="rts-btn btn-primary-white with-arrow">
-							View All Course <i className="fa-regular fa-arrow-right"></i>
+							Xem tất cả khóa học <i className="fa-regular fa-arrow-right"></i>
 						</Link>
 					</div>
 				</div>

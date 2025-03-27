@@ -12,22 +12,22 @@ export default function Counter() {
 	  const counters = [
         {
             countNum: 65972,
-            countTitle: 'Students Enrolled',
+            countTitle: 'Học sinh đã ghi danh',
             countIcon: '/images/fun-facts/01.svg',
         },
         {
             countNum: 5321,
-            countTitle: 'Completed Course',
+            countTitle: 'Khóa học đã hoàn thành',
             countIcon: '/images/fun-facts/02.svg',
         },
         {
             countNum: 44239,
-            countTitle: 'Students Learner',
+            countTitle: 'Học sinh Học viên',
             countIcon: '/images/fun-facts/03.svg',
         },
         {
             countNum : 75992,
-            countTitle: 'Students Community',
+            countTitle: 'Cộng đồng sinh viên',
             countIcon: '/images/fun-facts/04.svg',
         }
 

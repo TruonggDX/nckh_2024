@@ -12,9 +12,9 @@ export default function Footer(props) {
 				<div className="row">
 					<div className="col-lg-12">
 						{
-							CTAEnable === "one" ? 
+							CTAEnable === "one" ?
 								<FooterCTA /> :
-								CTAEnable === "two" ? 
+								CTAEnable === "two" ?
 									<FooterCTATwo /> : null
 						}
 						{/* footer main wrapper */}
@@ -28,12 +28,11 @@ export default function Footer(props) {
 								</div>
 								<div className="body">
 									<p className="dsic">
-										We are passionate education dedicated to providing high-quality resources learners
-										all backgrounds.
+										Chúng tôi là một tổ chức giáo dục đầy nhiệt huyết, tận tụy cung cấp nguồn tài nguyên chất lượng cao cho người học ở mọi hoàn cảnh.
 									</p>
 									<ul className="wrapper-list">
-										<li><i className="fa-regular fa-location-dot"></i>Yarra Park, Melbourne, Australia </li>
-										<li><i className="fa-regular fa-phone"></i><a href="tel:+4733378901">+(61) 485-826-710</a></li>
+										<li><i className="fa-regular fa-location-dot"></i> Phúc Diễn, Bắc Từ Liêm, Hà Nội</li>
+										<li><i className="fa-regular fa-phone"></i><a href="tel:+339205335">+(84) 339205335</a></li>
 									</ul>
 								</div>
 							</div>
@@ -41,15 +40,14 @@ export default function Footer(props) {
 							{/* single sized  footer  */}
 							<div className="footer-singl-wized">
 								<div className="head">
-									<h6 className="title">Quick Links</h6>
+									<h6 className="title">Liên kết nhanh</h6>
 								</div>
 								<div className="body">
 									<ul className="menu">
-										<li><Link href="/course-two">Latest Courses</Link></li>
-										<li><Link href="/about">Mission & Vision</Link></li>
-										<li><Link href="/become-instructor">Join a Carrer</Link></li>
-										<li><Link href="/zoom-meeting">Zoom Meeting</Link></li>
-										<li><Link href="/pricing">Pricing Plan</Link></li>
+										<li><Link href="/course-two">Các khóa học mới nhất</Link></li>
+										<li><Link href="/about">Sứ mệnh và tầm nhìn</Link></li>
+										<li><Link href="/zoom-meeting">Phòng học</Link></li>
+										<li><Link href="/pricing">Kế hoạch</Link></li>
 									</ul>
 								</div>
 							</div>
@@ -57,15 +55,13 @@ export default function Footer(props) {
 							{/* single sized  footer  */}
 							<div className="footer-singl-wized">
 								<div className="head">
-									<h6 className="title">Explore</h6>
+									<h6 className="title">Khám phá</h6>
 								</div>
 								<div className="body">
 									<ul className="menu">
-										<li><Link href="course-one">Course One</Link></li>
-										<li><Link href="course-two">Course Two</Link></li>
-										<li><Link href="create-course">Create Course</Link></li>
-										<li><Link href="lesson-details">Lesson Details</Link></li>
-										<li><Link href="instructor">Instructor</Link></li>
+										<li><Link href="http://localhost:3000/course">Khóa học</Link></li>
+										<li><Link href="http://localhost:3000/course/details/four?C001">Chi tiết khóa học</Link></li>
+										<li><Link href="http://localhost:3000/instructor">Giảng viên</Link></li>
 									</ul>
 								</div>
 							</div>
@@ -73,18 +69,18 @@ export default function Footer(props) {
 							{/* single sized  footer  */}
 							<div className="footer-singl-wized input-area">
 								<div className="head">
-									<h6 className="title">Newsletter</h6>
+									<h6 className="title">Bản tin</h6>
 								</div>
 								<div className="body">
-									<p className="disc">Subscribe Our newsletter get update our new course</p>
+									<p className="disc">Đăng ký nhận bản tin của chúng tôi để cập nhật khóa học mới của chúng tôi</p>
 									<form action="#">
 										<div className="input-area-fill">
-											<input type="email" placeholder="Enter Your Email" required />
-											<button> Subscribe</button>
+											<input type="email" placeholder="Nhập email của bạn" required />
+											<button>Đăng Ký</button>
 										</div>
 										<div className="d-flex align-items-center">
 											<input type="checkbox" id="exampleCheck1" />
-											<label htmlFor="exampleCheck1">I agree to the terms of use and privacy policy.</label>
+											<label htmlFor="exampleCheck1">Tôi đồng ý với các điều khoản sử dụng và chính sách bảo mật.</label>
 										</div>
 									</form>
 								</div>
@@ -100,7 +96,7 @@ export default function Footer(props) {
 					<div className="row">
 						<div className="col-lg-12">
 							<div className="copyright-area-one">
-								<p>Copyright © 2024 All Rights Reserved by Studyhub</p>
+								<p>Bản quyền © 2024 Mọi quyền được bảo lưu bởi Studyhub</p>
 								<div className="social-copyright">
 									<ul>
 										<li><a href="#"><i className="fa-brands fa-facebook-f"></i></a></li>

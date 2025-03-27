@@ -40,7 +40,7 @@ export default function Brand() {
 					<div className="col-lg-12">
 						<div className="brand-style-one ">
 							<div className="left-title">
-								<h6 className="title">Trusted by:</h6>
+								<h6 className="title">Được tin cậy bởi:</h6>
 							</div>
 							<Swiper {...brandOptions}>
 								<SwiperSlide key="1">

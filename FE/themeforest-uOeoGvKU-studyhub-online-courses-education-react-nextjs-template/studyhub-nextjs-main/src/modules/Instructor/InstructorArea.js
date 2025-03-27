@@ -6,7 +6,7 @@ import api from '../../route/teacher'
 import ReactPaginate from "react-paginate";
 export default function InstructorArea() {
 	const [instructor,setInstructor] = useState([])
-	const paginatePerPage = 5;
+	const paginatePerPage = 8;
 	const [totalPaginate, setTotalPaginate] = useState(0);
 	const [currentPage, setCurrentPage] = useState(0);
 	const [forcePage, setForcePage] = useState(0);
@@ -32,13 +32,18 @@ export default function InstructorArea() {
 								<div key={index} className="col-lg-3 col-md-4 col-sm-6 col-12">
 									<div className="single-instructor">
 										<div className="thumbnail-img">
-											<Link href={`instructor/${instructor?.id || "details"}`}
-												  className="thumbnail">
+											<Link href={`instructor/${instructor?.id || "details"}`} className="thumbnail">
 												<Image
 													src={instructor.accountDto.imageUrl || "/images/instructor/01.jpg"}
 													alt={instructor?.accountDto.fullName}
-													width={instructor.imgWidth || "338"}
-													height={instructor?.imgHeight || "374"}/>
+													width={330}
+													height={370}
+													style={{
+														objectFit: 'cover',
+														width: '330px',
+														height: '370px'
+													}}
+												/>
 											</Link>
 											<div className="social-img-instructor">
 												<ul>
@@ -53,6 +58,7 @@ export default function InstructorArea() {
 												</ul>
 											</div>
 										</div>
+
 										<Link href={`instructor/${instructor?.id || "details"}`}>
 											<h5 className="title">{instructor?.accountDto.fullName || "Elizabeth Olsen"}</h5>
 										</Link>

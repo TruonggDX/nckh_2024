@@ -41,51 +41,93 @@ export default function CourseDetailsSidebar(props) {
         <>
             {/* right- sticky bar area */}
             <div className={`right-course-details ${type === 'two' || type === 'four' && "mt--0"}`}>
-                <div className="course-side-bar">
-                    {
-                        type !== 'two' &&
-                        <div className="thumbnail">
-                            <Image src={item.img} width="400" height="280" alt=""/>
-                            <div className="vedio-icone">
-                            </div>
+                <div className="course-side-bar" style={{width: 440}}>
+                    {type !== 'two' && (
+                        <div className="thumbnail" style={{position: 'relative'}}>
+                            <Image
+                                src={item.img}
+                                width="400"
+                                height="280"
+                                alt=""
+                                style={{width: '100%', borderRadius: '8px'}}
+                            />
+                            {item.discount > 0 && (
+                                <span
+                                    style={{
+                                        position: 'absolute',
+                                        top: '10px',
+                                        right: '10px',
+                                        backgroundColor: '#ff4d4f',
+                                        color: '#fff',
+                                        padding: '4px 8px',
+                                        borderRadius: '4px',
+                                        fontSize: '14px',
+                                        fontWeight: 'bold',
+                                        zIndex: 5, 
+                                    }}
+                                >
+                    -{item.discount}%
+                </span>
+                            )}
+                            <div className="vedio-icone"></div>
                         </div>
-                    }
+                    )}
 
                     <div className="price-area">
-                        {
-                            item.price > 0 ?
-                                <>
-                                    <h3 className="title">{formatCurrency(item.price) || "$39.99"}</h3>
-                                    <h4 className="none">{formatCurrency(item.prevPrice) || "$79.99"}</h4>
-                                    <span className="discount">-{item.discount}%</span>
-                                </> :
-                                <>
-                                    <h3 className="title animated fadeIn">Free</h3>
-                                    <span className="discount">100%</span>
-                                </>
-                        }
-
-                    </div>
-                    {/*<div className="clock-area icon-gap">*/}
-                    {/*	<i className="fa-light fa-clock"></i>*/}
-                    {/*	<span>2 Day left at this price!</span>*/}
-                    {/*</div>*/}
-                    {
-                        item.price > 0 ?
+                        {item.price > 0 ? (
                             <>
-                                <button onClick={() => handleAddToCart(item.id, 1)} className="rts-btn btn-primary">
-                                    Thêm vào giỏ hàng
-                                </button>
-                            </> :
-                            <Link href="#" className="rts-btn btn-primary">Enroll Now</Link>
-                    }
+                                <h3 className="title">{formatCurrency(item.price) || "$39.99"}</h3>
+                                <h4 className="none">{formatCurrency(item.prevPrice) || "$79.99"}</h4>
+                            </>
+                        ) : (
+                            <>
+                                <h3 className="title animated fadeIn">Free</h3>
+                                <span className="discount">100%</span>
+                            </>
+                        )}
+                    </div>
+
+                    {item.price > 0 ? (
+                        <button
+                            onClick={() => handleAddToCart(item.id, 1)}
+                            className="rts-btn btn-primary"
+                            style={{
+                                width: '100%',
+                                padding: '12px',
+                                backgroundColor: '#ff4d4f',
+                                color: '#fff',
+                                border: 'none',
+                                borderRadius: '6px',
+                                fontSize: '16px',
+                                cursor: 'pointer',
+                                marginTop: '12px',
+                                transition: 'background-color 0.2s',
+                            }}
+                        >
+                            Thêm vào giỏ hàng
+                        </button>
+                    ) : (
+                        <Link
+                            href="#"
+                            className="rts-btn btn-primary"
+                            style={{
+                                display: 'block',
+                                textAlign: 'center',
+                                padding: '12px',
+                                backgroundColor: '#ff4d4f',
+                                color: '#fff',
+                                borderRadius: '6px',
+                                fontSize: '16px',
+                                marginTop: '12px',
+                                transition: 'background-color 0.2s',
+                            }}
+                        >
+                            Enroll Now
+                        </Link>
+                    )}
 
                     <div className="what-includes">
-                        {/*{*/}
-                        {/*	item.price > 0 &&*/}
-                        {/*	<span className="m">30-Day Money-Back Guarantee</span>*/}
-                        {/*}*/}
-                        <h5 className="title">Khóa học bao gồm: </h5>
+                        <h5 className="title">Khóa học bao gồm:</h5>
                         <div className="single-include">
                             <div className="left icon-gap">
                                 <i className="fa-light fa-chart-bar"></i>
@@ -123,7 +165,7 @@ export default function CourseDetailsSidebar(props) {
                 type !== "four" &&
                 <div className="right-course-details mt--30">
                     {/* single course-sidebar */}
-                    <div className="course-side-bar">
+                    <div className="course-side-bar !w-[500px]">
                         {/* course single sidebar */}
                         <div className="course-single-information">
                             <h5 className="title">A course by</h5>

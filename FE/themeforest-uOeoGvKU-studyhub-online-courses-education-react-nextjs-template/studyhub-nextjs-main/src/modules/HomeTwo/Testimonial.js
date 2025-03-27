@@ -12,10 +12,10 @@ export default function Testimonial() {
 						<div className="title-area-center-style">
 							<div className="pre-title">
 								<Image src="/images/banner/bulb.png" alt="icon" width="22" height="22" />
-								<span>Student Review</span>
+								<span>Đánh giá của sinh viên</span>
 							</div>
-							<h2 className="title">Our Students Feedback</h2>
-							<p className="post-title">You'll find something to spark your curiosity and enhance</p>
+							<h2 className="title">Phản hồi của học viên</h2>
+							<p className="post-title">Bạn sẽ tìm thấy thứ gì đó khơi dậy sự tò mò của bạn và nâng cao</p>
 						</div>
 					</div>
 				</div>
@@ -57,7 +57,7 @@ export default function Testimonial() {
 						</div>
 						<div className="marque-main-wrapper-parent-flex">
 							<div className="marquree-wrapper-2">
-								{/* single testimonials-area */}
+								{/* Khu vực đánh giá giáo viên đơn lẻ */}
 								<div className="single-testimonials-area-1">
 									<div className="stars-area">
 										<i className="fa-solid fa-star"></i>
@@ -67,18 +67,20 @@ export default function Testimonial() {
 										<i className="fa-regular fa-star"></i>
 									</div>
 									<p className="disc">
-										I can't recommend The Gourmet Haven enough. It's a place for special occasions, date nights, or whenever you're in the mood for a culinary.
+										Giáo viên rất tận tâm, bài giảng dễ hiểu và rất thú vị. Tôi cảm thấy rất hài
+										lòng khi tham gia khóa học này.
 									</p>
 									<div className="feedback-author">
-										<Image src="/images/students-feedback/02.png" alt="students-feedback" width="50" height="50" />
+										<Image src="/images/students-feedback/02.png" alt="phản hồi của học viên"
+											   width="50" height="50"/>
 										<div className="information">
-											<h5 className="title">Emma Elizabeth</h5>
-											<span>Assistant Teacher</span>
+											<h5 className="title">Nguyễn Minh Anh</h5>
+											<span>Học sinh</span>
 										</div>
 									</div>
 								</div>
-								{/* single testimonials-area end */}
-								{/* single testimonials-area */}
+								{/* Kết thúc khu vực đánh giá giáo viên đơn lẻ */}
+
 								<div className="single-testimonials-area-1">
 									<div className="stars-area">
 										<i className="fa-solid fa-star"></i>
@@ -88,18 +90,19 @@ export default function Testimonial() {
 										<i className="fa-regular fa-star"></i>
 									</div>
 									<p className="disc">
-										I can't recommend The Gourmet Haven enough. It's a place for special occasions, date nights, or whenever you're in the mood for a culinary.
+										Giáo viên giảng bài rất nhiệt tình, kiến thức được truyền đạt rõ ràng và dễ
+										hiểu. Tôi rất thích các bài giảng của thầy.
 									</p>
 									<div className="feedback-author">
-										<Image src="/images/students-feedback/03.png" alt="students-feedback" width="50" height="50" />
+										<Image src="/images/students-feedback/03.png" alt="phản hồi của học viên"
+											   width="50" height="50"/>
 										<div className="information">
-											<h5 className="title">Jack Benjamin</h5>
-											<span>Assistant Teacher</span>
+											<h5 className="title">Trần Quang Huy</h5>
+											<span>Sinh viên</span>
 										</div>
 									</div>
 								</div>
-								{/* single testimonials-area end */}
-								{/* single testimonials-area */}
+
 								<div className="single-testimonials-area-1">
 									<div className="stars-area">
 										<i className="fa-solid fa-star"></i>
@@ -109,18 +112,19 @@ export default function Testimonial() {
 										<i className="fa-regular fa-star"></i>
 									</div>
 									<p className="disc">
-										I can't recommend The Gourmet Haven enough. It's a place for special occasions, date nights, or whenever you're in the mood for a culinary.
+										Khóa học rất hữu ích, giáo viên giảng bài dễ hiểu và luôn sẵn sàng giải đáp thắc
+										mắc của học viên.
 									</p>
 									<div className="feedback-author">
-										<Image src="/images/students-feedback/04.png" alt="students-feedback" width="50" height="50" />
+										<Image src="/images/students-feedback/04.png" alt="phản hồi của học viên"
+											   width="50" height="50"/>
 										<div className="information">
-											<h5 className="title">Samuel John </h5>
-											<span>Assistant Teacher</span>
+											<h5 className="title">Lê Anh Thư</h5>
+											<span>Học sinh</span>
 										</div>
 									</div>
 								</div>
-								{/* single testimonials-area end */}
-								{/* single testimonials-area */}
+
 								<div className="single-testimonials-area-1">
 									<div className="stars-area">
 										<i className="fa-solid fa-star"></i>
@@ -130,20 +134,21 @@ export default function Testimonial() {
 										<i className="fa-regular fa-star"></i>
 									</div>
 									<p className="disc">
-										I can't recommend The Gourmet Haven enough. It's a place for special occasions, date nights, or whenever you're in the mood for a culinary.
+										Giảng viên giảng bài rất dễ hiểu, bài học có nhiều ví dụ thực tế giúp tôi dễ
+										dàng áp dụng vào công việc.
 									</p>
 									<div className="feedback-author">
-										<Image src="/images/students-feedback/05.png" alt="students-feedback" width="50" height="50" />
+										<Image src="/images/students-feedback/05.png" alt="phản hồi của học viên"
+											   width="50" height="50"/>
 										<div className="information">
-											<h5 className="title">Samantha Willow</h5>
-											<span>Assistant Teacher</span>
+											<h5 className="title">Phạm Gia Bảo</h5>
+											<span>Sinh viên</span>
 										</div>
 									</div>
 								</div>
-								{/* single testimonials-area end */}
 							</div>
+
 							<div className="marquree-wrapper-2">
-								{/* single testimonials-area */}
 								<div className="single-testimonials-area-1">
 									<div className="stars-area">
 										<i className="fa-solid fa-star"></i>
@@ -153,18 +158,19 @@ export default function Testimonial() {
 										<i className="fa-regular fa-star"></i>
 									</div>
 									<p className="disc">
-										I can't recommend The Gourmet Haven enough. It's a place for special occasions, date nights, or whenever you're in the mood for a culinary.
+										Giáo viên rất nhiệt tình, nội dung bài học phong phú, dễ hiểu và có tính ứng
+										dụng cao.
 									</p>
 									<div className="feedback-author">
-										<Image src="/images/students-feedback/06.png" alt="students-feedback" width="50" height="50" />
+										<Image src="/images/students-feedback/06.png" alt="phản hồi của học viên"
+											   width="50" height="50"/>
 										<div className="information">
-											<h5 className="title">Emma Elizabeth</h5>
-											<span>Assistant Teacher</span>
+											<h5 className="title">Đỗ Minh Khang</h5>
+											<span>Học sinh</span>
 										</div>
 									</div>
 								</div>
-								{/* single testimonials-area end */}
-								{/* single testimonials-area */}
+
 								<div className="single-testimonials-area-1">
 									<div className="stars-area">
 										<i className="fa-solid fa-star"></i>
@@ -174,18 +180,19 @@ export default function Testimonial() {
 										<i className="fa-regular fa-star"></i>
 									</div>
 									<p className="disc">
-										I can't recommend The Gourmet Haven enough. It's a place for special occasions, date nights, or whenever you're in the mood for a culinary.
+										Giảng viên nhiệt tình, bài giảng dễ hiểu và thực tế. Tôi đã học được rất nhiều
+										kiến thức mới từ khóa học.
 									</p>
 									<div className="feedback-author">
-										<Image src="/images/students-feedback/07.png" alt="students-feedback" width="50" height="50" />
+										<Image src="/images/students-feedback/07.png" alt="phản hồi của học viên"
+											   width="50" height="50"/>
 										<div className="information">
-											<h5 className="title">Emma Elizabeth</h5>
-											<span>Assistant Teacher</span>
+											<h5 className="title">Nguyễn Văn Toàn</h5>
+											<span>Sinh viên</span>
 										</div>
 									</div>
 								</div>
-								{/* single testimonials-area end */}
-								{/* single testimonials-area */}
+
 								<div className="single-testimonials-area-1">
 									<div className="stars-area">
 										<i className="fa-solid fa-star"></i>
@@ -195,38 +202,18 @@ export default function Testimonial() {
 										<i className="fa-regular fa-star"></i>
 									</div>
 									<p className="disc">
-										I can't recommend The Gourmet Haven enough. It's a place for special occasions, date nights, or whenever you're in the mood for a culinary.
+										Tôi rất hài lòng với giáo viên và cách giảng dạy của họ. Tôi đã áp dụng được
+										nhiều kiến thức vào thực tế.
 									</p>
 									<div className="feedback-author">
-										<Image src="/images/students-feedback/08.png" alt="students-feedback" width="50" height="50" />
+										<Image src="/images/students-feedback/08.png" alt="phản hồi của học viên"
+											   width="50" height="50"/>
 										<div className="information">
-											<h5 className="title">Emma Elizabeth</h5>
-											<span>Assistant Teacher</span>
+											<h5 className="title">Lê Thị Hoa</h5>
+											<span>Học sinh</span>
 										</div>
 									</div>
 								</div>
-								{/* single testimonials-area end */}
-								{/* single testimonials-area */}
-								<div className="single-testimonials-area-1">
-									<div className="stars-area">
-										<i className="fa-solid fa-star"></i>
-										<i className="fa-solid fa-star"></i>
-										<i className="fa-solid fa-star"></i>
-										<i className="fa-solid fa-star"></i>
-										<i className="fa-regular fa-star"></i>
-									</div>
-									<p className="disc">
-										I can't recommend The Gourmet Haven enough. It's a place for special occasions, date nights, or whenever you're in the mood for a culinary.
-									</p>
-									<div className="feedback-author">
-										<Image src="/images/students-feedback/09.png" alt="students-feedback" width="50" height="50" />
-										<div className="information">
-											<h5 className="title">Emma Elizabeth</h5>
-											<span>Assistant Teacher</span>
-										</div>
-									</div>
-								</div>
-								{/* single testimonials-area end */}
 							</div>
 						</div>
 					</div>

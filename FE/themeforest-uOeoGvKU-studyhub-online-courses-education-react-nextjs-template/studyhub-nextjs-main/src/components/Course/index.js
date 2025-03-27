@@ -6,8 +6,8 @@ export default function SingleCourse( props ) {
 	const { courseClass, Slug, Img, Title, Category, ratingCount, lessonCount, studentCount, Author, prevPrice, Price, imgWidth, imgHeight, type, discount  } = props;
 
 	return (
-		<div className={ courseClass || 'rts-single-course'}>
-			<div style={{ position: 'relative', width: 'fit-content' }}>
+		<div className={courseClass || 'rts-single-course'}>
+			<div style={{position: 'relative', width: 'fit-content'}}>
 				<Link href={`/course/detail/four?${Slug || 'details'}`} className="thumbnail">
 					<img
 						src={Img || '/images/course/01.jpg'}
@@ -21,6 +21,25 @@ export default function SingleCourse( props ) {
 						}}
 					/>
 
+					{/* Hiển thị danh mục ở góc trên bên trái */}
+					{Category && (
+						<div style={{
+							position: 'absolute',
+							top: '10px',
+							left: '10px',
+							backgroundColor: '#fff',
+							color: 'black',
+							padding: '5px 10px',
+							fontSize: '14px',
+							fontWeight: 'bold',
+							borderRadius: '4px',
+							zIndex: 10
+						}}>
+							{Category}
+						</div>
+					)}
+
+					{/* Hiển thị giảm giá ở góc trên bên phải */}
 					{discount > 0 && (
 						<div style={{
 							position: 'absolute',
@@ -39,14 +58,7 @@ export default function SingleCourse( props ) {
 					)}
 				</Link>
 			</div>
-			<div className="save-icon" data-bs-toggle="modal" data-bs-target="#exampleModal-login">
-				<i className="fa-sharp fa-light fa-bookmark"></i>
-			</div>
-			<div className="tags-area-wrapper">
-				<div className="single-tag">
-					<span>{Category || 'Web Development'}</span>
-				</div>
-			</div>
+
 			<div className="lesson-studente">
 				<div className="lesson">
 					<i className="far fa-calendar-alt"></i>
@@ -62,17 +74,17 @@ export default function SingleCourse( props ) {
 			</Link>
 			<p className="teacher">{Author || 'Dr. Angela Yu'}</p>
 			<div className="rating-and-price">
-				<div className="price-area" style={{display:'block'}}>
+				<div className="price-area" style={{display: 'block'}}>
 					{
 						type !== "dashboard" && discount > 0 && (
-                            <div className="not price">
-                                {formatCurrency(prevPrice) || '79.99'}
-                            </div>
-                        )
+							<div className="not price">
+								{formatCurrency(prevPrice) || '79.99'}
+							</div>
+						)
 
-                    }
-                    <div className="price" style={{fontSize: '22px'}}>
-                        {formatCurrency(Price)}
+					}
+					<div className="price" style={{fontSize: '22px'}}>
+						{formatCurrency(Price)}
 					</div>
 				</div>
 			</div>

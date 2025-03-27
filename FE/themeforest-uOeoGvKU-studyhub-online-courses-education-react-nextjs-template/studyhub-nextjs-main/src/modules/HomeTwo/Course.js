@@ -62,12 +62,12 @@ export default function Course() {
 									<Image src="/images/banner/bulb.png" alt="icon" width="22" height="22" />
 									<span>Các khóa học</span>
 								</div>
-								<h2 className="title mb--5">Best seller</h2>
+								<h2 className="title mb--5">Khoá học nổi bật</h2>
 								<p className="disc">
-									You'll find something to spark your curiosity and enhance
+									Bạn sẽ tìm thấy thứ gì đó khơi dậy sự tò mò của bạn và nâng cao
 								</p>
 							</div>
-							<Link href="/course" className="rts-btn with-arrow p-0">View All Course <i className="fa-light fa-arrow-right"></i></Link>
+							<Link href="/course" className="rts-btn with-arrow p-0">Xem tất cả khóa học <i className="fa-light fa-arrow-right"></i></Link>
 						</div>
 					</div>
 				</div>
