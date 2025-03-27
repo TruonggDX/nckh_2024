@@ -175,7 +175,6 @@ const TeacherGradeList = () =>{
   return (
     <>
       <Breadcrumb pageName="Danh sách lớp"/>
-      <button className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700" style={{ width: 150, marginBottom: 10 }} onClick={() => handleAdd()}>Thêm lớp học</button>
 
       <div className="flex flex-col gap-10">
         <div className="rounded-sm border border-stroke bg-white px-5 pt-6 pb-2.5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">

@@ -6,7 +6,7 @@ import api from '../../route/teacher'
 import ReactPaginate from "react-paginate";
 export default function InstructorArea() {
 	const [instructor,setInstructor] = useState([])
-	const paginatePerPage = 8;
+	const paginatePerPage = 4;
 	const [totalPaginate, setTotalPaginate] = useState(0);
 	const [currentPage, setCurrentPage] = useState(0);
 	const [forcePage, setForcePage] = useState(0);
