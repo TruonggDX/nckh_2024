@@ -39,6 +39,11 @@ public class ApiPoint {
         BaseResponse<PointDto> category = pointService.getPoint(id);
         return ResponseEntity.ok(category);
     }
+    @GetMapping("/findByUser")
+    public ResponseEntity<ResponsePage<List<PointDto>>> findByUser(Pageable pageable) {
+        ResponsePage<List<PointDto>> responsePage = pointService.findByUser(pageable);
+        return ResponseEntity.ok(responsePage);
+    }
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<BaseResponse<PointDto>> delete(@PathVariable String id) {
         BaseResponse<PointDto> baseResponse = pointService.deletePoint(id);

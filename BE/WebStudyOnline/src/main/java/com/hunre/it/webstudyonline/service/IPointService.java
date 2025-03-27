@@ -13,4 +13,6 @@ public interface IPointService {
     BaseResponse<PointDto> updatePoint(String id,PointDto pointDto);
     BaseResponse<PointDto> deletePoint(String id);
     BaseResponse<PointDto> getPoint(String id);
+
+    ResponsePage<List<PointDto>> findByUser(Pageable pageable);
 }

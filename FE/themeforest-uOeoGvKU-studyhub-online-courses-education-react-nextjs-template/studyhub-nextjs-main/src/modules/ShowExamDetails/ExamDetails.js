@@ -56,7 +56,6 @@ export default function ExamDetailsPoint({item}) {
             ref.current.style.setProperty("padding", "60px 0", "important");
         }
     }, []);
-    console.log('kaka',item)
     return (
         <>
             <div ref={ref} className="rts-events-area rts-section-gap">
