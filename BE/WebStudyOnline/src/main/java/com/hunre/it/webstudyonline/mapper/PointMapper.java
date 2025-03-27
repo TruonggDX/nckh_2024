@@ -15,6 +15,8 @@ import java.util.Optional;
 @Component
 public class PointMapper {
     @Autowired
+    private ExamMapper examMapper;
+    @Autowired
     private AccountRepository accountRepository;
     @Autowired
     private ExamRepository examRepository;
@@ -29,6 +31,7 @@ public class PointMapper {
         }
         if (pointEntity.getExamEntity() != null) {
             pointDto.setExamId(pointEntity.getExamEntity().getId());
+            pointDto.setExamDto(examMapper.toDto(pointEntity.getExamEntity()));
         }
         pointDto.setAccountName(pointEntity.getAccountEntity().getFullname());
         return pointDto;

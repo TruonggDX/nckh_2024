@@ -6,7 +6,16 @@ public class PointDto {
     private Long completionTime;
     private Long accountId;
     private Long examId;
+    private ExamDto examDto;
     private String accountName;
+
+    public ExamDto getExamDto() {
+        return examDto;
+    }
+
+    public void setExamDto(ExamDto examDto) {
+        this.examDto = examDto;
+    }
 
     public String getAccountName() {
         return accountName;
