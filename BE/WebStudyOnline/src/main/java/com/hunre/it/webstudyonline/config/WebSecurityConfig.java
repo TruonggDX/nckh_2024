@@ -65,10 +65,11 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/point/add").hasAnyRole("USER")
                         .requestMatchers("/api/bill/findById/**","/api/bill/list/**","/api/bill/create/**").authenticated()
                         .requestMatchers("/api/payment/**").permitAll()
-                        .requestMatchers("/api/inforTeacher/list").permitAll()
+                        .requestMatchers("/api/inforTeacher/list","/api/inforTeacher/findById/**").permitAll()
+                        .requestMatchers("/api/cart/list").permitAll()
                         .requestMatchers("/api/bill_details/create").authenticated()
                         .requestMatchers("/api/bill_details/list/**").authenticated()
-                        .requestMatchers("/api/cart/**").authenticated()
+                        .requestMatchers("/api/cart/add","/api/cart/update/**","/api/cart/delete/**").authenticated()
                         .anyRequest().authenticated()
                 );
 

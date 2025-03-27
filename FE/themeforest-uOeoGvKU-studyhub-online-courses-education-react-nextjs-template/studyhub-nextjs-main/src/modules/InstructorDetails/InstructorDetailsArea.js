@@ -25,7 +25,6 @@ export default function InstructorDetailsArea({item}) {
         api.getAllCourseByEmail(currentPage, paginatePerPage, email).then((res) => {
             setCourse(res.content);
             setTotalPaginate(res.totalElements)
-            console.log(res);
         })
     }, [currentPage, paginatePerPage, email])
     return (

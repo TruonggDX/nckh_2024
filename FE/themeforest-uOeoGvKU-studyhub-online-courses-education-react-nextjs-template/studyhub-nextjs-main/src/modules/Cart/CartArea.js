@@ -164,7 +164,7 @@ const CartArea = () => {
                             ) : (
                                 <tr>
                                     <td colSpan="6" className="empty-cart">
-                                        Cart is Empty
+                                        Giỏ hàng trống
                                     </td>
                                 </tr>
                             )}

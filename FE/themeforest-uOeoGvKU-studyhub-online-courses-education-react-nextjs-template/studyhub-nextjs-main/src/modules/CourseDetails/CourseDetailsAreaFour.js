@@ -24,7 +24,12 @@ export default function CourseDetailsAreaFour(props) {
 						}
 					})
 			}else {
-				document.querySelector(".course-top-enroll-area1").setAttribute("class","d-none")
+				const element = document.querySelector(".course-top-enroll-area1");
+				if (element) {
+					element.setAttribute("class", "d-none");
+				}
+
+				// document.querySelector(".course-top-enroll-area1").setAttribute("class","d-none")
 			}
 		})
 
