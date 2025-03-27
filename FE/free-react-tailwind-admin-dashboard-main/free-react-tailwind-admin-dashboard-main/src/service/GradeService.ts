@@ -43,6 +43,19 @@ export const findGradeById = async (id:number) => {
     throw error;
   }
 }
+export const findByUser = async (req) => {
+  const token = getToken();
+  try {
+    const response = await axios.get(`${api}/findByUser`, {
+      params: req,
+      headers: { 'Authorization': `Bearer ${token}` }
+    })
+    return response.data;
+  }catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 
 export const deleteGrade = async (id:number) => {
   const token = getToken();

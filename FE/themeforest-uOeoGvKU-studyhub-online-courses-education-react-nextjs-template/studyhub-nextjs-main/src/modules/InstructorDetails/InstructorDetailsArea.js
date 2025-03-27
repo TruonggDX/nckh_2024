@@ -102,7 +102,7 @@ export default function InstructorDetailsArea({item}) {
                                     {
                                         course.map((course, index) => {
                                             return (
-                                                <div key={index} className="col-lg-6 col-md-6 col-sm-12 col-12">
+                                                <div key={index} className="col-lg-4 col-md-6 col-sm-12 col-12">
                                                     <SingleCourse
                                                         Slug={course.code}
                                                         Img={course.imageUrl}

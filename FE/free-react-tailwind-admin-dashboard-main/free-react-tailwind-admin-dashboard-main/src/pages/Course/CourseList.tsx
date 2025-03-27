@@ -29,8 +29,6 @@ const CourseList = () => {
       setCategories(response.content);
     });
   }, [currentPage, itemsPerPage]);
-
-
   function getData(){
     if ( param.category || param.name || param.code || param.aim || param.status){
       dataSearch()

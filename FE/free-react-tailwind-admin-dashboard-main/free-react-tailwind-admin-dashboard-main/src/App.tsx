@@ -29,6 +29,8 @@ import CertificateTeacher from './pages/CertificateTeacher.tsx';
 import ListCourseTeacher from './pages/Course/ListCourseTeacher.tsx';
 import Timetable from './pages/Timetable/Timetable.tsx';
 import RoleList from './pages/Role/RoleList.tsx';
+import TeacherGradeList from './pages/Grade/TeacherGradeList.tsx';
+import TeacherTimetable from './pages/Timetable/TeacherTimetable.tsx';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -107,6 +109,24 @@ function App() {
             <>
               <PageTitle title="ADMIN" />
               <ListCourseTeacher />
+            </>
+          }
+        />
+        <Route
+          path="/gradeTeacher"
+          element={
+            <>
+              <PageTitle title="ADMIN" />
+              <TeacherGradeList />
+            </>
+          }
+        />
+        <Route
+          path="/timetableTeacher"
+          element={
+            <>
+              <PageTitle title="ADMIN" />
+              <TeacherTimetable />
             </>
           }
         />

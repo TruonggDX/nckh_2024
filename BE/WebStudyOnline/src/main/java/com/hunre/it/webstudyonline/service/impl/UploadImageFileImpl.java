@@ -36,13 +36,13 @@ public class UploadImageFileImpl implements UploadImageFile {
         String extension = getFileName(file.getOriginalFilename())[1];
         File fileUpload = convert(file);
         var uploadResult = cloudinary.uploader().upload(fileUpload,
-                ObjectUtils.asMap("public_id",
-                        "eager", Arrays.asList(
-                                new EagerTransformation().width(290).height(210).crop("pad").audioCodec("none"),
-                                new EagerTransformation().width(160).height(100).crop("crop").gravity("south").audioCodec("none")),
-                        publicValue));
+                ObjectUtils.asMap(
+                        "public_id", publicValue,
+                        "width", 290,
+                        "height", 210,
+                        "crop", "fill"
+                ));
         cleanDisk(fileUpload);
-
         ImageDto imageDTO = new ImageDto();
         imageDTO.setUrl(uploadResult.get("url").toString());
         imageDTO.setPublicId(uploadResult.get("public_id").toString());
@@ -50,45 +50,10 @@ public class UploadImageFileImpl implements UploadImageFile {
         return imageDTO;
     }
     @Override
-    public ImageDto uploadvideo(MultipartFile file)  {
-        assert file.getOriginalFilename() != null;
-        String publicValue = generatePublicValue(file.getOriginalFilename());
-        File fileUpload = null;
-        try {
-            fileUpload = convert(file);
-            var uploadResult =  cloudinary.uploader().upload(fileUpload,
-                    ObjectUtils.asMap("resource_type", "video",
-                            "public_id", publicValue,
-                            "eager", Arrays.asList(
-                                    new EagerTransformation().width(300).height(300).crop("pad").audioCodec("none"),
-                                    new EagerTransformation().width(160).height(100).crop("crop").gravity("south").audioCodec("none")),
-                            "eager_async", true,
-                            "eager_notification_url", "https://mysite.example.com/notify_endpoint"));
-
-            ImageDto imageDTO = new ImageDto();
-            imageDTO.setUrl(uploadResult.get("url").toString());
-            imageDTO.setPublicId(uploadResult.get("public_id").toString());
-            imageDTO.setType(file.getContentType());
-            return imageDTO;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-
-    }
-    @Override
     public void deleteImage(String publicId) {
         try {
             Map<String, String> params = ObjectUtils.asMap("public_id", publicId);
             cloudinary.uploader().destroy(publicId, params);
-        } catch (Exception e) {
-            throw new RuntimeException("Lỗi khi xóa hình ảnh từ Cloudinary", e);
-        }
-    }
-    @Override
-    public void deleteVideo(String publicId) {
-        try {
-            cloudinary.uploader().destroy(publicId,
-                    ObjectUtils.asMap("resource_type","video"));
         } catch (Exception e) {
             throw new RuntimeException("Lỗi khi xóa hình ảnh từ Cloudinary", e);
         }

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import Breadcrumb from '../../components/Breadcrumbs/Breadcrumb.tsx';
 import { Grade } from '../../types/Grade.ts'
 import { useNavigate } from 'react-router-dom';
-import { addGrade, deleteGrade,getGrades,createDiscord } from '../../service/GradeService.ts';
+import { addGrade, deleteGrade,findByUser,createDiscord } from '../../service/GradeService.ts';
 import { confirmDelete, showAlert } from '../../utils/swalUtils.ts';
 import { Pencil, Trash2 } from 'lucide-react';
 import { Course } from '../../types/Course.ts';
@@ -10,7 +10,7 @@ import { getCourses1 } from '../../service/CourseService.ts';
 import { formatDate } from '../../utils/dateUtils.ts';
 import { findByRole } from '../../service/AccountService.ts';
 
-const GradeList = () =>{
+const TeacherGradeList = () =>{
   const [grades, setGrades] = useState<Grade[]>([]);
   const [currentPage, setCurrentPage] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(5);
@@ -55,7 +55,6 @@ const GradeList = () =>{
   function getAllCourse(){
     getCourses1({}).then((response: any) => {
         setCourse(response.content);
-
         setTotalCertificate(response.totalElements);
       })
       .catch((error: any) => console.error(error));
@@ -79,7 +78,7 @@ const GradeList = () =>{
   }, [currentPage, itemsPerPage]);
 
   function getAllGrades(){
-    getGrades(currentPage, itemsPerPage).then((response:any) => {
+    findByUser({page: currentPage,size: 5}).then((response:any) => {
       let gradeArray = [];
 
       for (const grade of response.content) {
@@ -108,8 +107,6 @@ const GradeList = () =>{
       setTotalCertificate(response.totalElements)
     }).catch((error:any) => console.error(error));
   }
-
-  console.log(totalPages);
   const handleNextPage = () => {
     if (currentPage < totalPages - 1) {
       setCurrentPage(currentPage + 1);
@@ -175,7 +172,6 @@ const GradeList = () =>{
   const handleAdd = () => {
     setModalOpen(true);
   };
-
   return (
     <>
       <Breadcrumb pageName="Danh sách lớp"/>
@@ -373,4 +369,4 @@ const GradeList = () =>{
     </>
   );
 }
-export default GradeList;
+export default TeacherGradeList;

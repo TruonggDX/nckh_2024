@@ -297,4 +297,18 @@ public class IGradeServiceImpl implements IGradeService {
         response.setData(gradeDto);
         return response;
     }
+
+    @Override
+    public ResponsePage<List<GradeDto>> findByEmail(Pageable pageable) {
+        ResponsePage<List<GradeDto>> responsePage = new ResponsePage<>();
+        AuthDto authDto = jwtService.decodeToken();
+        Page<GradeEntity> page = gradeRepository.findByEmail(authDto.getEmail(),pageable);;
+        List<GradeDto> gradeDtos = page.getContent().stream().map(gradeMapper::toDto).toList();
+        responsePage.setPageNumber(pageable.getPageNumber());
+        responsePage.setPageSize(pageable.getPageSize());
+        responsePage.setTotalElements((page.getTotalElements()));
+        responsePage.setTotalPages(page.getTotalPages());
+        responsePage.setContent(gradeDtos);
+        return responsePage;
+    }
 }

@@ -84,6 +84,7 @@ export default function PagiCourse() {
                                         prevPrice={course.price}
                                         Price={course.price - course.price*course.discount/100}
                                         Level={course.aim}
+                                        Id={course.id}
                                     />
                                 </SwiperSlide>
                             )

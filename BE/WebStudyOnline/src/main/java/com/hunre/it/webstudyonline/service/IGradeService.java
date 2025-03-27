@@ -22,4 +22,5 @@ public interface IGradeService {
     BaseResponse<String> deleteStudentOuttoGrade(String id, String studentEmail);
 
     BaseResponse<GradeDto> findByCourseAndUser(String id);
+    ResponsePage<List<GradeDto>> findByEmail(Pageable pageable);
 }

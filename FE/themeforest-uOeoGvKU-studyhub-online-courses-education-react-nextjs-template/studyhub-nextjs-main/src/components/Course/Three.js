@@ -1,14 +1,53 @@
 import Image from "next/image";
 import Link from "next/link";
 import {formatCurrency} from "@/utils/utils";
+import {toast} from "react-toastify";
+import {useRouter} from "next/router";
+import {useCart} from "@/hooks/CartContext";
 
 export default function SingleCourseThree( props ) {
-	const { courseClass, Slug, Img, Title, Description, Category, ratingCount, lessonCount, studentCount, Author, bestSeller, Level, prevPrice, Price, imgWidth, imgHeight  } = props;
+	const { courseClass, Slug, Img, Title, Description, Category, ratingCount, lessonCount, studentCount, Author, bestSeller, Level, prevPrice, Price, imgWidth=290, imgHeight=210,Id  } = props;
 
+	const router = useRouter();
+	const { addCart } = useCart();
+	const handleAddToCart = (itemId, quantity) => {
+		const checkToken = localStorage.getItem("jwtToken");
+		if (!checkToken) {
+			toast.warning("Bạn cần đăng nhập vào hệ thống");
+			router.push("/login");
+		} else {
+			addCart(itemId, { quantity });
+			toast.success("Thêm thành công!", {
+				position: "top-right",
+				autoClose: 2000,
+				hideProgressBar: false,
+				closeOnClick: true,
+				pauseOnHover: true,
+				draggable: true,
+				theme: "colored",
+				closeButton: false,
+				style: {
+					padding: "5px",
+					width: "180px"
+				}
+			});
+		}
+	};
 	return (
 		<div className={ courseClass || 'single-course-style-three'} >
 			<Link href={`/course/details/four?${Slug || 'details'}`} className="thumbnail">
-				<Image src={Img || '/images/course/01.jpg'} width={imgWidth || 290} height={imgHeight || 210}alt="course" />
+				<Image
+					src={Img || '/images/course/01.jpg'}
+					width={imgWidth}
+					height={imgHeight}
+					alt="course"
+					style={{
+						width: '220px',
+						height: '150px',
+						objectFit: 'cover'
+					}}
+				/>
+
 				<div className="tag-thumb">
 					<span>{Category || 'Web Development'}</span>
 				</div>
@@ -44,7 +83,7 @@ export default function SingleCourseThree( props ) {
 						<span>{studentCount || '22'} Học viên</span>
 					</div>
 				</div>
-				<div className="course-content-area">
+				<div className="course-content-area" style={{width:'310px'}}>
 					<h5 className="heading-title">
 						<Link href={`/course/${Slug || 'details'}`}>
 							{Title || 'The Complete Web Developer in 2023: Zero to Mastery'}
@@ -65,15 +104,18 @@ export default function SingleCourseThree( props ) {
 							</div>
 						</div>
 					</div>
-					<p className="desc">{Description || 'Learn to create Machine Learning with Algorithms in Python and R from two Data Science experts included.'}</p>
+					<p className="desc">{Description || 'Học tiếng Anh một cách hiệu quả từ các chuyên gia giàu kinh nghiệm.'}</p>
 					<ul className="wrapper-list">
-						<li><i className="fa-solid fa-check"></i>Master Machine Learning on Python</li>
-						<li><i className="fa-solid fa-check"></i>Master Machine Learning on Python</li>
-						<li><i className="fa-solid fa-check"></i>Make accurate predictions</li>
+						<li><i className="fa-solid fa-check"></i>Nắm vững các kỹ năng </li>
+						<li><i className="fa-solid fa-check"></i>Cải thiện phát âm và ngữ pháp</li>
+						<li><i className="fa-solid fa-check"></i>Tăng sự tự tin khi giao tiếp</li>
 					</ul>
+
 					<div className="button-area">
-						<Link href="/cart" className="rts-btn btn-primary">Add To Cart</Link>
-						<Link href="/wishlist" className="wishlist-btn"><i className="far fa-heart"></i></Link>
+						<button onClick={() => handleAddToCart(Id, 1)} className="rts-btn btn-primary">
+							Thêm vào giỏ hàng
+						</button>
+						{/*<Link href="/cart" className="rts-btn btn-primary">Thêm vào giỏ hàng</Link>*/}
 					</div>
 					<div className="shape"></div>
 				</div>
