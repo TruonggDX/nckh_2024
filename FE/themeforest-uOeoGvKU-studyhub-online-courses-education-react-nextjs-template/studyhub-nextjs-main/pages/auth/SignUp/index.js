@@ -17,9 +17,9 @@ export default function SignUpModule() {
     const router = useRouter();
 
     const handleChange = (e) => {
-        const { id, value } = e.target;
-        setFormData((prevData) => ({ ...prevData, [id]: value }));
-        setDataOtp((prevData) => ({ ...prevData, registerUserDto: formData }));
+            const { id, value } = e.target;
+            setFormData((prevData) => ({ ...prevData, [id]: value }));
+            setDataOtp((prevData) => ({ ...prevData, registerUserDto: formData }));
     };
     const verificationCode = (e) => {
         const { id, value } = e.target;
@@ -41,6 +41,7 @@ export default function SignUpModule() {
 
     const handleOtpSubmit = (e) => {
         e.preventDefault();
+        dataOtp.registerUserDto.password = document.getElementById("password").value;
         api.verifyOtp(dataOtp).then((response) => {
             if (response === "Account verified successfully") {
                 router.push("/login");

@@ -42,7 +42,6 @@ export default function GradeDetail(props) {
 					<div className="">
 						<div className=" order-cl-1 order-lg-1 order-md-2 order-sm-2 order-2">
 							<div className="course-top-enroll-area1 ">
-
 							</div>
 
 							<div className="course-details-btn-wrapper materials full-width pb--50">
@@ -69,7 +68,9 @@ export default function GradeDetail(props) {
 									</li>
 								</ul>
 							</div>
-
+							<div>
+								<a href="http://localhost:3002/react-rtc-demo" style={{  fontSize: "13px",width: "80px", height: "43px",marginTop: "1%",}} className="btn btn-success">Phòng học</a>
+							</div>
 							<div className="tab-content mt--50" id="myTabContent">
 								{
 									activeTab === "timetable" ?

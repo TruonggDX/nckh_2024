@@ -38,7 +38,7 @@ const Timetable = () =>{
     if (url.length ==0) {
       alert("Vui lòng chọn lớp!")
     }else {
-      window.location.href=(url[0].url)
+      window.location.href=("http://localhost:3002/react-rtc-demo")
     }
   }
   return (
