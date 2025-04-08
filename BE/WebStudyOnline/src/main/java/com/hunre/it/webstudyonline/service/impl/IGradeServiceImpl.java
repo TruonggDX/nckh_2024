@@ -108,7 +108,7 @@ public class IGradeServiceImpl implements IGradeService {
         addTimetableRequest.setStudy_date(gradeEntity1.getStudy_date());
         addTimetableRequest.setCourseDetailsDto(courseDetailsDtos);
         addTimetableRequest.setGradeId(gradeEntity1.getId());
-        addTimetableRequest.setUrl("https://discord.com/channels/1346742537758441572");
+        addTimetableRequest.setUrl("http://localhost:3002/react-rtc-demo");
         timeTableService.addTimeTable(addTimetableRequest);
         return response;
     }
