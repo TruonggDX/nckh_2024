@@ -37,7 +37,6 @@ export default function CourseContent({ item }) {
 			</a>
 		)
 	}));
-
 	return (
 		<div className="course-content-wrapper-main mt--40">
 			<ModalVideo channel='youtube' isOpen={isOpen} videoId={url} onClose={() => openModal()} />
@@ -45,15 +44,10 @@ export default function CourseContent({ item }) {
 
 			<Accordion className="accordion">
 				{items.map(({ header, content }, i) => (
-					<AccordionItem header={header} key={i} initialEntered className="accordion-item">
-						{content}
-					</AccordionItem>
-				)).slice(0, 1)}
-				{items.map(({ header, content }, i) => (
 					<AccordionItem header={header} key={i} className="accordion-item">
 						{content}
 					</AccordionItem>
-				)).slice(1, 5)}
+				))}
 			</Accordion>
 		</div>
 	);

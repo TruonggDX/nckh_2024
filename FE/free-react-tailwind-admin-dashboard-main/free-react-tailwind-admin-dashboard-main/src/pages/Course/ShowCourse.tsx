@@ -444,15 +444,12 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
                   <div className="flex justify-between items-center">
                     <div>
                       <h3 className="text-lg font-semibold">
-                        Tiêu đề: {lesson.name}
+                        Buổi {lesson.period}: {lesson.name}
                       </h3>
                       <p className="text-sm text-gray-600">
                         Mô tả:
                         {lesson.description}
                       </p>
-                      <span className="text-xs text-gray-500">
-                        Thời lượng: {lesson.period}
-                      </span>
                       <p className="text-xs text-gray-500">
                         Video: {lesson.url}
                       </p>
@@ -589,7 +586,7 @@ const ShowCourse = ({ isEditMode = false }: { isEditMode?: boolean }) => {
             </div>
             <div className="mb-4">
               <label className="block text-gray-700 font-medium">
-                Thời lượng
+                Buổi
               </label>
               <input
                 type="text"

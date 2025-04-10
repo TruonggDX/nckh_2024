@@ -64,8 +64,6 @@ export default function Success() {
                 pay.statusZaloPay(params).then(async (result) => {
                     if (result && result.return_code === 1) {
                         createOrder();
-                    }else {
-                        router.push('/result_payment');
                     }
                 })
             }
@@ -84,8 +82,6 @@ export default function Success() {
 
                     if (res.resultCode === 0) {
                         createOrder()
-                    } else {
-                        router.push('/result_payment');
                     }
                 } catch (error) {
                     console.error(error);
