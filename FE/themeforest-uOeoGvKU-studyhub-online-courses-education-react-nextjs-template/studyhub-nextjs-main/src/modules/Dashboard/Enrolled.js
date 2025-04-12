@@ -13,6 +13,7 @@ import apiBill from "/src/route/bill"
 import api from "/src/route/route"
 import {useSelector} from "react-redux";
 import {formatDatee} from "@/utils/dateUtils";
+import {formatCurrency} from "@/utils/utils";
 SwiperCore.use([Navigation, Pagination]);
 export default function DashboardEnrolled() {
 	const [activeTab, setActiveTab] = useState("enrolled");
@@ -235,8 +236,8 @@ export default function DashboardEnrolled() {
 											Title={course.name}
 											Author={"Mục tiêu: "+course.aim}
 											ratingCount={"5"}
-											prevPrice={course.price}
-											Price={course.price - course.price*course.discount/100}
+											prevPrice={formatCurrency(course.price)}
+											Price={formatCurrency(course.price - course.price*course.discount/100)}
 											Level={course.aim}
 											courseClass="single-course-style-three enroll-course"
 											completePercent="80"
@@ -287,7 +288,7 @@ export default function DashboardEnrolled() {
 											Author={course.authorName}
 											ratingCount={course.ratingCount}
 											prevPrice={course.prevPrice}
-											Price={course.price}
+											Price={formatCurrency(course.price)}
 											imgWidth={course.imgWidth}
 											imgHeight={course.imgHeight}
 											bestSeller={course.bestSeller}

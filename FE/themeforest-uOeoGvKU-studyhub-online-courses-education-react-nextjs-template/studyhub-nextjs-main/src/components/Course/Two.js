@@ -32,9 +32,16 @@ export default function SingleCourseTwo( props ) {
 			})
 	},[status==="true"])
 	return (
-		<div className={ courseClass || 'single-course-style-three'}>
+		<div style={{marginBottom:'30px'}} className={ courseClass || 'single-course-style-three'}>
 			<Link href={`/grade/details/four?${JSON.stringify(Grade) || 'details'}`} className="thumbnail">
-				<Image src={Img || '/images/course/01.jpg'} width={imgWidth || 290} height={imgHeight || 210} alt="course" />
+				<Image src={Img || '/images/course/01.jpg'}
+					   width={imgWidth || 290} height={imgHeight || 210}
+					   style={{
+						   width: '220px',
+						   height: '150px',
+						   objectFit: 'cover'
+					   }}
+					   alt="course" />
 				<div className="tag-thumb">
 					<span>{Category || 'Web Development'}</span>
 				</div>
@@ -44,7 +51,7 @@ export default function SingleCourseTwo( props ) {
 					{
 						bestSeller && <div className="tags">Best Seller</div>
 					}
-					<div className="price">${Price || '79.99'}</div>
+					<div className="price">{Price || '79.99'}</div>
 				</div>
 				<Link href={`/grade/details/four?${JSON.stringify(Grade) || 'details'}`}>
 					<h5 className="title">{Title || 'The Complete Web Developer in 2023: Zero to Mastery'}</h5>
@@ -86,7 +93,7 @@ export default function SingleCourseTwo( props ) {
 						<div className="progress-wrapper-lesson-compleate">
 							<div className="compleate">
 								<div className="compl">
-									Complete
+									Hoàn thành
 								</div>
 								<div className="end">
 									<span>{completePercent || "80"}%</span>
