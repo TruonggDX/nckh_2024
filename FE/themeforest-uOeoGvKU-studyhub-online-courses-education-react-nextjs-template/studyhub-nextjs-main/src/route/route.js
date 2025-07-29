@@ -60,4 +60,10 @@ async function getGradeByCourseAndUser(req){
     const response = await axiosInstance.get(`/api/grade/findByCourseAndUser`,{params});
     return response.data;
 }
-export default {login,getTimetable,getGradeByCourseAndUser, getUser,signUp, verifyOtp,resendCode, getCategory, getCourse,getCourseBestSeller,getCourseDetails,getGradeByCourseId,signInGrade};
+
+async function getCourseByName(req){
+    const params = new URLSearchParams(req)
+    const response = await axiosInstance.get(`http://localhost:8080/api/course/get-name`, {params});
+    return response.data;
+}
+export default {login,getTimetable,getGradeByCourseAndUser, getUser,signUp, verifyOtp,resendCode, getCategory, getCourse,getCourseBestSeller,getCourseDetails,getGradeByCourseId,signInGrade,getCourseByName};

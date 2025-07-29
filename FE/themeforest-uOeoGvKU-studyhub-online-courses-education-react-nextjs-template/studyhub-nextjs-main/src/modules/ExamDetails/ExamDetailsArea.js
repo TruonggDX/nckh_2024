@@ -183,7 +183,7 @@ export default function ExamDetailsArea({item}) {
                             </div>
                             <div className="rts-events-details-area-information quiz-details">
                                 {data.map((question, key) => {
-                                    const parts = question.description.split(/(?=[A-D]\.)/);
+                                    const parts = question.description.replace(/\|/g, '').split(/(?=[A-D]\.)/);
                                     const questionText = parts[0];
                                     const answers = parts.slice(1);
 
@@ -194,7 +194,7 @@ export default function ExamDetailsArea({item}) {
                                             border: '1px solid #ddd',
                                             marginBottom: '12px',
                                             borderRadius: '8px',
-                                        }}> {question.name}
+                                        }}> Câu số {question.name}
 
                                             <h6>{questionText}</h6>
                                             <div style={{

@@ -31,6 +31,7 @@ import Timetable from './pages/Timetable/Timetable.tsx';
 import RoleList from './pages/Role/RoleList.tsx';
 import TeacherGradeList from './pages/Grade/TeacherGradeList.tsx';
 import TeacherTimetable from './pages/Timetable/TeacherTimetable.tsx';
+import { CreateExam } from './pages/Exam/CreateExam.tsx';
 
 function App() {
   const [loading, setLoading] = useState<boolean>(true);
@@ -240,7 +241,15 @@ function App() {
           }
         />
 
-
+        <Route
+          path="/create"
+          element={
+            <>
+              <PageTitle title="ADMIN" />
+              <CreateExam />
+            </>
+          }
+        />
 
 
 

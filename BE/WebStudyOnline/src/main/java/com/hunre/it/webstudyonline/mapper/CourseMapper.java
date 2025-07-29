@@ -1,6 +1,7 @@
 package com.hunre.it.webstudyonline.mapper;
 import com.hunre.it.webstudyonline.entity.CourseEntity;
 import com.hunre.it.webstudyonline.model.dto.CourseDto;
+import com.hunre.it.webstudyonline.model.dto.CourseIndex;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -36,4 +37,18 @@ public class CourseMapper {
         courseEntity.setStatus(courseDto.getStatus());
         return courseEntity;
     }
+
+    public CourseDto toDto(CourseIndex courseIndex) {
+        CourseDto dto = new CourseDto();
+        dto.setId(courseIndex.getId());
+        dto.setCode(courseIndex.getCode());
+        dto.setName(courseIndex.getName());
+        dto.setPrice(courseIndex.getPrice());
+        dto.setDescription(courseIndex.getDescription());
+        dto.setStatus(courseIndex.getStatus());
+        dto.setDiscount(courseIndex.getDiscount());
+        dto.setAim(courseIndex.getAim());
+        return dto;
+    }
+
 }

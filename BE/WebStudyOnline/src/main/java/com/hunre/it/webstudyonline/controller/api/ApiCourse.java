@@ -74,4 +74,10 @@ public class ApiCourse {
         ResponsePage<List<CourseDto>> response = courseService.getCourseByEmailTeacher(pageable,email);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/get-name")
+    public ResponseEntity<List<CourseDto>> search(@RequestParam String keyword) {
+        return ResponseEntity.ok(courseService.searchByName(keyword));
+    }
+
 }

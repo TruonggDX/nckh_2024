@@ -1,5 +1,7 @@
 package com.hunre.it.webstudyonline.service.impl;
 
+import co.elastic.clients.elasticsearch._types.query_dsl.Query;
+import co.elastic.clients.elasticsearch._types.query_dsl.QueryBuilders;
 import com.hunre.it.webstudyonline.entity.CategoryEntity;
 import com.hunre.it.webstudyonline.entity.CourseDetailsEntity;
 import com.hunre.it.webstudyonline.entity.CourseEntity;
@@ -7,6 +9,7 @@ import com.hunre.it.webstudyonline.entity.ImagesEntity;
 import com.hunre.it.webstudyonline.mapper.CourseMapper;
 import com.hunre.it.webstudyonline.mapper.ImageMapper;
 import com.hunre.it.webstudyonline.model.dto.CourseDto;
+import com.hunre.it.webstudyonline.model.dto.CourseIndex;
 import com.hunre.it.webstudyonline.model.dto.ImageDto;
 import com.hunre.it.webstudyonline.model.dto.RoleDto;
 import com.hunre.it.webstudyonline.model.dto.auth.AuthDto;
@@ -14,6 +17,7 @@ import com.hunre.it.webstudyonline.model.response.BaseResponse;
 import com.hunre.it.webstudyonline.model.response.ResponsePage;
 import com.hunre.it.webstudyonline.repository.CategoryRepository;
 import com.hunre.it.webstudyonline.repository.CourseDetailsRepository;
+import com.hunre.it.webstudyonline.repository.CourseElasticsearchRepository;
 import com.hunre.it.webstudyonline.repository.CourseRepository;
 import com.hunre.it.webstudyonline.repository.ImageRepository;
 import com.hunre.it.webstudyonline.security.service.JwtService;
@@ -24,6 +28,8 @@ import com.hunre.it.webstudyonline.utils.GenerateCode;
 import com.hunre.it.webstudyonline.utils.LongUtils;
 import com.hunre.it.webstudyonline.utils.Utils;
 import jakarta.transaction.Transactional;
+import java.util.stream.Collectors;
+import org.hibernate.query.NativeQuery;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -57,6 +63,8 @@ public class ICourseServiceImpl implements ICourseService {
     private CourseDetailsRepository courseDetailsRepository;
     @Autowired
     private JwtService jwtService;
+    @Autowired
+    private CourseElasticsearchRepository courseElasticsearchRepository;
 
     @Override
     public ResponsePage<List<CourseDto>> getCourses(Pageable pageable) {
@@ -336,4 +344,18 @@ public class ICourseServiceImpl implements ICourseService {
         responsePage.setContent(courseDtos);
         return responsePage;
     }
+
+    @Override
+    public List<CourseDto> searchByName(String name) {
+        List<CourseIndex> results = courseElasticsearchRepository.findByNameContainingIgnoreCase(name);
+        return results.stream()
+            .map(course -> {
+                CourseDto dto = courseMapper.toDto(course);
+                List<ImagesEntity> imagesEntity = imageRepository.findByCourseId(dto.getId());
+                dto.setImageUrl(imagesEntity.get(0).getUrl());
+                return dto;
+            })
+            .toList();
+    }
+
 }

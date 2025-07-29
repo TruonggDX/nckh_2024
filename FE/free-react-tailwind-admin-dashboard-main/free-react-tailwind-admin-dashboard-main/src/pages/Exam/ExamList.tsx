@@ -5,6 +5,7 @@ import { Exam } from '../../types/Exam.ts';
 import { addExam, deleteExamById, findByNameAndCode, getAllExams } from '../../service/ExamService.ts';
 import { confirmDelete, showAlert } from '../../utils/swalUtils.ts';
 import { useNavigate } from 'react-router-dom';
+import SelectAddExam from '../../components/Forms/SelectGroup/SelectAddExam.tsx';
 
 const ExamList = () => {
   const [exam, setExam] = useState<Exam[]>([]);
@@ -104,16 +105,18 @@ const ExamList = () => {
   const handleSearch = () =>{
     getDataSearch()
   }
+  useEffect(() => {
+    const handleOpenModal = () => setOpenModal(true);
+    window.addEventListener('openExamModal', handleOpenModal);
+    return () => {
+      window.removeEventListener('openExamModal', handleOpenModal);
+    };
+  }, []);
+
   return (
     <>
       <Breadcrumb pageName="Danh sách bài thi" />
-      <button
-        className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
-        style={{ width: 150, marginBottom: 10 }}
-        onClick={() => setOpenModal(true)}
-      >
-        Thêm bài thi
-      </button>
+      <SelectAddExam />
       <div className="flex flex-wrap items-center gap-4 mb-6">
         <div className="relative flex-1 min-w-[150px]">
           <FileText className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />

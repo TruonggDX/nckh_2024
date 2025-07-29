@@ -19,4 +19,5 @@ public interface ICourseService {
     ResponsePage<List<CourseDto>> getCourseByCreatedBy(Pageable pageable);
     ResponsePage<List<CourseDto>> getCourseBestSeller(Pageable pageable);
     ResponsePage<List<CourseDto>> getCourseByEmailTeacher(Pageable pageable,String email);
+    List<CourseDto> searchByName(String name);
 }

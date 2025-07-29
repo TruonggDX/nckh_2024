@@ -1,7 +1,11 @@
 package com.hunre.it.webstudyonline.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "exam")
@@ -11,9 +15,19 @@ public class ExamEntity extends AbstractEntity{
     private Integer duration;
     private Integer number_question;
     private Boolean isFree;
+    @OneToMany(mappedBy = "examEntity", cascade = CascadeType.ALL)
+    private List<ExamDetailsEntity> details = new ArrayList<>();
 
     public Boolean getFree() {
         return isFree;
+    }
+
+    public List<ExamDetailsEntity> getDetails() {
+        return details;
+    }
+
+    public void setDetails(List<ExamDetailsEntity> details) {
+        this.details = details;
     }
 
     public void setFree(Boolean free) {

@@ -95,17 +95,16 @@ export default function Header(props) {
 
     const handleSearch = (e) => {
         const value = e.target.value;
-        setFilter({name: value});
+        setFilter({ name: value });
         if (value.trim() !== '') {
-            api.getCourse({name: value}).then((response) => {
-                setCourses(response.content);
+            api.getCourseByName({ keyword: value }).then((response) => {
                 console.log('res', response);
+                setCourses(response);
             });
         } else {
             setCourses([]);
         }
     };
-
 
     return (
         <>
@@ -393,8 +392,7 @@ export default function Header(props) {
                                     fontSize: '16px',
                                 }}
                             />
-                            <button
-                            >
+                            <button>
                                 <i className="far fa-search"></i>
                             </button>
                         </div>
@@ -445,7 +443,6 @@ export default function Header(props) {
                                                         backgroundColor: '#f9f9f9',
                                                     }}
                                                 />
-
                                                 <div style={{display: 'flex', flexDirection: 'column'}}>
                                                     <div className="book-title" style={{
                                                         fontWeight: 'bold',
@@ -475,18 +472,12 @@ export default function Header(props) {
                                 )}
                             </div>
                         )}
-
                     </div>
                 </div>
-                <div
-                    id="close"
-                    className="search-close-icon"
-                    onClick={closeModal}
-                >
+                <div id="close" className="search-close-icon" onClick={closeModal}>
                     <i className="far fa-times"></i>
                 </div>
             </div>
-
             {/* Search Modal End */}
 
 
