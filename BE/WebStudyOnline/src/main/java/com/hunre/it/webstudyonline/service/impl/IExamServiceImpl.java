@@ -1,17 +1,24 @@
 package com.hunre.it.webstudyonline.service.impl;
 
+import com.hunre.it.webstudyonline.entity.CourseEntity;
 import com.hunre.it.webstudyonline.entity.ExamDetailsEntity;
 import com.hunre.it.webstudyonline.entity.ExamEntity;
+import com.hunre.it.webstudyonline.entity.ImagesEntity;
+import com.hunre.it.webstudyonline.mapper.CourseMapper;
 import com.hunre.it.webstudyonline.mapper.ExamDetailsMapper;
 import com.hunre.it.webstudyonline.mapper.ExamMapper;
 import com.hunre.it.webstudyonline.mapper.IExamMapper;
+import com.hunre.it.webstudyonline.model.dto.CourseDto;
 import com.hunre.it.webstudyonline.model.dto.ExamDto;
 import com.hunre.it.webstudyonline.model.dto.auth.AuthDto;
+import com.hunre.it.webstudyonline.model.request.ExamResultRequest;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
 import com.hunre.it.webstudyonline.model.response.ExamAutoFillResponse;
 import com.hunre.it.webstudyonline.model.response.ResponsePage;
 import com.hunre.it.webstudyonline.repository.BillRepository;
+import com.hunre.it.webstudyonline.repository.CourseRepository;
 import com.hunre.it.webstudyonline.repository.ExamRepository;
+import com.hunre.it.webstudyonline.repository.ImageRepository;
 import com.hunre.it.webstudyonline.security.service.JwtService;
 import com.hunre.it.webstudyonline.service.IExamService;
 import com.hunre.it.webstudyonline.utils.Constant;
@@ -41,6 +48,12 @@ public class IExamServiceImpl implements IExamService {
   private  BillRepository billRepository;
   @Autowired
   private  IExamMapper iExamMapper;
+  @Autowired
+  private CourseRepository courseRepository;
+  @Autowired
+  private CourseMapper courseMapper;
+  @Autowired
+  private ImageRepository imageRepository;
   @Override
   public ResponsePage<List<ExamDto>> getAll(Pageable pageable) {
     ResponsePage<List<ExamDto>> responsePage = new ResponsePage<>();
@@ -144,6 +157,45 @@ public class IExamServiceImpl implements IExamService {
     res.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
     res.setData(iExamMapper.toResponse(examEntity));
     return res;
+  }
+
+  @Override
+  public BaseResponse<List<CourseDto>> suggestCourse(ExamResultRequest request) {
+    BaseResponse<List<CourseDto>> response = new BaseResponse<>();
+    Long score = request.getScore();
+    List<CourseEntity> courseEntityList;
+    if (score >= 0 && score <= 50) {
+      // Beginner: A1
+      courseEntityList = courseRepository.findByAim("A1");
+    } else if (score <= 100) {
+      // Elementary: A2
+      courseEntityList = courseRepository.findByAim("A2");
+    } else if (score <= 150) {
+      // Intermediate: B1
+      courseEntityList = courseRepository.findByAim("B1");
+    } else if (score <= 200) {
+      // Upper Intermediate: B2
+      courseEntityList = courseRepository.findByAim("B2");
+    } else if (score <= 230) {
+      // Advanced: C1
+      courseEntityList = courseRepository.findByAim("C1");
+    } else {
+      // Proficient: C2
+      courseEntityList = courseRepository.findByAim("C2");
+    }
+    List<CourseDto> courseDtos = courseEntityList.stream().map(courseEntity -> {
+      CourseDto courseDto = courseMapper.toDto(courseEntity);
+      List<ImagesEntity> images = imageRepository.findByCourseId(courseEntity.getId());
+      if (!images.isEmpty()) {
+        ImagesEntity image = images.get(0);
+        courseDto.setImageUrl(image.getUrl());
+      }
+      return courseDto;
+    }).toList();
+    response.setData(courseDtos);
+    response.setCode(HttpStatus.OK.value());
+    response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
+    return response;
   }
 
   @Override

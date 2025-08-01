@@ -2,14 +2,23 @@ import Image from "next/image";
 import Link from "next/link";
 
 export default function SingleInstructor( props ) {
-	const { instructorClass, Slug, Img, Title, Designation, imgWidth, imgHeight  } = props;
+	const { instructorClass, Slug, Img, Name, Position, imgWidth, imgHeight  } = props;
 
 	return (
 		<div className={instructorClass || 'single-instructor'}>
 			<div className="single-instructor">
 				<div className="thumbnail-img">
 					<Link href={`/instructor/${Slug || 'details'}`} className="thumbnail">
-						<Image src={Img || '/images/instructor/01.jpg'} alt="instructor" width={imgWidth || 338} height={imgHeight || 374} />
+						<Image
+							src={Img}
+							width={330}
+							height={370}
+							style={{
+								objectFit: 'cover',
+								width: '330px',
+								height: '370px'
+							}}
+						/>
 					</Link>
 					<div className="social-img-instructor">
 						<ul>
@@ -21,9 +30,9 @@ export default function SingleInstructor( props ) {
 					</div>
 				</div>
 				<Link href={`/instructor/${Slug || 'details'}`}>
-					<h5 className="title">{Title || 'Emma Elizabeth'}</h5>
+					<h5 className="title">{Name || 'Emma Elizabeth'}</h5>
 				</Link>
-				<p>{Designation || 'Assistant Teacher'}</p>
+				<p>{Position || 'Assistant Teacher'}</p>
 			</div>
 		</div>
 	)

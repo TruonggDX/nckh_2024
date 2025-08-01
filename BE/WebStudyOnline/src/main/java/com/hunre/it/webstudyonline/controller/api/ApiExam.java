@@ -1,7 +1,9 @@
 package com.hunre.it.webstudyonline.controller.api;
 
 import com.hunre.it.webstudyonline.model.dto.CertificateDto;
+import com.hunre.it.webstudyonline.model.dto.CourseDto;
 import com.hunre.it.webstudyonline.model.dto.ExamDto;
+import com.hunre.it.webstudyonline.model.request.ExamResultRequest;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
 import com.hunre.it.webstudyonline.model.response.ExamAutoFillResponse;
 import com.hunre.it.webstudyonline.model.response.ResponsePage;
@@ -72,5 +74,10 @@ public class ApiExam {
   public ResponseEntity<BaseResponse<ExamAutoFillResponse>> createExamDetails(
       @RequestBody ExamAutoFillResponse examDto) {
     return ResponseEntity.ok(iExamService.create(examDto));
+  }
+
+  @PostMapping("/suggest")
+  public ResponseEntity<BaseResponse<List<CourseDto>>> suggest(@RequestBody ExamResultRequest request){
+    return ResponseEntity.ok(iExamService.suggestCourse(request));
   }
 }

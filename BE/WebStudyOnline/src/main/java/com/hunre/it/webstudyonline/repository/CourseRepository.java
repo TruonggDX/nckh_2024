@@ -44,4 +44,7 @@ public interface CourseRepository extends JpaRepository<CourseEntity,Long> {
 
     @Query(value = "SELECT c FROM CourseEntity c WHERE c.deleted=false ")
     List<CourseEntity> getAllDeletedCourses();
+
+    @Query("SELECT c FROM CourseEntity c WHERE c.deleted=false AND c.level=:level")
+    List<CourseEntity> findByAim(String level);
 }

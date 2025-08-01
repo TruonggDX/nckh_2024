@@ -20,6 +20,7 @@ export default function DashboarExam() {
     const [exam, setExam] = useState([]);
     useEffect(() => {
         ex.getExam(currentPage,paginatePerPage).then((res) => {
+            console.log('l',res)
             setExam(res.content)
             setTotalPaginate(res.totalElements)
         })

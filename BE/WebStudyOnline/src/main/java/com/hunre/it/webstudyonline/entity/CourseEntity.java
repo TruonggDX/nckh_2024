@@ -17,7 +17,12 @@ public class CourseEntity extends AbstractEntity {
     private String description;
     private Integer discount;
     private String status;
-    public String aim;
+    private String aim;
+    /*
+    add field
+     */
+    private String level;
+
     @OneToMany(mappedBy = "courseEntity")
     private Set<BillDetailsEntity>billDetailsEntities = new HashSet<>();
     @ManyToOne
@@ -114,5 +119,13 @@ public class CourseEntity extends AbstractEntity {
 
     public void setCategoryEntity(CategoryEntity categoryEntity) {
         this.categoryEntity = categoryEntity;
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(String level) {
+        this.level = level;
     }
 }
