@@ -23,4 +23,6 @@ public interface IGradeService {
 
     BaseResponse<GradeDto> findByCourseAndUser(String id);
     ResponsePage<List<GradeDto>> findByEmail(Pageable pageable);
+
+    BaseResponse<Long> countGrade();
 }

@@ -20,6 +20,7 @@ import com.hunre.it.webstudyonline.security.service.JwtService;
 import com.hunre.it.webstudyonline.service.ICourseService;
 import com.hunre.it.webstudyonline.service.UploadImageFile;
 import com.hunre.it.webstudyonline.utils.Constant;
+import com.hunre.it.webstudyonline.utils.Constant.HTTP_MESSAGE;
 import com.hunre.it.webstudyonline.utils.GenerateCode;
 import com.hunre.it.webstudyonline.utils.LongUtils;
 import com.hunre.it.webstudyonline.utils.Utils;
@@ -335,5 +336,15 @@ public class ICourseServiceImpl implements ICourseService {
         responsePage.setTotalPages(page.getTotalPages());
         responsePage.setContent(courseDtos);
         return responsePage;
+    }
+
+    @Override
+    public BaseResponse<Long> countCourse(){
+        BaseResponse<Long> baseResponse = new BaseResponse<>();
+        Long check = courseRepository.countCourse();
+        baseResponse.setData(check);
+        baseResponse.setCode(HttpStatus.OK.value());
+        baseResponse.setMessage(HTTP_MESSAGE.SUCCESS);
+        return baseResponse;
     }
 }

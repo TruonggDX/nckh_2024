@@ -1,17 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CardDataStats from '../../components/CardDataStats';
 import ChartOne from '../../components/Charts/ChartOne';
 import ChartThree from '../../components/Charts/ChartThree';
-import ChartTwo from '../../components/Charts/ChartTwo';
 import ChatCard from '../../components/Chat/ChatCard';
-import MapOne from '../../components/Maps/MapOne';
-import TableOne from '../../components/Tables/TableOne';
+import { countTeachers, countUser } from '../../service/AccountService.ts';
+import { countCourses } from '../../service/CourseService.ts';
+import { countGrades } from '../../service/GradeService.ts';
 
 const ECommerce: React.FC = () => {
+  const [countUserNumber, setCountUserNumber] = useState<number>(0);
+  const [countTeacherNumber, setCountTeacherNumber] = useState<number>(0);
+  const [countCoursesNumber, setCountCoursesNumber] = useState<number>(0);
+  const [countGradesNumber, setCountGradesNumber] = useState<number>(0);
+
+  useEffect(() =>{
+    countUser().then((res:any) => {
+      setCountUserNumber(res.data);
+    }).catch((e) => console.error(e));
+
+    countTeachers().then((res:any) => {
+      setCountTeacherNumber(res.data);
+    }).catch((e) => console.error(e));
+
+    countCourses().then((res:any) => {
+      setCountCoursesNumber(res.data);
+    }).catch((e) => console.error(e));
+
+    countGrades().then((res:any) => {
+      setCountGradesNumber(res.data);
+    }).catch((e) => console.error(e));
+  }, [])
+
   return (
     <>
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4 2xl:gap-7.5">
-        <CardDataStats title="Total views" total="$3.456K" rate="0.43%" levelUp>
+        <CardDataStats title="Học viên" total={countUserNumber.toString()} rate="" >
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -30,7 +53,7 @@ const ECommerce: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Profit" total="$45,2K" rate="4.35%" levelUp>
+        <CardDataStats title="Giảng viên" total={countTeacherNumber.toString()} rate="" >
           <svg
             className="fill-primary dark:fill-white"
             width="20"
@@ -53,7 +76,7 @@ const ECommerce: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Product" total="2.450" rate="2.59%" levelUp>
+        <CardDataStats title="Khóa học" total={countCoursesNumber.toString()} rate="" >
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -72,7 +95,7 @@ const ECommerce: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title="Total Users" total="3.456" rate="0.95%" levelDown>
+        <CardDataStats title="Lớp" total={countGradesNumber.toString()} rate="" >
           <svg
             className="fill-primary dark:fill-white"
             width="22"
@@ -99,12 +122,12 @@ const ECommerce: React.FC = () => {
 
       <div className="mt-4 grid grid-cols-12 gap-4 md:mt-6 md:gap-6 2xl:mt-7.5 2xl:gap-7.5">
         <ChartOne />
-        <ChartTwo />
+        {/*<ChartTwo />*/}
         <ChartThree />
-        <MapOne />
-        <div className="col-span-12 xl:col-span-8">
-          <TableOne />
-        </div>
+        {/*<MapOne />*/}
+        {/*<div className="col-span-12 xl:col-span-8">*/}
+        {/*  <TableOne />*/}
+        {/*</div>*/}
         <ChatCard />
       </div>
     </>

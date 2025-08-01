@@ -282,4 +282,25 @@ public class IAccountServiceImpl implements IAccountService {
         return responsePage;
     }
 
+
+    @Override
+    public BaseResponse<Long> countUser() {
+        BaseResponse<Long> response = new BaseResponse<>();
+        Long check = accountRepository.countUser();
+        response.setCode(HttpStatus.OK.value());
+        response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
+        response.setData(check);
+        return response;
+    }
+
+    @Override
+    public BaseResponse<Long> countTeacher(){
+        BaseResponse<Long> response = new BaseResponse<>();
+        Long check = accountRepository.countTeacher();
+        response.setCode(HttpStatus.OK.value());
+        response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
+        response.setData(check);
+        return response;
+    }
+
 }

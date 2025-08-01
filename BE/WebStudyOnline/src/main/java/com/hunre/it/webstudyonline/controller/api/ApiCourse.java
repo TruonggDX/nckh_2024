@@ -74,4 +74,10 @@ public class ApiCourse {
         ResponsePage<List<CourseDto>> response = courseService.getCourseByEmailTeacher(pageable,email);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/countCourse")
+    public ResponseEntity<BaseResponse<Long>> countCourse(){
+        BaseResponse<Long> response = courseService.countCourse();
+        return ResponseEntity.ok(response);
+    }
 }

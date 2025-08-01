@@ -1,196 +1,84 @@
 import { ApexOptions } from 'apexcharts';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
+import {
+  getRevenueByMonth,
+  getRevenueByWeek,
+  getRevenueByYear
+} from '../../service/RevenueService.tsx';
 
-const options: ApexOptions = {
-  legend: {
-    show: false,
-    position: 'top',
-    horizontalAlign: 'left',
-  },
-  colors: ['#3C50E0', '#80CAEE'],
-  chart: {
-    fontFamily: 'Satoshi, sans-serif',
-    height: 335,
-    type: 'area',
-    dropShadow: {
-      enabled: true,
-      color: '#623CEA14',
-      top: 10,
-      blur: 4,
-      left: 0,
-      opacity: 0.1,
-    },
-
-    toolbar: {
-      show: false,
-    },
-  },
-  responsive: [
-    {
-      breakpoint: 1024,
-      options: {
-        chart: {
-          height: 300,
-        },
-      },
-    },
-    {
-      breakpoint: 1366,
-      options: {
-        chart: {
-          height: 350,
-        },
-      },
-    },
-  ],
-  stroke: {
-    width: [2, 2],
-    curve: 'straight',
-  },
-  // labels: {
-  //   show: false,
-  //   position: "top",
-  // },
-  grid: {
-    xaxis: {
-      lines: {
-        show: true,
-      },
-    },
-    yaxis: {
-      lines: {
-        show: true,
-      },
-    },
-  },
-  dataLabels: {
-    enabled: false,
-  },
-  markers: {
-    size: 4,
-    colors: '#fff',
-    strokeColors: ['#3056D3', '#80CAEE'],
-    strokeWidth: 3,
-    strokeOpacity: 0.9,
-    strokeDashArray: 0,
-    fillOpacity: 1,
-    discrete: [],
-    hover: {
-      size: undefined,
-      sizeOffset: 5,
-    },
-  },
-  xaxis: {
-    type: 'category',
-    categories: [
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-    ],
-    axisBorder: {
-      show: false,
-    },
-    axisTicks: {
-      show: false,
-    },
-  },
-  yaxis: {
-    title: {
-      style: {
-        fontSize: '0px',
-      },
-    },
-    min: 0,
-    max: 100,
-  },
-};
-
-interface ChartOneState {
-  series: {
-    name: string;
-    data: number[];
-  }[];
-}
 
 const ChartOne: React.FC = () => {
-  const [state, setState] = useState<ChartOneState>({
-    series: [
-      {
-        name: 'Product One',
-        data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30, 45],
-      },
+  const [series, setSeries] = useState<{ name: string; data: number[] }[]>([]);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [filter, setFilter] = useState<'year' | 'week' | 'month'>('month');
+  const [loading, setLoading] = useState<boolean>(true);
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      let data;
+      if (filter === "week") {
+        data = await getRevenueByWeek();
+        data.data.sort((a: any, b: any) => a.week - b.week);
+        setCategories(data.data.map((d: any) => `Tuần ${d.week}`));
+        setSeries([{ name: "Total Revenue", data: data.data.map((d: any) => d.revenue) }]);
+      } else if (filter === "month") {
+        data = await getRevenueByMonth();
+        data.data.sort((a: any, b: any) => a.month - b.month);
+        setCategories(data.data.map((d: any) => `Tháng ${d.month}`));
+        setSeries([{ name: "Total Revenue", data: data.data.map((d: any) => d.revenue) }]);
+      } else {
+        data = await getRevenueByYear();
+        data.data.sort((a: any, b: any) => a.year - b.year);
+        setCategories(data.data.map((d: any) => `Năm ${d.year}`));
+        setSeries([{ name: "Total Revenue", data: data.data.map((d: any) => d.revenue) }]);
+      }
+      setLoading(false);
+    };
 
-      {
-        name: 'Product Two',
-        data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39, 51],
-      },
-    ],
-  });
+    fetchData();
+  }, [filter]);
 
-  const handleReset = () => {
-    setState((prevState) => ({
-      ...prevState,
-    }));
+
+  const options: ApexOptions = {
+    chart: { type: 'bar', height: '100%', width: '100%', fontFamily: 'Satoshi, sans-serif' },
+    plotOptions: { bar: { horizontal: false, columnWidth: '55%', endingShape: 'rounded' } },
+    dataLabels: { enabled: false },
+    stroke: { show: true, width: 2, colors: ['transparent'] },
+    xaxis: { categories },
+    yaxis: { title: { text: 'Doanh thu (VNĐ)' } },
+    fill: { opacity: 1 },
+    tooltip: { y: { formatter: (val) => `${val.toLocaleString()} VNĐ` } },
   };
-  handleReset;
 
   return (
-    <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-8">
+    <div className="col-span-12 rounded-sm border border-stroke bg-white px-5 pt-7.5 pb-5 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:col-span-12">
       <div className="flex flex-wrap items-start justify-between gap-3 sm:flex-nowrap">
-        <div className="flex w-full flex-wrap gap-3 sm:gap-5">
-          <div className="flex min-w-47.5">
-            <span className="mt-1 mr-2 flex h-4 w-full max-w-4 items-center justify-center rounded-full border border-primary">
-              <span className="block h-2.5 w-full max-w-2.5 rounded-full bg-primary"></span>
-            </span>
-            <div className="w-full">
-              <p className="font-semibold text-primary">Total Revenue</p>
-              <p className="text-sm font-medium">12.04.2022 - 12.05.2022</p>
-            </div>
-          </div>
-          <div className="flex min-w-47.5">
-            <span className="mt-1 mr-2 flex h-4 w-full max-w-4 items-center justify-center rounded-full border border-secondary">
-              <span className="block h-2.5 w-full max-w-2.5 rounded-full bg-secondary"></span>
-            </span>
-            <div className="w-full">
-              <p className="font-semibold text-secondary">Total Sales</p>
-              <p className="text-sm font-medium">12.04.2022 - 12.05.2022</p>
-            </div>
-          </div>
-        </div>
+        <h2 className="text-lg font-semibold">Thống kê doanh thu</h2>
         <div className="flex w-full max-w-45 justify-end">
           <div className="inline-flex items-center rounded-md bg-whiter p-1.5 dark:bg-meta-4">
-            <button className="rounded bg-white py-1 px-3 text-xs font-medium text-black shadow-card hover:bg-white hover:shadow-card dark:bg-boxdark dark:text-white dark:hover:bg-boxdark">
-              Day
-            </button>
-            <button className="rounded py-1 px-3 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark">
-              Week
-            </button>
-            <button className="rounded py-1 px-3 text-xs font-medium text-black hover:bg-white hover:shadow-card dark:text-white dark:hover:bg-boxdark">
-              Month
-            </button>
+            {['year', 'week', 'month'].map((type) => (
+              <button
+                key={type}
+                onClick={() => setFilter(type as 'year' | 'week' | 'month')}
+                className={`rounded py-1 px-3 text-xs font-medium ${filter === type ? 'bg-blue-600 text-white shadow-md' : 'text-black hover:bg-gray-200'
+                }`}
+              >
+                {type === 'year' ? 'Year' : type === 'week' ? 'Week' : 'Month'}
+              </button>
+            ))}
           </div>
         </div>
       </div>
 
       <div>
-        <div id="chartOne" className="-ml-5">
-          <ReactApexChart
-            options={options}
-            series={state.series}
-            type="area"
-            height={350}
-          />
-        </div>
+        {loading ? (
+          <p className="text-center py-5 font-semibold">Đang tải dữ liệu...</p>
+        ) : (
+          <div id="chartOne" className="w-full">
+            <ReactApexChart options={options} series={series} type="bar" width="100%" height={350} />
+          </div>
+        )}
       </div>
     </div>
   );

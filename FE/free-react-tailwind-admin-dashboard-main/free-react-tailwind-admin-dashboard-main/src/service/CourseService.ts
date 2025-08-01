@@ -126,3 +126,18 @@ export const findByCreateBy = async (page:number, size:number) => {
     throw e;
   }
 }
+
+export const countCourses = async () => {
+  const token = getToken();
+  try {
+    const response = await axios.get(`${api}/countCourse`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
