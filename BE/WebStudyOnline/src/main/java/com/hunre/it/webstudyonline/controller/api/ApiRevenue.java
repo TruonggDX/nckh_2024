@@ -1,5 +1,6 @@
 package com.hunre.it.webstudyonline.controller.api;
 
+import com.hunre.it.webstudyonline.model.dto.CategoryRevenueDto;
 import com.hunre.it.webstudyonline.model.dto.CourseRevenueDto;
 import com.hunre.it.webstudyonline.model.dto.RevenueMonthDto;
 import com.hunre.it.webstudyonline.model.dto.RevenueWeekDto;
@@ -45,6 +46,12 @@ public class ApiRevenue {
   @GetMapping("/course")
   public ResponseEntity<BaseResponse<List<CourseRevenueDto>>> getRevenueByCourse() {
     BaseResponse<List<CourseRevenueDto>> response = revenueService.getCourseRevenue();
+    return ResponseEntity.ok(response);
+  }
+
+  @GetMapping("/category")
+  public ResponseEntity<BaseResponse<List<CategoryRevenueDto>>> getRevenueByCategory() {
+    BaseResponse<List<CategoryRevenueDto>> response = revenueService.getCategoryRevenue();
     return ResponseEntity.ok(response);
   }
 

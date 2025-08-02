@@ -1,6 +1,7 @@
 package com.hunre.it.webstudyonline.repository;
 
 import com.hunre.it.webstudyonline.entity.BillDetailsEntity;
+import com.hunre.it.webstudyonline.model.dto.CategoryRevenueDto;
 import com.hunre.it.webstudyonline.model.dto.CourseRevenueDto;
 import com.hunre.it.webstudyonline.model.dto.RevenueMonthDto;
 import com.hunre.it.webstudyonline.model.dto.RevenueWeekDto;
@@ -51,13 +52,23 @@ public interface BillDetailsRepository extends JpaRepository<BillDetailsEntity,L
     List<RevenueWeekDto> getRevenueWeeks();
 
     @Query("select new com.hunre.it.webstudyonline.model.dto.CourseRevenueDto( "
-        + "c.name, coalesce(sum(bd.price * bd.quantity), 0) ) "
+        + "c.code, i.url, c.name, count(bd.id), coalesce(sum(bd.price * bd.quantity), 0) ) "
         + "from BillDetailsEntity bd "
-        + "join bd.billEntity b "
         + "join bd.courseEntity c "
-        + "where bd.deleted = false and b.deleted = false and c.deleted = false "
-        + "group by c.name")
+        + "left join ImagesEntity i on i.courseEntity = c "
+        + "where bd.deleted = false and c.deleted = false "
+        + "group by c.code, i.url, c.name "
+        + "order by coalesce(sum(bd.price * bd.quantity), 0) desc limit 5")
     List<CourseRevenueDto> getCourseRevenues();
+
+    @Query("select new com.hunre.it.webstudyonline.model.dto.CategoryRevenueDto( "
+        + "cate.name, coalesce(sum(bd.quantity * bd.price), 0) ) "
+        + "from BillDetailsEntity bd "
+        + "join bd.courseEntity c "
+        + "join c.categoryEntity cate "
+        + "where bd.deleted=false and c.deleted=false and cate.deleted=false "
+        + "group by cate.name")
+    List<CategoryRevenueDto> getCategoryRevenues();
 
     @Query("select bd from BillDetailsEntity bd " +
         "join bd.courseEntity c " +

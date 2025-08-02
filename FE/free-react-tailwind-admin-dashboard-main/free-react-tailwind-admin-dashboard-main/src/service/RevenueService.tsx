@@ -55,6 +55,19 @@ export const getRevenueByCourse = async () => {
   }
 }
 
+export const getRevenueByCategory = async () => {
+  const token = getToken();
+  try {
+    const response = await axios.get(`${api}/category`, {
+      headers: {'Authorization': `Bearer ${token}`},
+    });
+    return response.data;
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+}
+
 export const exportToExcel = async (startDate: string, endDate: string) => {
   const token = getToken();
   try {

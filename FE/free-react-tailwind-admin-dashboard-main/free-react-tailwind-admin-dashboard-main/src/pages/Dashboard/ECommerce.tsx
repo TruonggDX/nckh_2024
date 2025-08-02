@@ -6,6 +6,7 @@ import ChatCard from '../../components/Chat/ChatCard';
 import { countTeachers, countUser } from '../../service/AccountService.ts';
 import { countCourses } from '../../service/CourseService.ts';
 import { countGrades } from '../../service/GradeService.ts';
+import TableOne from '../../components/Tables/TableOne.tsx';
 
 const ECommerce: React.FC = () => {
   const [countUserNumber, setCountUserNumber] = useState<number>(0);
@@ -125,10 +126,10 @@ const ECommerce: React.FC = () => {
         {/*<ChartTwo />*/}
         <ChartThree />
         {/*<MapOne />*/}
-        {/*<div className="col-span-12 xl:col-span-8">*/}
-        {/*  <TableOne />*/}
-        {/*</div>*/}
         <ChatCard />
+        <div className="col-span-12 xl:col-span-12">
+          <TableOne />
+        </div>
       </div>
     </>
   );

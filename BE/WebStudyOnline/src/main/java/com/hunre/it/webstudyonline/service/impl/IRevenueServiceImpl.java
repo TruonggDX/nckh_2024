@@ -1,6 +1,7 @@
 package com.hunre.it.webstudyonline.service.impl;
 
 import com.hunre.it.webstudyonline.entity.BillDetailsEntity;
+import com.hunre.it.webstudyonline.model.dto.CategoryRevenueDto;
 import com.hunre.it.webstudyonline.model.dto.CourseRevenueDto;
 import com.hunre.it.webstudyonline.model.dto.RevenueMonthDto;
 import com.hunre.it.webstudyonline.model.dto.RevenueWeekDto;
@@ -73,6 +74,18 @@ public class IRevenueServiceImpl implements IRevenueService {
     response.setCode(HttpStatus.OK.value());
     return response;
   }
+
+
+  @Override
+  public BaseResponse<List<CategoryRevenueDto>> getCategoryRevenue() {
+    BaseResponse<List<CategoryRevenueDto>> response = new BaseResponse<>();
+    List<CategoryRevenueDto> list = billDetailsRepository.getCategoryRevenues();
+    response.setData(list);
+    response.setMessage(HTTP_MESSAGE.SUCCESS);
+    response.setCode(HttpStatus.OK.value());
+    return response;
+  }
+
 
   @Override
   public byte[] exportBillDetailsToExcel(Date startDate, Date endDate) {

@@ -1,7 +1,7 @@
 import { ApexOptions } from 'apexcharts';
 import React, { useEffect, useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
-import { getRevenueByCourse } from '../../service/RevenueService';
+import { getRevenueByCategory } from '../../service/RevenueService';
 
 interface ChartThreeState {
   series: number[];
@@ -15,11 +15,11 @@ const ChartThree: React.FC = () => {
   });
 
   useEffect(() => {
-    getRevenueByCourse().then((res) => {
-      const courseData = res.data;
+    getRevenueByCategory().then((res) => {
+      const categoryData = res.data;
 
-      const seriesData = courseData.map((item: any) => item.revenue);
-      const labelsData = courseData.map((item: any) => item.courseName);
+      const seriesData = categoryData.map((item: any) => item.revenue);
+      const labelsData = categoryData.map((item: any) => item.categoryName);
 
       setState({
         series: seriesData,
@@ -75,7 +75,7 @@ const ChartThree: React.FC = () => {
       <div className="mb-3 justify-between gap-4 sm:flex">
         <div>
           <h5 className="text-xl font-semibold text-black dark:text-white">
-            Thống kê theo khóa học
+            Thống kê theo danh mục
           </h5>
         </div>
       </div>
