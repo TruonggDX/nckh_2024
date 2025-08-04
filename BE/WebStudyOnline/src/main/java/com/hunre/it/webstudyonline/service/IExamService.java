@@ -1,7 +1,10 @@
 package com.hunre.it.webstudyonline.service;
 
+import com.hunre.it.webstudyonline.model.dto.CourseDto;
 import com.hunre.it.webstudyonline.model.dto.ExamDto;
+import com.hunre.it.webstudyonline.model.request.ExamResultRequest;
 import com.hunre.it.webstudyonline.model.response.BaseResponse;
+import com.hunre.it.webstudyonline.model.response.ExamAutoFillResponse;
 import com.hunre.it.webstudyonline.model.response.ResponsePage;
 import org.springframework.data.domain.Pageable;
 
@@ -15,4 +18,7 @@ public interface IExamService {
     BaseResponse<ExamDto> getExamById(String id);
     BaseResponse<ExamDto> getExamByCode(String examCode);
     ResponsePage<List<ExamDto>> findByCodeAndName(String name, String code,Pageable pageable);
+    BaseResponse<ExamAutoFillResponse> create(ExamAutoFillResponse response);
+
+    BaseResponse<List<CourseDto>> suggestCourse(ExamResultRequest request);
 }

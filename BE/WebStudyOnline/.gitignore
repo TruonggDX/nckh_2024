@@ -1,3 +1,46 @@
-.target
+# === Java ===
+*.class
+
+# === Build Directories ===
+/target/
+/build/
+
+# === Maven ===
+.mvn/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# === Gradle ===
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# === IDEs ===
+/.idea/
+/*.iml
+*.ipr
+*.iws
+/.vscode/
+out/
+.classpath
+.project
+.settings/
+bin/
+
+# === OS Files ===
+.DS_Store
+Thumbs.db
+
+# === Logs ===
+*.log
+
+# === Env Files ===
 .env
-src/main/java/com/hunre/it/webstudyonline/controller/api/ApiDiscord.java
+
+# === Others ===
+*~
+*.swp
+delombok/

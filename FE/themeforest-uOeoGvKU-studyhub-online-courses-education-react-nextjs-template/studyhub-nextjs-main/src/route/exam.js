@@ -27,4 +27,8 @@ async function getExamDetailsByExamId(page,size,id) {
     });
     return response.data;
 }
-export default {getExam,getExamById,getExamByName,getExamByCode,getExamDetailsByExamId};
+async function suggestCourse(req){
+    const response = await axiosInstance.post(`${api}/suggest`,req);
+    return response.data;
+}
+export default {getExam,getExamById,getExamByName,getExamByCode,getExamDetailsByExamId,suggestCourse};

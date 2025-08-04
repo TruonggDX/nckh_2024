@@ -20,4 +20,5 @@ public interface ICourseService {
     ResponsePage<List<CourseDto>> getCourseBestSeller(Pageable pageable);
     ResponsePage<List<CourseDto>> getCourseByEmailTeacher(Pageable pageable,String email);
     BaseResponse<Long> countCourse();
+    List<CourseDto> searchByName(String name);
 }

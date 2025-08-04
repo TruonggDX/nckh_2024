@@ -80,4 +80,9 @@ public class ApiCourse {
         BaseResponse<Long> response = courseService.countCourse();
         return ResponseEntity.ok(response);
     }
+    @GetMapping("/get-name")
+    public ResponseEntity<List<CourseDto>> search(@RequestParam String keyword) {
+        return ResponseEntity.ok(courseService.searchByName(keyword));
+    }
+
 }

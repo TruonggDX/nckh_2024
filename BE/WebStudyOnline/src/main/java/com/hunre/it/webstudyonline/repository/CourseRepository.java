@@ -1,6 +1,7 @@
 package com.hunre.it.webstudyonline.repository;
 
 import com.hunre.it.webstudyonline.entity.CourseEntity;
+import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -43,4 +44,9 @@ public interface CourseRepository extends JpaRepository<CourseEntity,Long> {
 
     @Query("select count(c) from CourseEntity c where c.deleted=false ")
     Long countCourse();
+    @Query(value = "SELECT c FROM CourseEntity c WHERE c.deleted=false ")
+    List<CourseEntity> getAllDeletedCourses();
+
+    @Query("SELECT c FROM CourseEntity c WHERE c.deleted=false AND c.level=:level")
+    List<CourseEntity> findByAim(String level);
 }
