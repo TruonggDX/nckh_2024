@@ -79,4 +79,10 @@ public class ApiGrade {
         BaseResponse<String> response = iGradeService.deleteStudentOuttoGrade(id,studentEmail);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/countGrade")
+    public ResponseEntity<BaseResponse<Long>> countGrade(){
+        BaseResponse<Long> response = iGradeService.countGrade();
+        return ResponseEntity.ok(response);
+    }
 }

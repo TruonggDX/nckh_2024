@@ -20,4 +20,6 @@ public interface IAccountService {
     BaseResponse<AccountDto> getAccount();
     BaseResponse<?> changePassword(String id, ChagePasswordRequest chagePasswordRequest);
     ResponsePage<List<AccountDto>> findAccountByAttribute(String fullname,String email,String role,Pageable pageable);
+    BaseResponse<Long> countUser();
+    BaseResponse<Long> countTeacher();
 }

@@ -42,6 +42,8 @@ public interface CourseRepository extends JpaRepository<CourseEntity,Long> {
             "WHERE b.accountEntity.id =:uid and c.id  = :courseId and c.deleted=false and c.status = 'Đã Duyệt'")
     Optional<CourseEntity> getCourseByUser(Long uid, Long courseId);
 
+    @Query("select count(c) from CourseEntity c where c.deleted=false ")
+    Long countCourse();
     @Query(value = "SELECT c FROM CourseEntity c WHERE c.deleted=false ")
     List<CourseEntity> getAllDeletedCourses();
 

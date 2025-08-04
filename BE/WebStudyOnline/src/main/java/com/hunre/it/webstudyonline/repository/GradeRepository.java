@@ -24,4 +24,7 @@ public interface GradeRepository extends JpaRepository<GradeEntity, Long> {
     GradeEntity findByCourseIdandEmail(Long courseId, String email);
     @Query(value = "select g from GradeEntity g join g.accounts a where g.deleted = false and a.email =:email ")
     Page<GradeEntity> findByEmail( String email,Pageable pageable);
+
+    @Query("select count(g) from GradeEntity g where g.deleted =false ")
+    Long countGrade();
 }

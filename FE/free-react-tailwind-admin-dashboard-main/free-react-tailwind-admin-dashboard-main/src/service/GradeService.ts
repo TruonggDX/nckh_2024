@@ -43,7 +43,7 @@ export const findGradeById = async (id:number) => {
     throw error;
   }
 }
-export const findByUser = async (req) => {
+export const findByUser = async (req:any) => {
   const token = getToken();
   try {
     const response = await axios.get(`${api}/findByUser`, {
@@ -135,3 +135,16 @@ export const deleteStudentOuttoGrade = async (req: any) => {
     throw error;
   }
 };
+
+export const countGrades = async () => {
+  const token = getToken();
+  try {
+    const response = await axios.get(`${api}/countGrade`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    return response.data;
+  }catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

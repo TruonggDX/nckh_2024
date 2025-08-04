@@ -74,6 +74,8 @@ public class WebSecurityConfig {
                         .requestMatchers("/api/bill_details/create").authenticated()
                         .requestMatchers("/api/bill_details/list/**").authenticated()
                         .requestMatchers("/api/cart/add","/api/cart/update/**","/api/cart/delete/**").authenticated()
+                        .requestMatchers("api/account/countUser", "api/account/countTeacher", "api/course/countCourse", "api/grade/countGrade").hasAnyRole("ADMIN")
+                        .requestMatchers("api/revenue/**").hasAnyRole("ADMIN")
                         .anyRequest().authenticated()
                 );
 

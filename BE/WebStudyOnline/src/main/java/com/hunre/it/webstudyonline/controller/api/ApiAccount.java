@@ -79,4 +79,16 @@ public class ApiAccount {
         AccountDto accountDto = accountService.findById(id);
         return ResponseEntity.ok(accountDto);
     }
+
+    @GetMapping("/countUser")
+    public ResponseEntity<BaseResponse<Long>> countUser() {
+        BaseResponse<Long> response = accountService.countUser();
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/countTeacher")
+    public ResponseEntity<BaseResponse<Long>> countTeacher() {
+        BaseResponse<Long> response = accountService.countTeacher();
+        return ResponseEntity.ok(response);
+    }
 }

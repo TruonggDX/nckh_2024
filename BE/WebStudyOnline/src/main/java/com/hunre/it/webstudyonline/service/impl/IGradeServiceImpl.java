@@ -311,4 +311,13 @@ public class IGradeServiceImpl implements IGradeService {
         responsePage.setContent(gradeDtos);
         return responsePage;
     }
+
+    public BaseResponse<Long> countGrade(){
+        BaseResponse<Long> response = new BaseResponse<>();
+        Long check = gradeRepository.countGrade();
+        response.setCode(HttpStatus.OK.value());
+        response.setMessage(Constant.HTTP_MESSAGE.SUCCESS);
+        response.setData(check);
+        return response;
+    }
 }

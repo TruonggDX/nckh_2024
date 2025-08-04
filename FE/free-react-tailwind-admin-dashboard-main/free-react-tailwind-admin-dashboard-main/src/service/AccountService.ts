@@ -110,3 +110,33 @@ export const findByCondition = async (page:number,size:number,filter:any) => {
     throw error;
   }
 };
+
+export const countUser = async () => {
+  const token = getToken();
+  try {
+    const response = await axios.get(`${api}/countUser`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+export const countTeachers = async () => {
+  const token = getToken();
+  try {
+    const response = await axios.get(`${api}/countTeacher`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}

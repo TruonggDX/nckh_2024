@@ -35,4 +35,14 @@ public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
 
     @Query(value = "select a.grades from AccountEntity a where a.email =:email")
     List<GradeEntity> findGradesByEmail(@Param("email") String email);
+
+    @Query("select count(a) from AccountEntity a "
+        + "join a.roles r "
+        + "where a.deleted =false and r.name = 'USER' ")
+    Long countUser();
+
+    @Query("select count(a) from AccountEntity a "
+        + "join a.roles r "
+        + "where a.deleted =false and r.name = 'TEACHER'")
+    Long countTeacher();
 }
